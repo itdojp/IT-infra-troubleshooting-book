@@ -1,0 +1,47 @@
+{
+  "name": "book-formatter",
+  "version": "1.0.0",
+  "description": "Book publishing template formatter - converts markdown books to various formats",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "node --test tests/BookGenerator.test.js tests/ConfigValidator.test.js",
+    "format": "prettier --write .",
+    "lint": "eslint src/ tests/",
+    "build": "node scripts/build.js",
+    "check-links": "node scripts/check-links.js",
+    "check-links:all": "node scripts/check-links.js . --output link-report.json",
+    "dashboard": "node scripts/dashboard.js",
+    "dashboard:watch": "node scripts/dashboard.js --watch",
+    "dashboard:report": "node scripts/dashboard.js --report markdown --save dashboard-report.md",
+    "sync-components": "node scripts/sync-components.js",
+    "sync-components:all": "node scripts/sync-components.js --all",
+    "sync-components:dry-run": "node scripts/sync-components.js --all --dry-run"
+  },
+  "keywords": [
+    "book",
+    "publishing",
+    "markdown",
+    "format",
+    "template"
+  ],
+  "author": "ITDO Inc.",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^12.0.0",
+    "markdown-it": "^14.1.0",
+    "yaml": "^2.4.1",
+    "fs-extra": "^11.2.0",
+    "chalk": "^5.3.0",
+    "glob": "^10.3.10"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "eslint": "^8.57.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
