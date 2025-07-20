@@ -30,6 +30,35 @@ kramdown:
   syntax_highlighter: rouge
   
 # GitHub Pages設定
+repository: 
+  github: "https://github.com/itdojp/IT-infra-troubleshooting-book"
 
-repository: "itdojp/IT-infra-troubleshooting-book"
+# Book structure for navigation
+structure:
+  chapters:
+    - id: 1
+      title: "トラブルシューティングの基本と心構え"
+      path: "/src/chapter-chapter01/"
+    - id: 2
+      title: "問題の特定と情報収集"
+      path: "/src/chapter-chapter02/"
+    - id: 3
+      title: "論理的な切り分けと原因特定"
+      path: "/src/chapter-chapter03/"
+    - id: 4
+      title: "各レイヤーでのトラブルシューティング実践"
+      path: "/src/chapter-chapter04/"
+    - id: 5
+      title: "クラウド環境特有のトラブルシューティング"
+      path: "/src/chapter-chapter05/"
+    - id: 6
+      title: "継続的学習と改善のプロセス"
+      path: "/src/chapter-chapter06/"
+  appendices:
+    - id: "A"
+      title: "実践的コマンドリファレンス"
+      path: "/src/appendices/"
+    - id: "B" 
+      title: "チェックリストとテンプレート"
+      path: "/src/appendices/"
 

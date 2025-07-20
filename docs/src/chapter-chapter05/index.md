@@ -2,6 +2,7 @@
 title: "第5章：クラウド環境特有のトラブルシューティング"
 chapter: chapter05
 layout: book
+order: 5
 ---
 
 # 第5章：クラウド環境特有のトラブルシューティング

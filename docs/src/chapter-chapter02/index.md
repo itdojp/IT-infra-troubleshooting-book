@@ -2,6 +2,7 @@
 title: "第2章：問題の特定と情報収集"
 chapter: chapter02
 layout: book
+order: 2
 ---
 
 # 第2章：問題の特定と情報収集

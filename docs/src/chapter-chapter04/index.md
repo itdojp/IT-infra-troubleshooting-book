@@ -2,6 +2,7 @@
 title: "第4章：各レイヤーでのトラブルシューティング実践"
 chapter: chapter04
 layout: book
+order: 4
 ---
 
 # 第4章：各レイヤーでのトラブルシューティング実践

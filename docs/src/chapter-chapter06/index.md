@@ -2,6 +2,7 @@
 title: "第6章：トラブルからの学びと再発防止"
 chapter: chapter06
 layout: book
+order: 6
 ---
 
 # 第6章：トラブルからの学びと再発防止

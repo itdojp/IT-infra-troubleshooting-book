@@ -2,6 +2,7 @@
 title: "第3章：論理的な切り分けと原因特定"
 chapter: chapter03
 layout: book
+order: 3
 ---
 
 # 第3章：論理的な切り分けと原因特定

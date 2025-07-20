@@ -2,6 +2,7 @@
 title: "第1章：トラブルシューティングの基本と心構え"
 chapter: chapter01
 layout: book
+order: 1
 ---
 
 # 第1章：トラブルシューティングの基本と心構え
