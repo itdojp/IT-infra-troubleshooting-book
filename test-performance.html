@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Test - IT Infra Troubleshooting Book</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .performance-info { background: #f0f0f0; padding: 10px; margin: 10px 0; }
+        code { background: #f5f5f5; padding: 2px 5px; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Browser Performance Test</h1>
+    
+    <div class="performance-info">
+        <h2>Performance Metrics</h2>
+        <p>Page Load Start: <span id="loadStart"></span></p>
+        <p>DOM Content Loaded: <span id="domLoaded"></span></p>
+        <p>Load Complete: <span id="loadComplete"></span></p>
+        <p>JavaScript Execution Time: <span id="jsTime"></span>ms</p>
+    </div>
+
+    <!-- Simulate large content like Chapter 3 -->
+    <h2>Test: Large Technical Content</h2>
+    <div id="large-content">
+        <!-- This will be populated with content to simulate the problematic chapters -->
+    </div>
+
+    <!-- Simulate multiple code blocks -->
+    <h2>Test: Multiple Code Blocks</h2>
+    <div id="code-blocks">
+        <!-- Code blocks will be generated here -->
+    </div>
+
+    <script>
+        // Performance measurement
+        const startTime = performance.now();
+        document.getElementById('loadStart').textContent = new Date().toISOString();
+
+        // DOM Content Loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('domLoaded').textContent = new Date().toISOString();
+        });
+
+        // Page fully loaded
+        window.addEventListener('load', function() {
+            const endTime = performance.now();
+            document.getElementById('loadComplete').textContent = new Date().toISOString();
+            document.getElementById('jsTime').textContent = (endTime - startTime).toFixed(2);
+        });
+
+        // Simulate the problem: Generate many elements like the book chapters
+        function generateLargeContent() {
+            const container = document.getElementById('large-content');
+            
+            // Generate content similar to Chapter 3
+            for (let i = 0; i < 50; i++) {
+                const section = document.createElement('div');
+                section.innerHTML = `
+                    <h3>Section ${i + 1}: Network Troubleshooting</h3>
+                    <p>This is a detailed explanation of network troubleshooting techniques...</p>
+                    <ul>
+                        <li><code>ping -i 0.1 target</code>: High frequency testing</li>
+                        <li><code>traceroute -n target</code>: DNS resolution disabled</li>
+                        <li><code>dig +trace domain</code>: Complete resolution tracking</li>
+                        <li><code>tcpdump -i any host 192.168.1.1</code>: Host monitoring</li>
+                        <li><code>iperf3 -c server -t 60</code>: 60-second bandwidth test</li>
+                    </ul>
+                `;
+                container.appendChild(section);
+            }
+        }
+
+        function generateCodeBlocks() {
+            const container = document.getElementById('code-blocks');
+            
+            // Generate many code blocks like Chapter 5
+            for (let i = 0; i < 30; i++) {
+                const codeBlock = document.createElement('div');
+                codeBlock.innerHTML = `
+                    <h4>Code Block ${i + 1}</h4>
+                    <pre><code># AWS CLI command example
+aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,State.Name]'
+aws cloudwatch get-metric-statistics --namespace AWS/EC2 --metric-name CPUUtilization
+kubectl get pods --all-namespaces
+docker logs container-id --timestamps</code></pre>
+                `;
+                container.appendChild(codeBlock);
+            }
+        }
+
+        // Generate content to test performance
+        generateLargeContent();
+        generateCodeBlocks();
+
+        // Monitor performance issues
+        let lastTime = performance.now();
+        function monitorFrameRate() {
+            const currentTime = performance.now();
+            const deltaTime = currentTime - lastTime;
+            
+            if (deltaTime > 100) { // Frame took longer than 100ms
+                console.warn(`Slow frame detected: ${deltaTime.toFixed(2)}ms`);
+            }
+            
+            lastTime = currentTime;
+            requestAnimationFrame(monitorFrameRate);
+        }
+        
+        // Start monitoring
+        requestAnimationFrame(monitorFrameRate);
+
+        // Test MutationObserver (similar to code-copy.js)
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                    // Simulate code-copy.js behavior
+                    const codeBlocks = document.querySelectorAll('pre code');
+                    console.log(`Processing ${codeBlocks.length} code blocks`);
+                }
+            });
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    </script>
+</body>
+</html>

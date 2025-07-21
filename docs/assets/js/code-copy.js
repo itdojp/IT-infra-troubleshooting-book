@@ -5,22 +5,21 @@
 (function() {
     'use strict';
     
-    // Add copy buttons to all code blocks
+    // Add copy buttons to all code blocks (optimized)
     function addCopyButtons() {
-        const codeBlocks = document.querySelectorAll('pre > code');
+        // Use more efficient selector to avoid processing already processed blocks
+        const codeBlocks = document.querySelectorAll('pre:not(.processed) > code');
         
         codeBlocks.forEach(block => {
-            // Skip if already has a copy button
-            if (block.parentElement.querySelector('.copy-button')) {
-                return;
-            }
+            const pre = block.parentElement;
+            // Mark as processed to avoid reprocessing
+            pre.classList.add('processed');
             
             // Create wrapper
             const wrapper = document.createElement('div');
             wrapper.className = 'code-block-wrapper';
             
             // Wrap the pre element
-            const pre = block.parentElement;
             pre.parentNode.insertBefore(wrapper, pre);
             wrapper.appendChild(pre);
             
@@ -97,12 +96,14 @@
         }
     }
     
-    // Add language labels to code blocks
+    // Add language labels to code blocks (optimized)
     function addLanguageLabels() {
-        const codeBlocks = document.querySelectorAll('pre > code[class*="language-"]');
+        const codeBlocks = document.querySelectorAll('pre:not(.lang-processed) > code[class*="language-"]');
         
         codeBlocks.forEach(block => {
             const pre = block.parentElement;
+            // Mark as processed to avoid reprocessing
+            pre.classList.add('lang-processed');
             
             // Extract language from class
             const match = block.className.match(/language-(\w+)/);
@@ -118,10 +119,31 @@
         addCopyButtons();
         addLanguageLabels();
         
-        // Watch for dynamically added code blocks
-        const observer = new MutationObserver(() => {
-            addCopyButtons();
-            addLanguageLabels();
+        // Watch for dynamically added code blocks with throttling
+        let timeoutId;
+        const observer = new MutationObserver((mutations) => {
+            // Throttle the processing to avoid excessive calls
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                // Only process if there are actually new code blocks
+                let hasNewCodeBlocks = false;
+                mutations.forEach(mutation => {
+                    if (mutation.addedNodes.length > 0) {
+                        for (let node of mutation.addedNodes) {
+                            if (node.nodeType === 1 && // Element node
+                                (node.tagName === 'PRE' || node.querySelector && node.querySelector('pre > code'))) {
+                                hasNewCodeBlocks = true;
+                                break;
+                            }
+                        }
+                    }
+                });
+                
+                if (hasNewCodeBlocks) {
+                    addCopyButtons();
+                    addLanguageLabels();
+                }
+            }, 100); // 100ms throttle
         });
         
         observer.observe(document.body, {
