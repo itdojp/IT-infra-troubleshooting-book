@@ -1,412 +1,631 @@
-# 付録C: 練習問題解答
-
-本書の各章末に掲載された練習問題の詳細な解答と解説を示します。
-
-## 第1章: 数学的基礎
-
-### 練習問題1.1 集合演算
-
-**問題**: A = {1, 2, 3, 4}, B = {3, 4, 5, 6}に対して、以下を求めよ。
-(a) A ∪ B  (b) A ∩ B  (c) A \ B  (d) B \ A  (e) A ⊕ B（対称差）
-
-**解答**:
-(a) A ∪ B = {1, 2, 3, 4, 5, 6}
-(b) A ∩ B = {3, 4}
-(c) A \ B = {1, 2}
-(d) B \ A = {5, 6}
-(e) A ⊕ B = (A \ B) ∪ (B \ A) = {1, 2, 5, 6}
-
-**解説**: 対称差A ⊕ Bは、AとBのいずれか一方にのみ属する要素の集合です。
-
-### 練習問題1.2 関数の性質
-
-**問題**: f: ℝ → ℝ, f(x) = x² について、以下を示せ。
-(a) fは単射ではない
-(b) fは全射ではない
-(c) f: ℝ≥0 → ℝ≥0として制限すれば全単射である
-
-**解答**:
-
-**(a) fは単射ではない**
-
-**証明**: 単射でないことを示すには、f(a) = f(b)かつa ≠ bとなる例を見つければよい。
-f(2) = 4, f(-2) = 4であり、2 ≠ -2なので、fは単射ではない。□
-
-**(b) fは全射ではない**
-
-**証明**: 全射でないことを示すには、fの値域に含まれない実数を見つければよい。
-任意のx ∈ ℝに対してf(x) = x² ≥ 0なので、例えば-1はfの値域に含まれない。
-よってfは全射ではない。□
-
-**(c) 制限された関数は全単射**
-
-**証明**: f: ℝ≥0 → ℝ≥0, f(x) = x²について：
-
-*単射性*: x₁, x₂ ∈ ℝ≥0とし、f(x₁) = f(x₂)とする。
-x₁² = x₂²であり、x₁, x₂ ≥ 0なので、x₁ = x₂。よって単射。
-
-*全射性*: 任意のy ∈ ℝ≥0に対して、x = √y ∈ ℝ≥0とすると、
-f(x) = (√y)² = yなので全射。
-
-よって制限された関数は全単射である。□
-
-### 練習問題1.3 数学的帰納法
-
-**問題**: 数学的帰納法を用いて、以下を証明せよ。
-∀n ∈ ℕ, ∑_{i=1}^n i = n(n+1)/2
-
-**解答**:
-
-**証明**: 数学的帰納法による。
-
-*基底ケース* (n = 1):
-左辺: ∑_{i=1}^1 i = 1
-右辺: 1(1+1)/2 = 1
-よって成立。
-
-*帰納ステップ*: n = kで成立すると仮定する。すなわち、
-∑_{i=1}^k i = k(k+1)/2
-
-n = k+1の場合を考える：
-∑_{i=1}^{k+1} i = ∑_{i=1}^k i + (k+1)
-= k(k+1)/2 + (k+1)  （帰納仮定より）
-= (k+1)[k/2 + 1]
-= (k+1)(k+2)/2
-
-これはn = k+1での右辺に一致する。
-
-よって数学的帰納法により、すべての自然数nに対して成立する。□
-
-## 第2章: 計算理論の基礎
-
-### 練習問題2.1 チューリング機械の設計
-
-**問題**: 文字列w ∈ {0,1}*に対して、ww（wを2回連結した文字列）を認識するチューリング機械を設計せよ。
-
-**解答**:
-
-**解法**: 入力が2n文字であることを確認し、前半n文字と後半n文字が一致することを確認する。
-
-**アルゴリズム**:
-1. 入力の長さが偶数であることを確認
-2. 最初の文字をマークし、対応する位置（中央より後）の文字と比較
-3. 一致すれば次の文字に進む
-4. すべての文字が一致すれば受理
-
-**チューリング機械M = (Q, Σ, Γ, δ, q₀, qaccept, qreject)**:
-- Q: 状態集合
-- Σ = {0, 1}: 入力アルファベット
-- Γ = {0, 1, X, Y, ⊔}: テープアルファベット
-- q₀: 初期状態
-- δ: 遷移関数（詳細な状態遷移表は省略）
-
-**主な状態の役割**:
-- q₀: 開始状態、入力の長さをチェック
-- q₁: 前半の文字をマーク
-- q₂: 対応する後半の文字を探す
-- q₃: 文字の一致をチェック
-- qaccept: 受理状態
-- qreject: 拒否状態
-
-### 練習問題2.2 計算可能性
-
-**問題**: 以下の関数が計算可能であることを証明せよ。
-f(n) = 2n if n is even, 3n+1 if n is odd
-
-**解答**:
-
-**証明**: チューリング機械によってf(n)を計算できることを示す。
-
-**アルゴリズム**:
-1. 入力nを読む
-2. nが偶数か奇数かを判定
-3. 偶数の場合: n × 2を計算
-4. 奇数の場合: n × 3 + 1を計算
-5. 結果を出力
-
-**詳細**:
-
-*偶数判定*: nを2で割り、余りが0かどうかをチェック（除算はチューリング機械で実現可能）
-
-*乗算の実現*: チューリング機械で乗算は実現可能（加算を繰り返す）
-
-*加算の実現*: チューリング機械で加算は実現可能
-
-すべての構成要素がチューリング機械で実現可能なので、f(n)は計算可能である。□
-
-## 第3章: 形式言語とオートマトン理論
-
-### 練習問題3.1 正規言語の証明
-
-**問題**: L = {w ∈ {a,b}* | wにaが偶数個含まれる}が正規言語であることを証明せよ。
-
-**解答**:
-
-**方法1: DFAによる証明**
-
-DFA M = (Q, Σ, δ, q₀, F)を構成する：
-- Q = {q₀, q₁} （q₀: 偶数個, q₁: 奇数個）
-- Σ = {a, b}
-- δ(q₀, a) = q₁, δ(q₀, b) = q₀, δ(q₁, a) = q₀, δ(q₁, b) = q₁
-- 初期状態: q₀
-- 受理状態: F = {q₀}
-
-このDFAはLを認識するので、Lは正規言語である。□
-
-**方法2: 正規表現による証明**
-
-Lを表す正規表現: b*(bb*ab*ab*)*
-
-この正規表現は：
-- 任意個のb
-- 0回以上の（任意個のb, a, 任意個のb, a, 任意個のb）の繰り返し
-
-これはaが偶数個（0個を含む）含まれる文字列を正確に表現する。□
-
-### 練習問題3.2 文脈自由文法
-
-**問題**: L = {aⁿbⁿ | n ≥ 0}を生成する文脈自由文法を示せ。
-
-**解答**:
-
-**文脈自由文法G = (V, Σ, R, S)**:
-- V = {S} (非終端記号)
-- Σ = {a, b} (終端記号)
-- R: 生成規則
-  - S → aSb
-  - S → ε
-- S: 開始記号
-
-**導出例**:
-- n = 0: S ⇒ ε
-- n = 1: S ⇒ aSb ⇒ aεb = ab
-- n = 2: S ⇒ aSb ⇒ aaSbb ⇒ aaεbb = aabb
-- n = 3: S ⇒ aSb ⇒ aaSbb ⇒ aaaSbbb ⇒ aaaεbbb = aaabbb
-
-**正当性**: 任意のn ≥ 0に対してaⁿbⁿが生成可能であり、この文法から生成される文字列はすべてこの形式である。□
-
-### 練習問題3.3 ポンピング補題
-
-**問題**: L = {aⁿbⁿcⁿ | n ≥ 0}が文脈自由言語でないことをポンピング補題で証明せよ。
-
-**解答**:
-
-**証明**: 文脈自由言語のポンピング補題により、Lが文脈自由言語であると仮定する。
-
-ポンピング長をpとする。文字列s = aᵖbᵖcᵖ ∈ Lを考える。
-|s| = 3p ≥ pなので、s = uvxyzと分解でき：
-1. |vxy| ≤ p
-2. |vy| ≥ 1
-3. ∀i ≥ 0, uvⁱxyⁱz ∈ L
-
-条件1により、vxyはaᵖbᵖcᵖの長さp以下の部分文字列である。
-したがって、vxyは次のいずれかに含まれる：
-- aᵖの一部とbᵖの一部
-- bᵖの一部とcᵖの一部
-- aᵖ, bᵖ, cᵖのいずれか1つの内部
-
-**場合分析**:
-
-*場合1*: vxyがaとbにまたがる場合
-v, yがそれぞれa, bのみを含むとすると、uv²xy²zではaとbの個数が増加するが、cの個数は変わらない。よってuv²xy²z ∉ L。
-
-*場合2*: vxyがbとcにまたがる場合
-同様に、uv²xy²zでbとcの個数が増加するが、aの個数は変わらない。よってuv²xy²z ∉ L。
-
-*場合3*: vxyが1つの文字種のみを含む場合
-v, yが同じ文字のみを含むとすると、uv²xy²zではその文字の個数のみが増加し、他の文字の個数は変わらない。よってuv²xy²z ∉ L。
-
-すべての場合で矛盾が生じるため、Lは文脈自由言語ではない。□
-
-## 第4章: 計算可能性
-
-### 練習問題4.1 停止問題
-
-**問題**: 以下の問題が決定不可能であることを証明せよ。
-EMPTY = {⟨M⟩ | M はチューリング機械でL(M) = ∅}
-
-**解答**:
-
-**証明**: 停止問題ATMからEMPTYへの還元を示す。
-
-ATM = {⟨M,w⟩ | M は入力wで停止し受理する}
-
-還元関数f: ⟨M,w⟩ → ⟨M'⟩を以下のように構成：
-
-**M'の動作**（入力x）:
-1. xを無視してwをテープに書く
-2. Mをw上でシミュレート
-3. Mがwを受理すれば受理
-4. Mがwを拒否すれば拒否
-
-**解析**:
-- ⟨M,w⟩ ∈ ATM ⟺ Mはwを受理 ⟺ M'はすべての入力を受理 ⟺ L(M') ≠ ∅ ⟺ ⟨M'⟩ ∉ EMPTY
-- ⟨M,w⟩ ∉ ATM ⟺ Mはwを受理しない ⟺ M'はどの入力も受理しない ⟺ L(M') = ∅ ⟺ ⟨M'⟩ ∈ EMPTY
-
-よって⟨M,w⟩ ∈ ATM ⟺ ⟨M'⟩ ∉ EMPTY。
-
-ATMが決定不可能でこの還元が計算可能なので、EMPTYも決定不可能である。□
-
-### 練習問題4.2 Riceの定理
-
-**問題**: Riceの定理を用いて、以下の問題が決定不可能であることを証明せよ。
-INFINITE = {⟨M⟩ | L(M)は無限言語}
-
-**解答**:
-
-**証明**: Riceの定理を適用する。
-
-**Riceの定理**: L₁, L₂が言語の非自明な性質Pについて、L₁がPを満たしL₂がPを満たさないとき、{⟨M⟩ | L(M)がPを満たす}は決定不可能。
-
-INFINITEに対して：
-- P: 「言語が無限である」という性質
-- L₁ = Σ* (無限言語)
-- L₂ = ∅ (有限言語)
-
-L₁はPを満たし、L₂はPを満たさない。また、Pは非自明（Pを満たす言語と満たさない言語が両方存在）。
-
-よってRiceの定理により、INFINITEは決定不可能である。□
-
-## 第5章: 計算複雑性理論
-
-### 練習問題5.1 複雑性クラスの関係
-
-**問題**: P ⊆ NP ⊆ PSPACE を証明せよ。
-
-**解答**:
-
-**P ⊆ NP の証明**:
-L ∈ Pとする。Lを多項式時間で決定するTM Mが存在する。
-以下の非決定性TM M'を構成：
-- M'は入力xに対してMを実行し、Mと同じ結果を返す
-- M'の実行時間はMと同じで多項式時間
-
-よってL ∈ NP。□
-
-**NP ⊆ PSPACE の証明**:
-L ∈ NPとする。Lを多項式時間で検証するTM Vが存在し、証拠yの長さはp(|x|)以下（pは多項式）。
-
-以下のPSPACE TM M'を構成：
-- 入力x（長さn）について
-- 長さp(n)以下のすべての文字列yを列挙（指数的に多い）
-- 各yについてV(x,y)を実行し、受理すれば受理
-
-**空間解析**:
-- yの列挙にはp(n)の空間（現在のyを保存）
-- V(x,y)の実行にはp(n)の空間（Vは多項式時間）
-- 全体でO(p(n))の多項式空間
-
-よってL ∈ PSPACE。□
-
-### 練習問題5.2 NP完全性の証明
-
-**問題**: VERTEX-COVERがNP完全であることを証明せよ。
-VERTEX-COVER = {⟨G,k⟩ | Gはサイズk以下の頂点被覆を持つ}
-
-**解答**:
-
-**VERTEX-COVER ∈ NP の証明**:
-証拠：サイズk以下の頂点集合S
-検証：Sの各頂点を確認し、すべての辺が被覆されているかチェック
-時間：O(|V| + |E|)で多項式時間
-
-**NP困難性の証明**（3-SATからの還元）:
-3-SATのインスタンス φ = C₁ ∧ C₂ ∧ ... ∧ Cₘ（各Cᵢは3つのリテラルの選言）から、グラフG = (V,E)とk = |V| - mを構成：
-
-**構成**:
-1. 各変数xᵢについて：2つの頂点xᵢ, x̄ᵢを作成し、エッジ(xᵢ, x̄ᵢ)を追加
-2. 各節Cⱼについて：3つの頂点を作成し、完全グラフにする
-3. 各節の頂点を、対応するリテラルの頂点に接続
-
-**正当性**:
-⇒: φが充足可能ならば、真の割当てに対応する変数頂点と、各節で偽になるリテラル以外の頂点を選ぶ
-
-⇐: サイズk = |V| - mの頂点被覆が存在するならば、各変数ペアから1つ、各節から2つずつ選ばれ、これは充足可能割当てに対応
-
-よってVERTEX-COVERはNP完全である。□
-
-## 第6章: アルゴリズムの数学的解析
-
-### 練習問題6.1 Master定理
-
-**問題**: 以下の漸化式をMaster定理で解け。
-T(n) = 8T(n/2) + n²
-
-**解答**:
-
-**Master定理の適用**:
-T(n) = aT(n/b) + f(n)の形で、a = 8, b = 2, f(n) = n²
-
-**比較**:
-- nᶜ = n^(log₂ 8) = n³ （∵ log₂ 8 = 3）
-- f(n) = n²
-
-f(n) = O(nᶜ⁻ᵋ) for ε = 1なので、ケース1が適用される。
-
-**結果**: T(n) = Θ(n³)
-
-**検証**:
-T(n) = 8T(n/2) + n²
-= 8[8T(n/4) + (n/2)²] + n²
-= 64T(n/4) + 2n² + n²
-= 64T(n/4) + 3n²
-⋮
-= 8ᵏT(n/2ᵏ) + n²∑ᵢ₌₀ᵏ⁻¹(8/4)ⁱ
-
-k = log₂ nのとき、T(1) = O(1)なので：
-T(n) = O(nᵏ) + n²((8/4)ᵏ - 1)/(8/4 - 1)
-= O(n³) + n²(2ᵏ - 1)
-= O(n³) + n²(n - 1)
-= Θ(n³) □
-
-### 練習問題6.2 動的計画法の設計
-
-**問題**: 最適二分探索木問題に対する動的計画法アルゴリズムを設計し、時間複雑性を解析せよ。
-
-**解答**:
-
-**問題設定**: n個のキーk₁ < k₂ < ... < kₙに対し、各キーkᵢの検索確率がpᵢで与えられたとき、期待検索コストを最小化する二分探索木を構築する。
-
-**部分問題**: opt[i][j] = キーkᵢ, ..., kⱼから構成される最適二分探索木のコスト
-
-**漸化式**:
-opt[i][j] = min{opt[i][r-1] + opt[r+1][j] + ∑ₖ₌ᵢʲ pₖ} for i ≤ r ≤ j
-
-**アルゴリズム**:
-```python
-def optimal_bst(p):
-    n = len(p)
-    opt = [[0] * n for _ in range(n)]
-    sum_p = [[0] * n for _ in range(n)]
-    
-    # 前処理：確率の累積和を計算
-    for i in range(n):
-        for j in range(i, n):
-            sum_p[i][j] = sum(p[i:j+1])
-    
-    # 動的計画法
-    for length in range(1, n+1):  # 部分問題のサイズ
-        for i in range(n - length + 1):
-            j = i + length - 1
-            opt[i][j] = float('inf')
-            
-            for r in range(i, j+1):  # 根の選択
-                cost = sum_p[i][j]
-                if r > i:
-                    cost += opt[i][r-1]
-                if r < j:
-                    cost += opt[r+1][j]
-                
-                opt[i][j] = min(opt[i][j], cost)
-    
-    return opt[0][n-1]
+---
+title: "付録C: 設定ファイルサンプル"
+layout: book
+order: 103
+---
+
+# 付録C: 設定ファイルサンプル
+
+典型的なシステム設定ファイルのサンプルと設定のベストプラクティスを示します。
+
+## ネットワーク設定サンプル
+
+### CentOS/RHEL ネットワーク設定
+
+#### /etc/sysconfig/network-scripts/ifcfg-eth0
+```bash
+# 静的IP設定例
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=static
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+NAME=eth0
+UUID=12345678-1234-1234-1234-123456789abc
+DEVICE=eth0
+ONBOOT=yes
+IPADDR=192.168.1.100
+NETMASK=255.255.255.0
+GATEWAY=192.168.1.1
+DNS1=8.8.8.8
+DNS2=8.8.4.4
 ```
 
-**時間複雑性解析**:
-- 3重ループ：O(n³)
-- 各内側の計算：O(1)
-- 全体：Θ(n³)
+#### /etc/sysconfig/network
+```bash
+# システム全体のネットワーク設定
+NETWORKING=yes
+HOSTNAME=server01.example.com
+GATEWAY=192.168.1.1
+```
 
-**空間複雑性**: Θ(n²) □
+### Ubuntu/Debian ネットワーク設定
 
-これらの解答例は、理論的な理解を深めるとともに、実際の問題解決能力を向上させることを目的としています。各解答には証明の構造、アルゴリズムの設計、複雑性解析が含まれており、理論と実践の両面から学習できるようになっています。
+#### /etc/netplan/00-installer-config.yaml (Ubuntu 18.04+)
+```yaml
+network:
+  version: 2
+  ethernets:
+    eth0:
+      dhcp4: false
+      addresses: [192.168.1.100/24]
+      gateway4: 192.168.1.1
+      nameservers:
+        addresses: [8.8.8.8, 8.8.4.4]
+        search: [example.com]
+```
+
+#### /etc/network/interfaces (Debian/Ubuntu classic)
+```bash
+# The primary network interface
+auto eth0
+iface eth0 inet static
+    address 192.168.1.100
+    netmask 255.255.255.0
+    gateway 192.168.1.1
+    dns-nameservers 8.8.8.8 8.8.4.4
+    dns-search example.com
+
+# DHCP設定例
+# auto eth0
+# iface eth0 inet dhcp
+```
+
+### ルーティング設定
+
+#### /etc/sysconfig/network-scripts/route-eth0 (RHEL/CentOS)
+```bash
+# 静的ルート設定
+10.0.0.0/8 via 192.168.1.254 dev eth0
+172.16.0.0/12 via 192.168.1.254 dev eth0
+```
+
+#### /etc/network/interfaces でのルート設定 (Debian/Ubuntu)
+```bash
+# eth0インターフェース設定内に追加
+up route add -net 10.0.0.0/8 gw 192.168.1.254 dev eth0
+up route add -net 172.16.0.0/12 gw 192.168.1.254 dev eth0
+```
+
+## Web サーバー設定例
+
+### Apache HTTP Server
+
+#### /etc/httpd/conf/httpd.conf (基本設定)
+```apache
+# 基本設定
+ServerRoot "/etc/httpd"
+Listen 80
+Listen 443 ssl
+
+# セキュリティ設定
+ServerTokens Prod
+ServerSignature Off
+
+# MPM設定（preforkモジュール）
+<IfModule mpm_prefork_module>
+    StartServers         8
+    MinSpareServers      5
+    MaxSpareServers     20
+    ServerLimit        256
+    MaxRequestWorkers  256
+    MaxConnectionsPerChild 4000
+</IfModule>
+
+# ログ設定
+LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+CustomLog logs/access_log combined
+ErrorLog logs/error_log
+LogLevel warn
+
+# バーチャルホスト設定
+<VirtualHost *:80>
+    ServerName example.com
+    ServerAlias www.example.com
+    DocumentRoot /var/www/html/example
+    ErrorLog logs/example_error.log
+    CustomLog logs/example_access.log combined
+    
+    # セキュリティヘッダー
+    Header always set X-Frame-Options DENY
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-XSS-Protection "1; mode=block"
+</VirtualHost>
+
+# SSL設定
+<VirtualHost *:443>
+    ServerName example.com
+    DocumentRoot /var/www/html/example
+    
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/certs/example.crt
+    SSLCertificateKeyFile /etc/ssl/private/example.key
+    SSLCertificateChainFile /etc/ssl/certs/intermediate.crt
+    
+    # SSL設定の強化
+    SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
+    SSLCipherSuite ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384
+    SSLHonorCipherOrder on
+</VirtualHost>
+```
+
+### Nginx
+
+#### /etc/nginx/nginx.conf
+```nginx
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log warn;
+pid /var/run/nginx.pid;
+
+events {
+    worker_connections 1024;
+    use epoll;
+    multi_accept on;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    
+    # ログ設定
+    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for"';
+    access_log /var/log/nginx/access.log main;
+    
+    # パフォーマンス設定
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+    types_hash_max_size 2048;
+    
+    # セキュリティ設定
+    server_tokens off;
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection "1; mode=block";
+    
+    # Gzip圧縮
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml;
+    
+    include /etc/nginx/conf.d/*.conf;
+}
+```
+
+#### /etc/nginx/conf.d/example.conf
+```nginx
+server {
+    listen 80;
+    server_name example.com www.example.com;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name example.com www.example.com;
+    root /var/www/html/example;
+    index index.html index.php;
+    
+    # SSL設定
+    ssl_certificate /etc/ssl/certs/example.crt;
+    ssl_certificate_key /etc/ssl/private/example.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384;
+    ssl_prefer_server_ciphers on;
+    
+    # アクセス制御
+    location / {
+        try_files $uri $uri/ =404;
+    }
+    
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php-fpm/www.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+    
+    # 静的ファイルのキャッシュ
+    location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+}
+```
+
+## データベース設定例
+
+### MySQL/MariaDB
+
+#### /etc/my.cnf
+```ini
+[mysqld]
+# 基本設定
+port = 3306
+socket = /var/lib/mysql/mysql.sock
+datadir = /var/lib/mysql
+pid-file = /var/run/mysqld/mysqld.pid
+
+# 文字セット設定
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+
+# メモリ設定
+innodb_buffer_pool_size = 1G
+innodb_log_file_size = 256M
+innodb_log_buffer_size = 16M
+key_buffer_size = 256M
+max_connections = 200
+thread_cache_size = 8
+query_cache_size = 64M
+query_cache_limit = 2M
+
+# ログ設定
+log_error = /var/log/mysql/error.log
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/slow.log
+long_query_time = 2
+
+# セキュリティ設定
+bind-address = 127.0.0.1
+# ssl-ca = /etc/mysql/ssl/ca-cert.pem
+# ssl-cert = /etc/mysql/ssl/server-cert.pem
+# ssl-key = /etc/mysql/ssl/server-key.pem
+
+# レプリケーション設定
+server-id = 1
+log-bin = mysql-bin
+binlog-format = ROW
+expire_logs_days = 7
+
+[mysql]
+default-character-set = utf8mb4
+
+[client]
+default-character-set = utf8mb4
+```
+
+### PostgreSQL
+
+#### /var/lib/pgsql/data/postgresql.conf
+```ini
+# 接続設定
+listen_addresses = 'localhost'
+port = 5432
+max_connections = 200
+
+# メモリ設定
+shared_buffers = 256MB
+effective_cache_size = 1GB
+work_mem = 4MB
+maintenance_work_mem = 64MB
+
+# WAL設定
+wal_level = replica
+max_wal_size = 1GB
+min_wal_size = 80MB
+checkpoint_completion_target = 0.7
+
+# ログ設定
+log_destination = 'stderr'
+logging_collector = on
+log_directory = 'log'
+log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'
+log_statement = 'mod'
+log_min_duration_statement = 1000
+
+# 統計情報
+track_activities = on
+track_counts = on
+track_functions = all
+```
+
+#### /var/lib/pgsql/data/pg_hba.conf
+```ini
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# Local接続
+local   all             postgres                                peer
+local   all             all                                     md5
+
+# IPv4ローカル接続
+host    all             all             127.0.0.1/32            md5
+
+# IPv6ローカル接続
+host    all             all             ::1/128                 md5
+
+# レプリケーション接続
+host    replication     replicator      192.168.1.0/24          md5
+```
+
+## 監視設定サンプル
+
+### Nagios
+
+#### /etc/nagios/nagios.cfg
+```ini
+# 主要設定ファイル
+cfg_file=/etc/nagios/objects/commands.cfg
+cfg_file=/etc/nagios/objects/contacts.cfg
+cfg_file=/etc/nagios/objects/timeperiods.cfg
+cfg_file=/etc/nagios/objects/templates.cfg
+cfg_dir=/etc/nagios/servers
+
+# ログ設定
+log_file=/var/log/nagios/nagios.log
+log_rotation_method=d
+log_archive_path=/var/log/nagios/archives
+
+# チェック設定
+execute_service_checks=1
+execute_host_checks=1
+check_service_freshness=1
+check_host_freshness=1
+enable_notifications=1
+
+# パフォーマンス設定
+max_concurrent_checks=20
+service_check_timeout=60
+host_check_timeout=30
+```
+
+#### /etc/nagios/objects/templates.cfg
+```ini
+# ホストテンプレート
+define host{
+    name                    linux-server
+    use                     generic-host
+    check_period            24x7
+    check_interval          5
+    retry_interval          1
+    max_check_attempts      10
+    check_command           check-host-alive
+    notification_period     workhours
+    notification_interval   120
+    notification_options    d,u,r
+    contact_groups          admins
+    register                0
+}
+
+# サービステンプレート
+define service{
+    name                    generic-service
+    active_checks_enabled   1
+    passive_checks_enabled  1
+    parallelize_check       1
+    obsess_over_service     1
+    check_freshness         0
+    notifications_enabled   1
+    event_handler_enabled   1
+    flap_detection_enabled  1
+    failure_prediction_enabled 1
+    process_perf_data       1
+    retain_status_information 1
+    retain_nonstatus_information 1
+    is_volatile             0
+    check_period            24x7
+    max_check_attempts      3
+    normal_check_interval   10
+    retry_check_interval    2
+    contact_groups          admins
+    notification_options    w,u,c,r
+    notification_interval   60
+    notification_period     24x7
+    register                0
+}
+```
+
+### Zabbix
+
+#### /etc/zabbix/zabbix_server.conf
+```ini
+# データベース設定
+DBHost=localhost
+DBName=zabbix
+DBUser=zabbix
+DBPassword=password
+
+# ログ設定
+LogFile=/var/log/zabbix/zabbix_server.log
+LogFileSize=10
+DebugLevel=3
+
+# プロセス設定
+StartPollers=5
+StartIPMIPollers=0
+StartPollersUnreachable=1
+StartTrappers=5
+StartPingers=1
+StartDiscoverers=1
+StartHTTPPollers=1
+
+# タイムアウト設定
+Timeout=4
+TrapperTimeout=300
+UnreachablePeriod=45
+UnavailableDelay=60
+UnreachableDelay=15
+
+# ハウスキーピング
+HousekeepingFrequency=1
+MaxHousekeeperDelete=500
+```
+
+## セキュリティ設定例
+
+### SSH設定 (/etc/ssh/sshd_config)
+```bash
+# ポート設定
+Port 22
+Protocol 2
+
+# 認証設定
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+
+# セキュリティ設定
+PermitEmptyPasswords no
+MaxAuthTries 3
+MaxSessions 10
+ClientAliveInterval 300
+ClientAliveCountMax 2
+
+# 暗号化設定
+Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+MACs hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha2-256,hmac-sha2-512
+
+# ログ設定
+SyslogFacility AUTH
+LogLevel INFO
+
+# アクセス制御
+AllowUsers admin user1 user2
+DenyUsers root
+AllowGroups sshusers
+```
+
+### Firewall設定 (iptables)
+```bash
+#!/bin/bash
+# /etc/iptables/rules.v4
+
+# デフォルトポリシー
+-P INPUT DROP
+-P FORWARD DROP
+-P OUTPUT ACCEPT
+
+# ループバック許可
+-A INPUT -i lo -j ACCEPT
+
+# 確立済み接続許可
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# SSH許可
+-A INPUT -p tcp --dport 22 -j ACCEPT
+
+# HTTP/HTTPS許可
+-A INPUT -p tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp --dport 443 -j ACCEPT
+
+# DNS許可
+-A INPUT -p udp --dport 53 -j ACCEPT
+-A INPUT -p tcp --dport 53 -j ACCEPT
+
+# ICMP許可（制限付き）
+-A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+
+# 特定ネットワークからの管理アクセス
+-A INPUT -s 192.168.1.0/24 -p tcp --dport 3306 -j ACCEPT
+
+COMMIT
+```
+
+### fail2ban設定 (/etc/fail2ban/jail.local)
+```ini
+[DEFAULT]
+# 基本設定
+bantime = 3600
+findtime = 600
+maxretry = 3
+backend = auto
+
+# 通知設定
+destemail = admin@example.com
+sender = fail2ban@example.com
+action = %(action_mwl)s
+
+[sshd]
+enabled = true
+port = ssh
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+
+[apache-auth]
+enabled = true
+port = http,https
+filter = apache-auth
+logpath = /var/log/apache2/error.log
+maxretry = 3
+
+[nginx-http-auth]
+enabled = true
+port = http,https
+filter = nginx-http-auth
+logpath = /var/log/nginx/error.log
+maxretry = 3
+```
+
+## 設定管理のベストプラクティス
+
+### 設定ファイルのバックアップ
+```bash
+#!/bin/bash
+# 設定ファイル自動バックアップスクリプト
+
+BACKUP_DIR="/backup/config"
+DATE=$(date +%Y%m%d_%H%M%S)
+
+# 重要な設定ファイルリスト
+CONFIG_FILES=(
+    "/etc/httpd/conf/httpd.conf"
+    "/etc/nginx/nginx.conf"
+    "/etc/my.cnf"
+    "/etc/ssh/sshd_config"
+    "/etc/iptables/rules.v4"
+)
+
+mkdir -p "$BACKUP_DIR/$DATE"
+
+for file in "${CONFIG_FILES[@]}"; do
+    if [ -f "$file" ]; then
+        cp "$file" "$BACKUP_DIR/$DATE/"
+        echo "Backed up: $file"
+    fi
+done
+
+# 30日以上古いバックアップを削除
+find "$BACKUP_DIR" -type d -mtime +30 -exec rm -rf {} \;
+```
+
+### 設定の検証
+```bash
+#!/bin/bash
+# 設定ファイル検証スクリプト
+
+echo "=== Configuration Validation ==="
+
+# Apache設定検証
+echo "Checking Apache configuration..."
+httpd -t && echo "Apache: OK" || echo "Apache: ERROR"
+
+# Nginx設定検証
+echo "Checking Nginx configuration..."
+nginx -t && echo "Nginx: OK" || echo "Nginx: ERROR"
+
+# SSH設定検証
+echo "Checking SSH configuration..."
+sshd -t && echo "SSH: OK" || echo "SSH: ERROR"
+
+# MySQL設定検証
+echo "Checking MySQL configuration..."
+mysqld --help --verbose > /dev/null 2>&1 && echo "MySQL: OK" || echo "MySQL: ERROR"
+
+echo "=== Validation Complete ==="
+```
+
+---
+
+これらの設定サンプルを参考に、環境に適した設定を構築してください。設定変更前には必ずバックアップを取り、段階的に適用することで安全な運用を心がけましょう。

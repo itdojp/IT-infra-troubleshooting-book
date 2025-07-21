@@ -1,402 +1,509 @@
-# 付録D: 用語集・索引
+---
+title: "付録D: 用語集・技術索引"
+layout: book
+order: 104
+---
 
-理論計算機科学で使用される専門用語の日英対訳と詳細な説明です。
+# 付録D: 用語集・技術索引
+
+ITインフラトラブルシューティングで使用される専門用語の詳細な説明と索引です。
 
 ## A
 
-**アルゴリズム (Algorithm)**
-- 問題を解くための明確で有限な手順の集合
-- 入力から出力への変換プロセス
-- 正確性、有限性、効率性が要求される
+**Apache HTTP Server**
+- 世界で最も広く使用されているWebサーバーソフトウェア
+- モジュール構造による柔軟な機能拡張が特徴
+- Virtual Host機能により複数サイトの運用が可能
 
-**アクセプタ (Acceptor)**
-- 入力文字列を受理または拒否する計算装置
-- 有限オートマトン、プッシュダウンオートマトン等
+**API (Application Programming Interface)**
+- アプリケーション間の通信インターフェース
+- REST API、GraphQL APIなど複数の形式が存在
+- レート制限やバージョン管理が重要な運用要素
 
-**アルファベット (Alphabet)**
-- 記号の有限集合（通常Σで表記）
-- 例: Σ = {0, 1}, Σ = {a, b, c}
+**AWS (Amazon Web Services)**
+- Amazon提供のクラウドコンピューティングサービス
+- EC2、S3、RDSなど豊富なサービスラインナップ
+- 従量課金制による柔軟なコスト管理
 
-**AND演算 (AND Operation)**
-- 論理積、∧記号で表記
-- P ∧ Q は P と Q が共に真のときのみ真
+**Auto Scaling**
+- 負荷に応じてリソースを自動的に増減する機能
+- CPU使用率、メモリ使用率、ネットワーク負荷を監視
+- スケールアウト（水平拡張）とスケールアップ（垂直拡張）
 
 ## B
 
-**ビッグオー記法 (Big-O Notation)**
-- 関数の上界を表す漸近記法
-- f(n) = O(g(n)): f(n)はg(n)の定数倍を漸近的に超えない
-- 時間・空間複雑性の解析に使用
+**Backup**
+- データ喪失に備えたデータの複製保存
+- フル、差分、増分バックアップの種類がある
+- RTO（Recovery Time Objective）とRPO（Recovery Point Objective）の設定が重要
 
-**二分探索 (Binary Search)**
-- ソート済み配列に対する効率的な探索アルゴリズム
-- 時間複雑性: O(log n)
-- 分割統治法の典型例
+**Bandwidth**
+- ネットワークやシステムのデータ転送能力
+- bps（bits per second）で測定される
+- ボトルネック特定の重要な指標
 
-**背理法 (Proof by Contradiction)**
-- 証明したい命題の否定を仮定し、矛盾を導く証明技法
-- 決定不可能性の証明によく使用される
+**BGP (Border Gateway Protocol)**
+- インターネットにおける経路制御プロトコル
+- AS（Autonomous System）間でのルーティング情報交換
+- 大規模障害の原因となることがある
+
+**Blue-Green Deployment**
+- 本番環境とステージング環境を切り替えるデプロイ手法
+- ダウンタイムを最小化
+- 問題発生時の高速ロールバックが可能
 
 ## C
 
-**チューリング機械 (Turing Machine)**
-- 理論計算機科学の基本的計算モデル
-- 無限テープ、ヘッド、状態集合から構成
-- 計算可能性の定義に使用
+**CDN (Content Delivery Network)**
+- 地理的に分散したサーバーでコンテンツを配信
+- レスポンス時間の改善とサーバー負荷軽減
+- CloudFlare、AWS CloudFront、Azure CDNなど
 
-**Church-Turing仮説 (Church-Turing Thesis)**
-- 直感的に計算可能な関数はチューリング機械で計算可能
-- 計算可能性の基本仮説
+**CI/CD (Continuous Integration/Continuous Deployment)**
+- 継続的インテグレーション・継続的デプロイメント
+- 自動化によるソフトウェア開発効率化
+- Jenkins、GitLab CI、GitHub Actionsなどのツールを使用
 
-**複雑性クラス (Complexity Class)**
-- 同程度の計算資源で解ける問題の集合
-- P, NP, PSPACE, EXPTIME等
+**Cloud Computing**
+- インターネット経由でIT リソースを提供するサービス
+- IaaS、PaaS、SaaSの3つのサービスモデル
+- 共有責任モデルによるセキュリティ管理
 
-**文脈自由文法 (Context-Free Grammar)**
-- 型2文法、プッシュダウンオートマトンと対応
-- A → α の形の生成規則（Aは非終端記号）
-
-**計算可能性 (Computability)**
-- アルゴリズムによって解ける問題の性質
-- チューリング機械による定式化
+**Cluster**
+- 複数のサーバーを連携させた分散システム
+- 高可用性（HA）と負荷分散を実現
+- Kubernetes、Docker Swarmなどのオーケストレーションツール
 
 ## D
 
-**決定可能性 (Decidability)**
-- ある問題に対してyes/noの答えを常に出力するアルゴリズムが存在する性質
-- 決定可能言語 = 再帰言語
+**Database**
+- 構造化されたデータの集合とその管理システム
+- RDBMS（MySQL、PostgreSQL）とNoSQL（MongoDB、Redis）
+- ACID特性（Atomicity、Consistency、Isolation、Durability）
 
-**決定性有限オートマトン (Deterministic Finite Automaton, DFA)**
-- 各状態・入力記号の組に対して遷移先が一意に決まるFA
-- 正規言語を認識する最も基本的な計算モデル
+**DNS (Domain Name System)**
+- ドメイン名とIPアドレスの対応付けシステム
+- 階層構造による分散管理
+- TTL（Time To Live）によるキャッシュ制御
 
-**深さ優先探索 (Depth-First Search, DFS)**
-- グラフ探索アルゴリズムの一種
-- スタックまたは再帰を使用
-- 時間複雑性: O(V + E)
+**Docker**
+- コンテナ型仮想化プラットフォーム
+- アプリケーションの移植性と効率性を向上
+- イメージ、コンテナ、Dockerfileなどの概念
 
-**分割統治法 (Divide and Conquer)**
-- 問題を小さな部分問題に分割し、解を統合する手法
-- マージソート、クイックソート等で使用
-
-**動的計画法 (Dynamic Programming)**
-- 最適部分構造を持つ問題に対する最適化手法
-- メモ化により重複計算を避ける
+**DDoS (Distributed Denial of Service)**
+- 分散型サービス拒否攻撃
+- 複数の送信元から大量のトラフィックを送信
+- WAF、CDN、スケーリングによる対策
 
 ## E
 
-**空文字列 (Empty String)**
-- 長さ0の文字列、εまたはλで表記
-- すべての言語の部分集合
+**Elasticsearch**
+- 分散型検索・分析エンジン
+- ログ分析とリアルタイム検索に特化
+- Elastic Stack（ELK）の中核コンポーネント
 
-**空集合 (Empty Set)**
-- 要素を含まない集合、∅で表記
-- すべての集合の部分集合
+**Encryption**
+- データの暗号化技術
+- 転送時暗号化（TLS/SSL）と保存時暗号化
+- 対称暗号と非対称暗号の2つの方式
 
-**ユークリッドアルゴリズム (Euclidean Algorithm)**
-- 最大公約数を求める効率的アルゴリズム
-- 時間複雑性: O(log min(a,b))
-
-**指数時間 (Exponential Time)**
-- 実行時間がO(2^n)等の指数関数となるアルゴリズム
-- 多くのNP完全問題の既知最良解法
+**ETL (Extract, Transform, Load)**
+- データの抽出、変換、格納プロセス
+- データウェアハウス構築の基本概念
+- Apache Spark、Airflowなどのツールを使用
 
 ## F
 
-**有限オートマトン (Finite Automaton)**
-- 有限個の状態を持つ計算装置
-- DFA（決定性）とNFA（非決定性）がある
+**Failover**
+- 障害発生時の自動切り替え機能
+- プライマリ・セカンダリ構成での高可用性実現
+- RTO（目標復旧時間）の短縮が目的
 
-**形式言語 (Formal Language)**
-- ある言語が表現するパターンを数学的に定義したもの
-- チョムスキー階層による分類
+**Firewall**
+- ネットワークセキュリティの防御機構
+- パケットフィルタリング、ステートフル検査
+- iptables、ufw、AWS Security Groupなど
 
-**関数 (Function)**
-- 定義域の各要素を値域の要素に対応させる規則
-- f: A → B で表記
+**FTP (File Transfer Protocol)**
+- ファイル転送プロトコル
+- SFTP、FTPSによるセキュア通信
+- 設定ミスによる情報漏洩リスクあり
 
 ## G
 
-**文法 (Grammar)**
-- 言語を生成するための規則の集合
-- G = (V, T, P, S)で定義（V: 非終端記号, T: 終端記号, P: 生成規則, S: 開始記号）
+**Git**
+- 分散型バージョン管理システム
+- Infrastructure as Code（IaC）での設定管理
+- GitHub、GitLab、Bitbucketなどのホスティングサービス
 
-**グラフ (Graph)**
-- 頂点（V）と辺（E）の集合 G = (V, E)
-- 有向グラフと無向グラフがある
+**GCP (Google Cloud Platform)**
+- Google提供のクラウドコンピューティングサービス
+- BigQuery、Kubernetes Engine、Cloud Functionsなど
+- AI/ML サービスが充実
 
-**貪欲法 (Greedy Algorithm)**
-- 各段階で局所的に最適な選択をする手法
-- 最短路問題（ダイクストラ法）等で使用
-
-**最大公約数 (Greatest Common Divisor, GCD)**
-- 2つの整数の共通約数の最大値
-- ユークリッドアルゴリズムで効率的に計算
+**Grafana**
+- メトリクス可視化・ダッシュボードツール
+- Prometheus、InfluxDBなどとの連携
+- アラート機能による運用自動化
 
 ## H
 
-**停止問題 (Halting Problem)**
-- チューリング機械が与えられた入力で停止するかを判定する問題
-- 決定不可能問題の代表例
+**HAProxy**
+- 高性能なロードバランサー・プロキシサーバー
+- レイヤー4/7でのトラフィック分散
+- ヘルスチェック機能による自動フェイルオーバー
 
-**ハッシュ関数 (Hash Function)**
-- 任意サイズのデータを固定サイズの値に写像する関数
-- ハッシュテーブルで使用
+**HTTPS**
+- HTTP over SSL/TLS
+- Web通信の暗号化プロトコル
+- SSL証明書による身元確認
 
-**ハミルトン経路 (Hamiltonian Path)**
-- グラフのすべての頂点を正確に一度ずつ通る経路
-- NP完全問題
+**Hypervisor**
+- 仮想化技術の基盤ソフトウェア
+- Type1（ベアメタル）とType2（ホスト型）
+- VMware、Hyper-V、KVMなど
 
 ## I
 
-**帰納法 (Induction)**
-- 数学的帰納法: P(1) ∧ ∀k(P(k) → P(k+1)) → ∀n P(n)
-- 構造帰納法: データ構造に対する帰納的証明
+**IaaS (Infrastructure as a Service)**
+- インフラストラクチャのクラウドサービス
+- 仮想マシン、ストレージ、ネットワークを提供
+- AWS EC2、Azure VM、GCP Compute Engineなど
 
-**単射 (Injection)**
-- 異なる入力は異なる出力を持つ関数
-- ∀x,y ∈ A, f(x) = f(y) → x = y
+**Incident Management**
+- 障害対応の体系的なプロセス
+- ITIL フレームワークに基づく運用
+- 検知、対応、復旧、改善のサイクル
 
-**交集合 (Intersection)**
-- 2つの集合の共通要素の集合
-- A ∩ B = {x | x ∈ A ∧ x ∈ B}
+**IP Address**
+- ネットワーク上でのデバイス識別子
+- IPv4（32bit）とIPv6（128bit）
+- パブリックIPとプライベートIPの区別
 
 ## J
 
-**結合 (Join)**
-- グラフ理論: 2つの頂点を結ぶ操作
-- データベース: テーブル間の結合操作
+**JSON (JavaScript Object Notation)**
+- 軽量なデータ交換フォーマット
+- API通信、設定ファイルで広く使用
+- 人間が読みやすい構造化データ
+
+**JVM (Java Virtual Machine)**
+- Javaバイトコードの実行環境
+- ガベージコレクション、メモリ管理
+- ヒープメモリ、GC調整がパフォーマンスに影響
 
 ## K
 
-**Kleene閉包 (Kleene Closure)**
-- 言語Lに対するL* = L⁰ ∪ L¹ ∪ L² ∪ ...
-- 0回以上の連接
+**Kubernetes**
+- コンテナオーケストレーションプラットフォーム
+- Pod、Service、Deploymentなどのリソース
+- クラウドネイティブアプリケーションの標準
+
+**KPI (Key Performance Indicator)**
+- 重要業績評価指標
+- SLA、可用性、応答時間などの運用指標
+- ビジネス目標との整合性が重要
 
 ## L
 
-**言語 (Language)**
-- アルファベット上の文字列の集合
-- L ⊆ Σ*
+**Load Balancer**
+- 複数サーバーへのトラフィック分散装置
+- ラウンドロビン、重み付け、最小接続数などのアルゴリズム
+- L4（Transport層）とL7（Application層）
 
-**線形探索 (Linear Search)**
-- 配列を先頭から順番に探索するアルゴリズム
-- 時間複雑性: O(n)
+**Log**
+- システムやアプリケーションの動作記録
+- アクセスログ、エラーログ、監査ログ
+- ログレベル（ERROR、WARN、INFO、DEBUG）
 
-**対数時間 (Logarithmic Time)**
-- 実行時間がO(log n)のアルゴリズム
-- 二分探索等で実現
-
-**最長共通部分列 (Longest Common Subsequence, LCS)**
-- 2つの列の最長の共通部分列を求める問題
-- 動的計画法で O(mn) で解ける
+**LVM (Logical Volume Manager)**
+- Linuxの論理ボリューム管理システム
+- 物理ストレージの抽象化
+- 動的リサイズ、スナップショット機能
 
 ## M
 
-**Master定理 (Master Theorem)**
-- 分割統治アルゴリズムの漸化式を解く定理
-- T(n) = aT(n/b) + f(n) の形の式に適用
+**Microservices**
+- アプリケーションを小さなサービスに分割するアーキテクチャ
+- 独立したデプロイ、技術スタック選択が可能
+- サービス間通信、分散システムの複雑性が課題
 
-**マッチング (Matching)**
-- グラフにおいて、端点を共有しない辺の集合
-- 二部グラフの最大マッチング問題
+**Monitoring**
+- システム状態の継続的な監視
+- メトリクス（CPU、メモリ、ディスク）収集
+- Nagios、Zabbix、DataDog、New Relicなど
 
-**メモ化 (Memoization)**
-- 計算結果を保存して重複計算を避ける技法
-- 動的計画法の実装手法
+**MySQL**
+- オープンソースのリレーショナルデータベース
+- InnoDB、MyISAMなどのストレージエンジン
+- レプリケーション、クラスタリング機能
 
 ## N
 
-**非決定性 (Nondeterminism)**
-- 複数の計算経路が可能な計算モデル
-- NFA、非決定性チューリング機械
+**Nginx**
+- 高性能なWebサーバー・リバースプロキシ
+- 非同期イベント駆動アーキテクチャ
+- 静的コンテンツ配信、ロードバランシング
 
-**NP完全 (NP-Complete)**
-- NPクラスに属し、NPの任意の問題から多項式時間還元可能な問題
-- SAT、クリーク問題、巡回セールスマン問題等
+**Network**
+- コンピューター間の通信基盤
+- OSI参照モデル（7層）による階層化
+- TCP/IP、HTTP/HTTPS、DNS、DHCPなど
 
-**非決定性有限オートマトン (Nondeterministic Finite Automaton, NFA)**
-- 各状態・入力記号の組に対して複数の遷移先を持てるFA
-- DFAと同等の認識能力
+**NFS (Network File System)**
+- ネットワーク経由のファイル共有システム
+- Unix/Linux環境での標準的なファイル共有
+- パフォーマンス、セキュリティ設定が重要
 
 ## O
 
-**オラクル (Oracle)**
-- ある問題を1ステップで解ける仮想的装置
-- 相対化による複雑性理論の研究
+**OAuth**
+- 認可フレームワーク
+- 第三者アプリケーションへの安全なアクセス許可
+- OAuth 2.0、OpenID Connectが主流
 
-**最適化問題 (Optimization Problem)**
-- 制約の下で目的関数を最小化/最大化する問題
-- 決定問題の対比概念
+**ORM (Object-Relational Mapping)**
+- オブジェクトとリレーショナルデータベースのマッピング
+- SQLクエリの抽象化
+- N+1問題などのパフォーマンス課題あり
+
+**OSI Model**
+- ネットワーク通信の7層参照モデル
+- 物理層からアプリケーション層まで
+- トラブルシューティングの体系的アプローチに活用
 
 ## P
 
-**多項式時間 (Polynomial Time)**
-- 実行時間がO(n^k)（kは定数）のアルゴリズム
-- 効率的に解けるとみなされる
+**PaaS (Platform as a Service)**
+- アプリケーション実行基盤のクラウドサービス
+- 開発者はアプリケーションのみに集中
+- Heroku、Google App Engine、AWS Elastic Beanstalkなど
 
-**P vs NP問題 (P vs NP Problem)**
-- P = NP か否かを問うミレニアム問題の一つ
-- 理論計算機科学の最重要未解決問題
+**PostgreSQL**
+- 高機能なオープンソースRDBMS
+- ACID準拠、拡張可能性が特徴
+- JSON サポート、GIS機能なども提供
 
-**プッシュダウンオートマトン (Pushdown Automaton, PDA)**
-- スタックを持つ有限オートマトン
-- 文脈自由言語を認識
-
-**ポンピング補題 (Pumping Lemma)**
-- 言語のクラスに属さないことを証明する技法
-- 正規言語、文脈自由言語にそれぞれ存在
+**Prometheus**
+- 時系列データベース・監視システム
+- Pull型メトリクス収集
+- PromQL によるクエリ、Grafanaとの連携
 
 ## Q
 
-**クイックソート (Quicksort)**
-- 分割統治による効率的ソートアルゴリズム
-- 平均時間複雑性: O(n log n)
+**QPS (Queries Per Second)**
+- 1秒間のクエリ処理数
+- データベース、Webサーバーの性能指標
+- 負荷テスト、キャパシティプランニングで使用
 
-**キュー (Queue)**
-- FIFO（先入れ先出し）データ構造
-- 幅優先探索で使用
+**Queue**
+- 非同期処理のためのメッセージキュー
+- Redis、RabbitMQ、Apache Kafkaなど
+- スケーラビリティ、信頼性向上に寄与
 
 ## R
 
-**還元 (Reduction)**
-- ある問題を別の問題に変換すること
-- 計算可能性、複雑性の研究で重要
+**Redis**
+- インメモリデータ構造ストア
+- キャッシュ、セッション管理、メッセージブローカー
+- クラスタリング、レプリケーション機能
 
-**正規言語 (Regular Language)**
-- 有限オートマトンで認識可能な言語
-- 正規表現で表現可能
+**REST (Representational State Transfer)**
+- Webサービスのアーキテクチャスタイル
+- HTTP メソッド（GET、POST、PUT、DELETE）を使用
+- ステートレス、統一インターフェース
 
-**正規表現 (Regular Expression)**
-- 正規言語を表現する記法
-- 文字列パターンマッチングで使用
+**RPO (Recovery Point Objective)**
+- 目標復旧時点
+- データ損失の許容範囲を定義
+- バックアップ戦略の基準
 
-**再帰 (Recursion)**
-- 自分自身を呼び出すアルゴリズム設計技法
-- 数学的帰納法と密接な関係
+**RTO (Recovery Time Objective)**
+- 目標復旧時間
+- システム復旧までの許容時間
+- 可用性要件の基準
 
 ## S
 
-**SAT問題 (Satisfiability Problem)**
-- 論理式が充足可能かを判定する問題
-- 最初に証明されたNP完全問題
+**SaaS (Software as a Service)**
+- ソフトウェアのクラウドサービス
+- ユーザーはソフトウェア機能のみを利用
+- Salesforce、Office 365、Google Workspaceなど
 
-**集合 (Set)**
-- 異なる要素の集まり
-- 数学の基本概念
+**Scalability**
+- システムの拡張性
+- 水平拡張（スケールアウト）と垂直拡張（スケールアップ）
+- 負荷増加に対する対応能力
 
-**スタック (Stack)**
-- LIFO（後入れ先出し）データ構造
-- 深さ優先探索、再帰で使用
+**SSL/TLS**
+- 暗号化通信プロトコル
+- PKI（公開鍵基盤）による認証
+- 証明書の管理、更新が運用ポイント
 
-**全射 (Surjection)**
-- 値域のすべての要素が像に含まれる関数
-- ∀b ∈ B, ∃a ∈ A, f(a) = b
+**SLA (Service Level Agreement)**
+- サービスレベル合意書
+- 可用性、性能、サポート要件を定義
+- 99.9%、99.99%などの可用性目標
 
 ## T
 
-**時間複雑性 (Time Complexity)**
-- アルゴリズムの実行時間の解析
-- 入力サイズnの関数として表現
+**TCP/IP**
+- インターネットの基盤通信プロトコル
+- 信頼性のあるデータ転送
+- 3-way handshake、フロー制御
 
-**チューリング還元 (Turing Reduction)**
-- オラクルを用いた還元
-- many-one還元より一般的
+**Terraform**
+- Infrastructure as Code（IaC）ツール
+- 宣言的な設定記述
+- 複数クラウドプロバイダー対応
 
-**木 (Tree)**
-- サイクルのない連結グラフ
-- データ構造、探索アルゴリズムで重要
+**TLS (Transport Layer Security)**
+- トランスポート層セキュリティプロトコル
+- SSLの後継プロトコル
+- 現在はTLS 1.2、1.3が推奨
 
 ## U
 
-**和集合 (Union)**
-- 2つの集合のいずれかに属する要素の集合
-- A ∪ B = {x | x ∈ A ∨ x ∈ B}
+**UDP (User Datagram Protocol)**
+- コネクションレス型通信プロトコル
+- 高速だが信頼性は低い
+- DNS、ストリーミング、ゲームなどで使用
 
-**全単射 (Bijection)**
-- 単射かつ全射の関数
-- 一対一対応
+**URL (Uniform Resource Locator)**
+- Web上のリソースの所在地
+- プロトコル、ホスト名、パス、パラメーターで構成
+- REST API設計の重要な要素
 
 ## V
 
-**検証器 (Verifier)**
-- 解候補の正当性を確認するアルゴリズム
-- NP問題の定義で使用
+**VPN (Virtual Private Network)**
+- 仮想プライベートネットワーク
+- 暗号化による安全な通信トンネル
+- IPsec、OpenVPN、WireGuardなど
 
-**頂点被覆 (Vertex Cover)**
-- グラフのすべての辺を被覆する頂点集合
-- NP完全問題
+**VM (Virtual Machine)**
+- 仮想マシン
+- 物理サーバー上で動作する仮想的なコンピューター
+- リソース分離、効率的な利用が可能
+
+**VLAN (Virtual LAN)**
+- 仮想ローカルエリアネットワーク
+- 物理ネットワークの論理分割
+- セキュリティ、性能向上に寄与
 
 ## W
 
-**最悪時間複雑性 (Worst-Case Time Complexity)**
-- すべての入力に対する実行時間の上界
-- アルゴリズム解析の基本指標
+**WAF (Web Application Firewall)**
+- Webアプリケーション向けファイアウォール
+- SQLインジェクション、XSS攻撃の防御
+- CloudFlare、AWS WAFなど
+
+**WebSocket**
+- リアルタイム双方向通信プロトコル
+- HTTP接続をアップグレード
+- チャット、ゲーム、リアルタイム更新に使用
 
 ## X
 
-**XOR演算 (XOR Operation)**
-- 排他的論理和、⊕記号で表記
-- P ⊕ Q は P と Q の真偽値が異なるときのみ真
+**XML (eXtensible Markup Language)**
+- 拡張可能マークアップ言語
+- 構造化データの記述
+- SOAP、設定ファイルなどで使用
+
+**XSS (Cross-Site Scripting)**
+- クロスサイトスクリプティング攻撃
+- Webアプリケーションの脆弱性
+- CSP（Content Security Policy）による対策
 
 ## Y
 
-**なし**
+**YAML**
+- 人間が読みやすいデータシリアライゼーション形式
+- 設定ファイル、Infrastructure as Codeで使用
+- インデントによる階層構造
 
 ## Z
 
-**ゼロ知識証明 (Zero-Knowledge Proof)**
-- 知識を明かすことなく知識の保有を証明する手法
-- 暗号理論で重要
+**Zabbix**
+- オープンソース統合監視ソフトウェア
+- ネットワーク、サーバー、アプリケーション監視
+- 豊富なアラート機能、レポート機能
+
+**Zero Downtime Deployment**
+- ダウンタイムゼロでのアプリケーション更新
+- Blue-Green、Rolling Update、Canary Deploymentなど
+- ビジネス継続性の確保
+
+## 技術分野別索引
+
+### ネットワーク
+- BGP、CDN、DNS、Firewall、HAProxy、IP Address、Load Balancer、Network、OSI Model、TCP/IP、UDP、VPN、VLAN
+
+### サーバー・仮想化
+- Apache HTTP Server、Docker、Hypervisor、Kubernetes、Nginx、VM
+
+### データベース
+- Database、MySQL、PostgreSQL、Redis、Backup、ETL
+
+### クラウド
+- AWS、Cloud Computing、GCP、IaaS、PaaS、SaaS、Auto Scaling
+
+### セキュリティ
+- DDoS、Encryption、Firewall、OAuth、SSL/TLS、WAF、XSS
+
+### 運用・監視
+- Grafana、Incident Management、Monitoring、Prometheus、SLA、Zabbix
+
+### 開発・デプロイ
+- CI/CD、Git、Microservices、REST、Terraform、Zero Downtime Deployment
+
+## エラーメッセージ索引
+
+### HTTP エラー
+- **400 Bad Request**: 不正なリクエスト形式
+- **401 Unauthorized**: 認証が必要
+- **403 Forbidden**: アクセス権限なし
+- **404 Not Found**: リソースが存在しない
+- **500 Internal Server Error**: サーバー内部エラー
+- **502 Bad Gateway**: 上位サーバーからの不正応答
+- **503 Service Unavailable**: サービス利用不可
+- **504 Gateway Timeout**: 上位サーバーの応答タイムアウト
+
+### データベースエラー
+- **Connection refused**: データベース接続拒否
+- **Deadlock**: デッドロック発生
+- **Lock timeout**: ロックタイムアウト
+- **Table doesn't exist**: テーブルが存在しない
+- **Too many connections**: 接続数上限
+
+### システムエラー
+- **Permission denied**: 権限不足
+- **No space left on device**: ディスク容量不足
+- **Memory allocation failed**: メモリ不足
+- **Network unreachable**: ネットワーク到達不可
+- **Segmentation fault**: セグメンテーション違反
+
+## プロトコル・ポート番号一覧
+
+### よく使用されるポート番号
+- **20/21**: FTP（データ/制御）
+- **22**: SSH
+- **23**: Telnet
+- **25**: SMTP
+- **53**: DNS
+- **80**: HTTP
+- **110**: POP3
+- **143**: IMAP
+- **443**: HTTPS
+- **993**: IMAPS
+- **995**: POP3S
+- **3306**: MySQL
+- **5432**: PostgreSQL
+- **6379**: Redis
+- **8080**: HTTP代替
+- **27017**: MongoDB
 
 ---
 
-## 記号索引
-
-### 論理記号
-- ∧ (AND): 論理積
-- ∨ (OR): 論理和  
-- ¬ (NOT): 否定
-- → (IMPLIES): 含意
-- ↔ (IFF): 同値
-- ∀ (FOR ALL): 全称量詞
-- ∃ (EXISTS): 存在量詞
-
-### 集合記号
-- ∈ (IN): 要素の所属
-- ⊆ (SUBSET): 部分集合
-- ∪ (UNION): 和集合
-- ∩ (INTERSECTION): 積集合
-- ∅ (EMPTY): 空集合
-- × (CARTESIAN): 直積
-
-### 複雑性記号
-- O (BIG-O): 上界
-- Ω (BIG-OMEGA): 下界
-- Θ (BIG-THETA): 厳密な界
-- o (LITTLE-O): 真の上界
-- ω (LITTLE-OMEGA): 真の下界
-
-### 形式言語記号
-- Σ (SIGMA): アルファベット
-- Σ* (SIGMA-STAR): 文字列全体
-- ε (EPSILON): 空文字列
-- |w| (LENGTH): 文字列の長さ
-
-### 関数記号
-- f: A → B: AからBへの関数
-- dom(f): 定義域
-- ran(f): 値域
-- f⁻¹: 逆関数
-- g ∘ f: 合成関数
-
-### グラフ記号
-- G = (V,E): グラフ
-- |V|: 頂点数
-- |E|: 辺数
-- deg(v): 頂点vの次数
-- d(u,v): 頂点間距離
-
----
-
-この用語集は理論計算機科学の学習において頻繁に参照されることを想定しており、各用語の正確な定義と関連概念を効率的に確認できるよう構成されています。
+この用語集は継続的に更新され、新しい技術やトレンドに対応していきます。トラブルシューティング時の参考資料として活用してください。
