@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="700" viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-family: 'Noto Sans JP', sans-serif; font-size: 20px; font-weight: bold; fill: #2c3e50; }
+      .section-title { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: bold; fill: #2c3e50; }
+      .category-title { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; font-weight: bold; fill: #fff; }
+      .text-content { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; fill: #2c3e50; }
+      .small-text { font-family: 'Noto Sans JP', sans-serif; font-size: 10px; fill: #7f8c8d; }
+      .problem-box { fill: #e74c3c; stroke: #c0392b; stroke-width: 2; }
+      .cause-box { fill: #3498db; stroke: #2980b9; stroke-width: 2; }
+      .human-box { fill: #9b59b6; stroke: #8e44ad; stroke-width: 2; }
+      .machine-box { fill: #f39c12; stroke: #e67e22; stroke-width: 2; }
+      .method-box { fill: #2ecc71; stroke: #27ae60; stroke-width: 2; }
+      .material-box { fill: #1abc9c; stroke: #16a085; stroke-width: 2; }
+      .measurement-box { fill: #34495e; stroke: #2c3e50; stroke-width: 2; }
+      .environment-box { fill: #95a5a6; stroke: #7f8c8d; stroke-width: 2; }
+      .component { fill: #fff; stroke: #95a5a6; stroke-width: 1; }
+      .fishbone-line { stroke: #34495e; stroke-width: 2; fill: none; }
+      .arrow { stroke: #34495e; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#34495e"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="450" y="30" class="title" text-anchor="middle">根本原因分析（RCA）手法</text>
+
+  <!-- Fishbone Diagram -->
+  <g id="fishbone">
+    <text x="450" y="70" class="section-title" text-anchor="middle">特性要因図（フィッシュボーン図）</text>
+    
+    <!-- Main spine -->
+    <line x1="100" y1="200" x2="700" y2="200" class="fishbone-line"/>
+    <path d="M 700 200 L 800 200" class="arrow"/>
+    
+    <!-- Problem -->
+    <rect x="810" y="175" width="80" height="50" class="problem-box" rx="5"/>
+    <text x="850" y="195" class="category-title" text-anchor="middle">問題</text>
+    <text x="850" y="210" class="small-text" text-anchor="middle">システム</text>
+    <text x="850" y="220" class="small-text" text-anchor="middle">障害</text>
+    
+    <!-- Upper branches -->
+    <!-- Human -->
+    <line x1="200" y1="200" x2="150" y2="120" class="fishbone-line"/>
+    <rect x="80" y="90" width="100" height="30" class="human-box" rx="3"/>
+    <text x="130" y="108" class="category-title" text-anchor="middle">人的要因</text>
+    <line x1="100" y1="120" x2="100" y2="100" class="fishbone-line"/>
+    <text x="70" y="100" class="small-text">操作ミス</text>
+    <line x1="150" y1="120" x2="150" y2="100" class="fishbone-line"/>
+    <text x="160" y="100" class="small-text">知識不足</text>
+    
+    <!-- Machine -->
+    <line x1="350" y1="200" x2="300" y2="120" class="fishbone-line"/>
+    <rect x="230" y="90" width="100" height="30" class="machine-box" rx="3"/>
+    <text x="280" y="108" class="category-title" text-anchor="middle">機器</text>
+    <line x1="250" y1="120" x2="250" y2="100" class="fishbone-line"/>
+    <text x="220" y="100" class="small-text">老朽化</text>
+    <line x1="300" y1="120" x2="300" y2="100" class="fishbone-line"/>
+    <text x="310" y="100" class="small-text">故障</text>
+    
+    <!-- Method -->
+    <line x1="500" y1="200" x2="450" y2="120" class="fishbone-line"/>
+    <rect x="380" y="90" width="100" height="30" class="method-box" rx="3"/>
+    <text x="430" y="108" class="category-title" text-anchor="middle">方法</text>
+    <line x1="400" y1="120" x2="400" y2="100" class="fishbone-line"/>
+    <text x="370" y="100" class="small-text">手順不備</text>
+    <line x1="450" y1="120" x2="450" y2="100" class="fishbone-line"/>
+    <text x="460" y="100" class="small-text">設計ミス</text>
+    
+    <!-- Lower branches -->
+    <!-- Material -->
+    <line x1="200" y1="200" x2="150" y2="280" class="fishbone-line"/>
+    <rect x="80" y="280" width="100" height="30" class="material-box" rx="3"/>
+    <text x="130" y="298" class="category-title" text-anchor="middle">材料</text>
+    <line x1="100" y1="280" x2="100" y2="300" class="fishbone-line"/>
+    <text x="70" y="320" class="small-text">リソース</text>
+    <line x1="150" y1="280" x2="150" y2="300" class="fishbone-line"/>
+    <text x="160" y="320" class="small-text">データ</text>
+    
+    <!-- Measurement -->
+    <line x1="350" y1="200" x2="300" y2="280" class="fishbone-line"/>
+    <rect x="230" y="280" width="100" height="30" class="measurement-box" rx="3"/>
+    <text x="280" y="298" class="category-title" text-anchor="middle">測定</text>
+    <line x1="250" y1="280" x2="250" y2="300" class="fishbone-line"/>
+    <text x="220" y="320" class="small-text">監視不足</text>
+    <line x1="300" y1="280" x2="300" y2="300" class="fishbone-line"/>
+    <text x="310" y="320" class="small-text">誤検知</text>
+    
+    <!-- Environment -->
+    <line x1="500" y1="200" x2="450" y2="280" class="fishbone-line"/>
+    <rect x="380" y="280" width="100" height="30" class="environment-box" rx="3"/>
+    <text x="430" y="298" class="category-title" text-anchor="middle">環境</text>
+    <line x1="400" y1="280" x2="400" y2="300" class="fishbone-line"/>
+    <text x="370" y="320" class="small-text">温度</text>
+    <line x1="450" y1="280" x2="450" y2="300" class="fishbone-line"/>
+    <text x="460" y="320" class="small-text">電源</text>
+  </g>
+
+  <!-- 5 Whys Analysis -->
+  <g id="five-whys">
+    <rect x="50" y="360" width="400" height="280" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="5"/>
+    <text x="250" y="385" class="section-title" text-anchor="middle">なぜなぜ分析（5 Whys）</text>
+    
+    <rect x="70" y="400" width="360" height="30" class="problem-box" rx="3"/>
+    <text x="250" y="420" class="category-title" text-anchor="middle">問題: Webサイトがダウン</text>
+    
+    <text x="80" y="450" class="text-content">Why1: なぜサイトがダウンしたか？</text>
+    <text x="100" y="465" class="small-text">→ サーバーが応答しなくなった</text>
+    
+    <text x="80" y="490" class="text-content">Why2: なぜサーバーが応答しないか？</text>
+    <text x="100" y="505" class="small-text">→ メモリ不足が発生した</text>
+    
+    <text x="80" y="530" class="text-content">Why3: なぜメモリ不足が発生したか？</text>
+    <text x="100" y="545" class="small-text">→ メモリリークがあった</text>
+    
+    <text x="80" y="570" class="text-content">Why4: なぜメモリリークが発生したか？</text>
+    <text x="100" y="585" class="small-text">→ コードにバグがあった</text>
+    
+    <text x="80" y="610" class="text-content">Why5: なぜバグが見逃されたか？</text>
+    <text x="100" y="625" class="small-text">→ コードレビューが不十分だった</text>
+  </g>
+
+  <!-- Timeline Analysis -->
+  <g id="timeline">
+    <rect x="470" y="360" width="380" height="280" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="5"/>
+    <text x="660" y="385" class="section-title" text-anchor="middle">タイムライン分析</text>
+    
+    <line x1="500" y1="420" x2="820" y2="420" stroke="#34495e" stroke-width="2"/>
+    
+    <!-- Events -->
+    <circle cx="520" cy="420" r="5" fill="#2ecc71"/>
+    <text x="520" y="410" class="small-text" text-anchor="middle">正常</text>
+    <text x="520" y="440" class="small-text" text-anchor="middle">09:00</text>
+    
+    <circle cx="600" cy="420" r="5" fill="#f39c12"/>
+    <text x="600" y="410" class="small-text" text-anchor="middle">警告</text>
+    <text x="600" y="440" class="small-text" text-anchor="middle">10:30</text>
+    <text x="600" y="455" class="small-text" text-anchor="middle">CPU高負荷</text>
+    
+    <circle cx="680" cy="420" r="5" fill="#e74c3c"/>
+    <text x="680" y="410" class="small-text" text-anchor="middle">障害</text>
+    <text x="680" y="440" class="small-text" text-anchor="middle">11:15</text>
+    <text x="680" y="455" class="small-text" text-anchor="middle">サービス停止</text>
+    
+    <circle cx="760" cy="420" r="5" fill="#3498db"/>
+    <text x="760" y="410" class="small-text" text-anchor="middle">対応</text>
+    <text x="760" y="440" class="small-text" text-anchor="middle">11:45</text>
+    <text x="760" y="455" class="small-text" text-anchor="middle">再起動実施</text>
+    
+    <!-- Key Events List -->
+    <text x="500" y="490" class="text-content" font-weight="bold">重要イベント:</text>
+    <text x="500" y="510" class="small-text">• 09:00 - システム正常稼働</text>
+    <text x="500" y="525" class="small-text">• 10:15 - トラフィック急増</text>
+    <text x="500" y="540" class="small-text">• 10:30 - CPU使用率90%超</text>
+    <text x="500" y="555" class="small-text">• 10:45 - メモリ警告発生</text>
+    <text x="500" y="570" class="small-text">• 11:00 - 応答遅延開始</text>
+    <text x="500" y="585" class="small-text">• 11:15 - サービス完全停止</text>
+    <text x="500" y="600" class="small-text">• 11:20 - インシデント検知</text>
+    <text x="500" y="615" class="small-text">• 11:45 - 緊急再起動実施</text>
+    <text x="500" y="630" class="small-text">• 12:00 - サービス復旧確認</text>
+  </g>
+</svg>
