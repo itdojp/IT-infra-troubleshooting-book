@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="700" viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-family: 'Noto Sans JP', sans-serif; font-size: 20px; font-weight: bold; fill: #2c3e50; }
+      .phase-title { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: bold; fill: #fff; }
+      .text-content { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; fill: #2c3e50; }
+      .small-text { font-family: 'Noto Sans JP', sans-serif; font-size: 10px; fill: #7f8c8d; }
+      .priority-critical { fill: #e74c3c; stroke: #c0392b; stroke-width: 2; }
+      .priority-high { fill: #f39c12; stroke: #e67e22; stroke-width: 2; }
+      .priority-medium { fill: #3498db; stroke: #2980b9; stroke-width: 2; }
+      .priority-low { fill: #2ecc71; stroke: #27ae60; stroke-width: 2; }
+      .process-box { fill: #9b59b6; stroke: #8e44ad; stroke-width: 2; }
+      .component { fill: #fff; stroke: #95a5a6; stroke-width: 1; }
+      .flow-arrow { stroke: #34495e; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .escalation-arrow { stroke: #e74c3c; stroke-width: 3; fill: none; marker-end: url(#arrowhead-red); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#34495e"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#e74c3c"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="450" y="30" class="title" text-anchor="middle">インシデントレスポンスライフサイクル</text>
+
+  <!-- Priority Levels -->
+  <g id="priority-levels">
+    <text x="450" y="70" class="text-content" text-anchor="middle" font-weight="bold">優先度レベル</text>
+    
+    <rect x="150" y="85" width="120" height="40" class="priority-critical" rx="5"/>
+    <text x="210" y="108" class="phase-title" text-anchor="middle">Critical</text>
+    <text x="210" y="120" class="small-text" text-anchor="middle">即時対応</text>
+    
+    <rect x="290" y="85" width="120" height="40" class="priority-high" rx="5"/>
+    <text x="350" y="108" class="phase-title" text-anchor="middle">High</text>
+    <text x="350" y="120" class="small-text" text-anchor="middle">1時間以内</text>
+    
+    <rect x="430" y="85" width="120" height="40" class="priority-medium" rx="5"/>
+    <text x="490" y="108" class="phase-title" text-anchor="middle">Medium</text>
+    <text x="490" y="120" class="small-text" text-anchor="middle">4時間以内</text>
+    
+    <rect x="570" y="85" width="120" height="40" class="priority-low" rx="5"/>
+    <text x="630" y="108" class="phase-title" text-anchor="middle">Low</text>
+    <text x="630" y="120" class="small-text" text-anchor="middle">24時間以内</text>
+  </g>
+
+  <!-- Incident Response Process -->
+  <g id="response-process">
+    <!-- Detection -->
+    <rect x="100" y="160" width="160" height="100" class="priority-critical" rx="10"/>
+    <text x="180" y="185" class="phase-title" text-anchor="middle">検出</text>
+    <rect x="115" y="195" width="130" height="25" class="component" rx="3"/>
+    <text x="180" y="212" class="text-content" text-anchor="middle">アラート受信</text>
+    <rect x="115" y="225" width="130" height="25" class="component" rx="3"/>
+    <text x="180" y="242" class="text-content" text-anchor="middle">初期トリアージ</text>
+    
+    <!-- Containment -->
+    <rect x="300" y="160" width="160" height="100" class="priority-high" rx="10"/>
+    <text x="380" y="185" class="phase-title" text-anchor="middle">封じ込め</text>
+    <rect x="315" y="195" width="130" height="25" class="component" rx="3"/>
+    <text x="380" y="212" class="text-content" text-anchor="middle">影響範囲限定</text>
+    <rect x="315" y="225" width="130" height="25" class="component" rx="3"/>
+    <text x="380" y="242" class="text-content" text-anchor="middle">一時対処</text>
+    
+    <!-- Eradication -->
+    <rect x="500" y="160" width="160" height="100" class="priority-medium" rx="10"/>
+    <text x="580" y="185" class="phase-title" text-anchor="middle">根絶</text>
+    <rect x="515" y="195" width="130" height="25" class="component" rx="3"/>
+    <text x="580" y="212" class="text-content" text-anchor="middle">根本原因除去</text>
+    <rect x="515" y="225" width="130" height="25" class="component" rx="3"/>
+    <text x="580" y="242" class="text-content" text-anchor="middle">システム修正</text>
+    
+    <!-- Recovery -->
+    <rect x="700" y="160" width="160" height="100" class="priority-low" rx="10"/>
+    <text x="780" y="185" class="phase-title" text-anchor="middle">復旧</text>
+    <rect x="715" y="195" width="130" height="25" class="component" rx="3"/>
+    <text x="780" y="212" class="text-content" text-anchor="middle">サービス復旧</text>
+    <rect x="715" y="225" width="130" height="25" class="component" rx="3"/>
+    <text x="780" y="242" class="text-content" text-anchor="middle">監視強化</text>
+  </g>
+
+  <!-- Process Flow -->
+  <path d="M 260 210 L 300 210" class="flow-arrow"/>
+  <path d="M 460 210 L 500 210" class="flow-arrow"/>
+  <path d="M 660 210 L 700 210" class="flow-arrow"/>
+
+  <!-- Lessons Learned -->
+  <rect x="300" y="290" width="360" height="80" class="process-box" rx="10"/>
+  <text x="480" y="315" class="phase-title" text-anchor="middle">事後レビュー</text>
+  <rect x="320" y="325" width="150" height="30" class="component" rx="3"/>
+  <text x="395" y="345" class="text-content" text-anchor="middle">原因分析</text>
+  <rect x="490" y="325" width="150" height="30" class="component" rx="3"/>
+  <text x="565" y="345" class="text-content" text-anchor="middle">改善策立案</text>
+
+  <!-- Escalation Matrix -->
+  <g id="escalation-matrix">
+    <rect x="50" y="400" width="800" height="250" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="5"/>
+    <text x="450" y="425" class="text-content" text-anchor="middle" font-weight="bold">エスカレーションマトリックス</text>
+    
+    <!-- Level 1 -->
+    <rect x="70" y="440" width="760" height="50" fill="#e6ffe6" stroke="#2ecc71" stroke-width="1" rx="3"/>
+    <text x="90" y="470" class="text-content" font-weight="bold">L1</text>
+    <text x="150" y="460" class="text-content">対応者: サポートチーム</text>
+    <text x="150" y="475" class="small-text">対応内容: 初期対応、既知問題解決</text>
+    <text x="450" y="460" class="text-content">権限: 読み取り専用</text>
+    <text x="450" y="475" class="small-text">ツール: 監視ダッシュボード、FAQ</text>
+    <text x="700" y="460" class="text-content">応答時間: 15分</text>
+    <text x="700" y="475" class="small-text">解決目標: 30分</text>
+    
+    <!-- Level 2 -->
+    <rect x="70" y="500" width="760" height="50" fill="#e6f3ff" stroke="#3498db" stroke-width="1" rx="3"/>
+    <text x="90" y="530" class="text-content" font-weight="bold">L2</text>
+    <text x="150" y="520" class="text-content">対応者: システム管理者</text>
+    <text x="150" y="535" class="small-text">対応内容: 詳細調査、設定変更</text>
+    <text x="450" y="520" class="text-content">権限: 設定変更可</text>
+    <text x="450" y="535" class="small-text">ツール: SSH、管理コンソール</text>
+    <text x="700" y="520" class="text-content">応答時間: 30分</text>
+    <text x="700" y="535" class="small-text">解決目標: 2時間</text>
+    
+    <!-- Level 3 -->
+    <rect x="70" y="560" width="760" height="50" fill="#fff3cd" stroke="#f39c12" stroke-width="1" rx="3"/>
+    <text x="90" y="590" class="text-content" font-weight="bold">L3</text>
+    <text x="150" y="580" class="text-content">対応者: エンジニアチーム</text>
+    <text x="150" y="595" class="small-text">対応内容: 根本原因分析、修正開発</text>
+    <text x="450" y="580" class="text-content">権限: フルアクセス</text>
+    <text x="450" y="595" class="small-text">ツール: デバッガ、ソースコード</text>
+    <text x="700" y="580" class="text-content">応答時間: 1時間</text>
+    <text x="700" y="595" class="small-text">解決目標: 8時間</text>
+    
+    <!-- Management -->
+    <rect x="70" y="620" width="760" height="50" fill="#ffe6e6" stroke="#e74c3c" stroke-width="1" rx="3" stroke-dasharray="5,3"/>
+    <text x="90" y="650" class="text-content" font-weight="bold">MGT</text>
+    <text x="150" y="640" class="text-content">対応者: 管理職・経営層</text>
+    <text x="150" y="655" class="small-text">対応内容: 意思決定、対外対応</text>
+    <text x="450" y="640" class="text-content">権限: 承認権限</text>
+    <text x="450" y="655" class="small-text">対応: 顧客説明、プレスリリース</text>
+    <text x="700" y="640" class="text-content">応答時間: 即時</text>
+    <text x="700" y="655" class="small-text">重大インシデント時</text>
+  </g>
+
+  <!-- Escalation Arrows -->
+  <path d="M 450 490 L 450 500" class="escalation-arrow"/>
+  <path d="M 450 550 L 450 560" class="escalation-arrow"/>
+  <path d="M 450 610 L 450 620" class="escalation-arrow"/>
+</svg>
