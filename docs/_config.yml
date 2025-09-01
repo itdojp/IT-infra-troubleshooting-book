@@ -74,3 +74,13 @@ structure:
       title: "継続学習ガイド"
       path: "/src/appendices/f"
 
+permalink: pretty
+  - jekyll-relative-links
+  - jekyll-optional-front-matter
+# Use custom book layout as default
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "book"
