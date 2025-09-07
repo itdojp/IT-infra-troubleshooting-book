@@ -1,0 +1,6 @@
+introduction:
+- title: はじめに
+  path: /src/introduction/
+appendices:
+- title: 付録
+  path: /src/appendices/
