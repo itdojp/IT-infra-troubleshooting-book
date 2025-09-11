@@ -1,6 +1,20 @@
+# updated by automation to avoid 404 on appendices root without index.md
+# updated by automation to avoid 404 on appendices root without index.md
 introduction:
 - title: はじめに
   path: /src/introduction/
+
+
 appendices:
-- title: 付録
-  path: /src/appendices/
+- title: 付録A: トラブルシューティング用コマンドリファレンス
+  path: /src/appendices/a/
+- title: 付録B: 診断チェックリスト集
+  path: /src/appendices/b/
+- title: 付録C: 設定ファイルサンプル
+  path: /src/appendices/c/
+- title: 付録D: 用語集・技術索引
+  path: /src/appendices/d/
+- title: 付録E: 実践ケーススタディ
+  path: /src/appendices/e/
+- title: 付録F: 継続学習ガイド
+  path: /src/appendices/f/
