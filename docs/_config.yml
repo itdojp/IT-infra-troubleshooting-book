@@ -16,6 +16,8 @@ plugins:
   - jekyll-seo-tag
 
 # 除外ファイル
+  - jekyll-relative-links
+  - jekyll-optional-front-matter
 exclude:
   - node_modules/
   - package.json
@@ -75,8 +77,6 @@ structure:
       path: "/src/appendices/f"
 
 permalink: pretty
-  - jekyll-relative-links
-  - jekyll-optional-front-matter
 # Use custom book layout as default
 defaults:
   - scope:
