@@ -7,14 +7,14 @@ introduction:
 
 appendices:
 - title: 付録A: トラブルシューティング用コマンドリファレンス
-  path: /src/appendices/a/
+  path: /src/appendices/a.html
 - title: 付録B: 診断チェックリスト集
-  path: /src/appendices/b/
+  path: /src/appendices/b.html
 - title: 付録C: 設定ファイルサンプル
-  path: /src/appendices/c/
+  path: /src/appendices/c.html
 - title: 付録D: 用語集・技術索引
-  path: /src/appendices/d/
+  path: /src/appendices/d.html
 - title: 付録E: 実践ケーススタディ
-  path: /src/appendices/e/
+  path: /src/appendices/e.html
 - title: 付録F: 継続学習ガイド
-  path: /src/appendices/f/
+  path: /src/appendices/f.html
