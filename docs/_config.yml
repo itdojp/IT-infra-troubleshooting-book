@@ -35,7 +35,7 @@ kramdown:
   input: GFM
   syntax_highlighter: rouge
   
-# GitHub Pages設定
+# リポジトリ情報
 repository: 
   github: "https://github.com/itdojp/IT-infra-troubleshooting-book"
 
