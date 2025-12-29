@@ -4,6 +4,10 @@ author: "ITDO Inc.（株式会社アイティードゥ）"
 version: "1.0.0"
 lang: "ja"
 
+# GitHub Pages設定
+url: "https://itdojp.github.io"
+baseurl: "/IT-infra-troubleshooting-book"
+
 # Jekyll設定
 markdown: kramdown
 highlighter: rouge
@@ -14,10 +18,10 @@ plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
-
-# 除外ファイル
   - jekyll-relative-links
   - jekyll-optional-front-matter
+
+# 除外ファイル
 exclude:
   - node_modules/
   - package.json
@@ -31,7 +35,7 @@ kramdown:
   input: GFM
   syntax_highlighter: rouge
   
-# GitHub Pages設定
+# リポジトリ情報
 repository: 
   github: "https://github.com/itdojp/IT-infra-troubleshooting-book"
 
