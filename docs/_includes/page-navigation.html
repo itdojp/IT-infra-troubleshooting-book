@@ -98,7 +98,12 @@ display ToC titles even when order falls back to site.pages.
     {%- else -%}
       {%- assign item_url = item.url -%}
     {%- endif -%}
-    {%- if item_url == page.url or page.url contains item_url -%}
+    {%- if item_url == '/' -%}
+      {%- if page.url == '/' -%}
+        {%- assign current_index = forloop.index0 -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- elsif item_url == page.url or page.url contains item_url -%}
       {%- assign current_index = forloop.index0 -%}
       {%- break -%}
     {%- endif -%}
