@@ -43,8 +43,11 @@
 </head>
 <body>
     {% assign repository_url = site.repository.github | default: site.repository %}
+    {% if repository_url and repository_url.github %}
+        {% assign repository_url = repository_url.github %}
+    {% endif %}
     {% if repository_url %}
-        {% unless repository_url contains 'http' %}
+        {% unless repository_url contains '://' %}
             {% assign repository_url = 'https://github.com/' | append: repository_url %}
         {% endunless %}
     {% endif %}
