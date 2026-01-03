@@ -24,7 +24,7 @@ order: 5
 
 **IaaS環境での責任分担**では、インフラストラクチャサービスでの責任範囲を明確化します。
 
-プロバイダー責任範囲：
+プロバイダー責任範囲
 - 物理インフラ（データセンター、ハードウェア）
 - 仮想化レイヤー（ハイパーバイザー）
 - ネットワークインフラ（物理ネットワーク）
@@ -34,12 +34,12 @@ order: 5
 
 **PaaS環境での責任分担**では、プラットフォームサービスでの責任範囲を理解します。
 
-プロバイダー責任範囲：
+プロバイダー責任範囲
 - OS、ランタイム環境
 - ミドルウェア、開発フレームワーク
 - プラットフォーム監視
 
-利用者責任範囲：
+利用者責任範囲
 - アプリケーションコード
 - データ管理
 - ユーザー認証・認可
@@ -51,7 +51,7 @@ order: 5
 
 **リージョン障害の特性と対策**では、広範囲での障害への対応を計画します。
 
-リージョン障害の確認：
+リージョン障害の確認
 ```bash
 # AWS CLI での複数リージョン確認
 aws ec2 describe-regions
@@ -62,14 +62,14 @@ aws sts get-caller-identity --region us-west-2
 curl -s https://status.aws.amazon.com/
 ```
 
-マルチリージョン戦略：
+マルチリージョン戦略
 - データレプリケーション設定
 - DNS フェイルオーバー設定
 - アプリケーションの地理分散
 
 **アベイラビリティゾーン障害の管理**では、リージョン内での障害分散を図ります。
 
-AZ障害の検出：
+AZ障害の検出
 ```bash
 # EC2インスタンスのAZ確認
 aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,Placement.AvailabilityZone]'
@@ -99,7 +99,7 @@ APIレート制限の設計は、サービスごと、操作ごと、ユーザ�
 
 **CloudWatch による統合監視**では、AWS全体のメトリクス監視とアラート管理を行います。
 
-CloudWatchメトリクス確認：
+CloudWatchメトリクス確認
 ```bash
 # EC2インスタンスメトリクス
 aws cloudwatch get-metric-statistics \
@@ -124,7 +124,7 @@ aws cloudwatch get-metric-statistics \
 
 **AWS X-Ray による分散トレーシング**では、マイクロサービスアーキテクチャでの問題を分析します。
 
-X-Rayトレース分析：
+X-Rayトレース分析
 ```bash
 # トレース取得
 aws xray get-trace-summaries \
@@ -140,7 +140,7 @@ aws xray get-service-graph \
 
 **VPC Flow Logs による ネットワーク分析**では、AWS ネットワーク内のトラフィックを詳細に分析します。
 
-Flow Logs分析：
+Flow Logs分析
 ```bash
 # Flow Logsの有効化確認
 aws ec2 describe-flow-logs
@@ -153,7 +153,7 @@ aws logs describe-log-groups --log-group-name-prefix VPCFlowLogs
 
 **Azure Monitor の活用**では、Azure全体の統合監視を実現します。
 
-Azure Monitor確認：
+Azure Monitor確認
 ```bash
 # リソースのメトリクス確認
 az monitor metrics list --resource /subscriptions/.../resourceGroups/myRG/providers/Microsoft.Compute/virtualMachines/myVM
@@ -166,7 +166,7 @@ az monitor log-analytics query \
 
 **Application Insights による アプリケーション監視**では、アプリケーション性能の詳細監視を行います。
 
-Application Insights確認：
+Application Insights確認
 ```bash
 # アプリケーション可用性確認
 az monitor app-insights query \
@@ -178,7 +178,7 @@ az monitor app-insights query \
 
 **Cloud Monitoring による統合監視**では、GCP リソースの包括的な監視を実現します。
 
-Cloud Monitoring確認：
+Cloud Monitoring確認
 ```bash
 # メトリクス確認
 gcloud monitoring metrics list --filter="resource.type=gce_instance"
@@ -189,7 +189,7 @@ gcloud alpha monitoring policies list
 
 **Cloud Logging による ログ分析**では、GCP全体のログを統合的に分析します。
 
-Cloud Logging確認：
+Cloud Logging確認
 ```bash
 # ログエントリ確認
 gcloud logging read "resource.type=gce_instance AND severity>=ERROR" --limit=50
@@ -207,7 +207,7 @@ gcloud logging metrics list
 
 **関数実行とパフォーマンスの分析**では、サーバーレス関数の実行特性を詳細に分析します。
 
-Lambda関数診断（AWS）：
+Lambda関数診断（AWS）
 ```bash
 # Lambda関数のログ確認
 aws logs describe-log-groups --log-group-name-prefix /aws/lambda/
@@ -219,7 +219,7 @@ aws lambda get-function --function-name my-function
 aws lambda get-function-configuration --function-name my-function
 ```
 
-コールドスタート分析：
+コールドスタート分析
 ```python
 import time
 import json
@@ -247,7 +247,7 @@ def lambda_handler(event, context):
 
 **イベントドリブンアーキテクチャの監視**では、イベントの流れと処理状況を包括的に監視します。
 
-SQSキュー監視：
+SQSキュー監視
 ```bash
 # キューの状況確認
 aws sqs get-queue-attributes \
@@ -264,7 +264,7 @@ aws sqs receive-message \
 
 **コンテナライフサイクルの監視**では、コンテナの作成から終了までの全ライフサイクルを監視します。
 
-Docker診断：
+Docker診断
 ```bash
 # コンテナ状態確認
 docker ps -a
@@ -279,7 +279,7 @@ docker exec container-id ps aux
 
 **Kubernetes クラスタの診断**では、Kubernetes環境での包括的な問題診断を行います。
 
-Kubernetes診断：
+Kubernetes診断
 ```bash
 # クラスタ状態確認
 kubectl cluster-info
@@ -297,7 +297,7 @@ kubectl get endpoints
 kubectl logs pod-name -c container-name --previous
 ```
 
-ポッド診断詳細：
+ポッド診断詳細
 ```bash
 # ポッドのリソース使用量
 kubectl top pods --all-namespaces
@@ -311,7 +311,7 @@ kubectl exec -it pod-name -- nslookup kubernetes.default
 
 **コンテナセキュリティの監視**では、コンテナ環境固有のセキュリティリスクを管理します。
 
-セキュリティ診断：
+セキュリティ診断
 ```bash
 # コンテナイメージの脆弱性スキャン
 docker scan image-name
@@ -336,7 +336,7 @@ kubectl auth can-i create pods --as=system:serviceaccount:default:default
 
 **コスト監視と異常検知**では、継続的なコスト監視により異常を早期発見します。
 
-AWS Cost Explorer API使用：
+AWS Cost Explorer API使用
 ```bash
 # コスト情報取得
 aws ce get-cost-and-usage \
@@ -349,7 +349,7 @@ aws ce get-cost-and-usage \
 aws budgets describe-budgets --account-id 123456789012
 ```
 
-Azure Cost Management：
+Azure Cost Management
 ```bash
 # コスト分析
 az consumption usage list --top 10
@@ -360,7 +360,7 @@ az consumption budget list
 
 **リソース使用効率の最適化**では、クラウドリソースの効率的な利用により、コストパフォーマンスを向上させます。
 
-未使用リソース検出：
+未使用リソース検出
 ```bash
 # AWS 未使用EBSボリューム検出
 aws ec2 describe-volumes \
@@ -377,7 +377,7 @@ aws ec2 describe-instances \
   --query 'Reservations[*].Instances[*].[InstanceId,InstanceType,LaunchTime]'
 ```
 
-リソースサイジング分析：
+リソースサイジング分析
 ```python
 # CloudWatchメトリクスを使用したサイジング分析
 import boto3
@@ -413,7 +413,7 @@ def analyze_instance_utilization(instance_id):
 
 **課金最適化戦略**では、クラウドプロバイダーの課金オプションを効果的に活用します。
 
-Reserved Instance分析：
+Reserved Instance分析
 ```bash
 # AWS Reserved Instance使用状況
 aws ce get-reservation-utilization \
@@ -428,7 +428,7 @@ aws ce get-savings-plans-utilization \
 
 **Infrastructure as Code（IaC）による管理**では、インフラストラクチャの定義と管理を自動化します。
 
-Terraformでのコスト最適化：
+Terraformでのコスト最適化
 ```hcl
 # terraform/cost-optimization.tf
 resource "aws_instance" "web" {
@@ -484,7 +484,7 @@ resource "aws_autoscaling_group" "web" {
 
 **監視とアラートの自動化**では、運用監視を包括的に自動化します。
 
-CloudWatchアラーム設定：
+CloudWatchアラーム設定
 ```bash
 # コスト異常検知アラーム
 aws cloudwatch put-anomaly-detector \
@@ -506,7 +506,7 @@ aws cloudwatch put-metric-alarm \
   --evaluation-periods 2
 ```
 
-Lambda自動修復関数：
+Lambda自動修復関数
 ```python
 import boto3
 import json
