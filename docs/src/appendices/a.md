@@ -56,10 +56,13 @@ ITインフラトラブルシューティングで頻繁に使用するコマン
 | コマンド | 説明 | 使用例 |
 |---------|------|-------|
 | `ss -tuln` | ソケット状態確認 | ポート利用状況確認 |
-| `netstat -tuln` | ネットワーク統計 | 接続状態確認 |
 | `tcpdump -i eth0` | パケットキャプチャ | 通信内容分析 |
 | `iptables -L` | ファイアウォール規則 | 通信制御確認 |
+| `nft list ruleset` | nftables ルール確認 | 通信制御確認（nftables） |
+| `firewall-cmd --list-all` | firewalld 状態確認 | 通信制御確認（RHEL系） |
 | `dig +trace domain` | DNS 完全解決 | DNS 問題詳細分析 |
+
+`netstat` は旧来の `net-tools` に含まれるコマンドであり、環境によってはインストールされていません。基本は `ss` を前提に整理すると混乱が少なくなります。
 
 ### 帯域・性能測定
 
@@ -104,7 +107,8 @@ ITインフラトラブルシューティングで頻繁に使用するコマン
 
 | コマンド | 説明 | 使用例 |
 |---------|------|-------|
-| `tail -f /var/log/syslog` | リアルタイムログ監視 | 継続的ログ監視 |
+| `tail -f /var/log/syslog` | リアルタイムログ監視（Debian/Ubuntu系） | 継続的ログ監視 |
+| `tail -f /var/log/messages` | リアルタイムログ監視（RHEL系） | 継続的ログ監視 |
 | `grep ERROR /var/log/*` | エラーログ検索 | 問題箇所特定 |
 | `journalctl -f` | systemd ログリアルタイム | systemd 管理サービス監視 |
 | `last` | ログイン履歴 | セキュリティ監査 |

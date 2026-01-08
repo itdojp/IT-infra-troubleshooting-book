@@ -10,7 +10,21 @@ order: 103
 
 ## ネットワーク設定サンプル
 
-### CentOS/RHEL ネットワーク設定
+### RHEL系（RHEL/RockyLinux/AlmaLinux等）ネットワーク設定
+
+RHEL 8 以降では NetworkManager が標準となっており、設定は `nmcli` 等で管理する運用が一般的です。一方で、従来の `ifcfg-*` 形式は互換目的で残っている場合もあります（環境・方針により異なるため要確認）。
+
+#### NetworkManager 設定例（nmcli）
+```bash
+# 例: eth0 に静的IPを設定（環境に合わせて調整）
+nmcli connection modify eth0 \
+  ipv4.method manual \
+  ipv4.addresses "192.168.1.100/24" \
+  ipv4.gateway "192.168.1.1" \
+  ipv4.dns "8.8.8.8 8.8.4.4"
+
+nmcli connection up eth0
+```
 
 #### /etc/sysconfig/network-scripts/ifcfg-eth0
 ```bash
