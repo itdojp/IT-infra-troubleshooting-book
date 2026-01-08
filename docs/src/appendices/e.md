@@ -18,7 +18,7 @@ order: 105
 **原因**: データベース負荷急増によるカスケード障害  
 
 #### システム構成
-```
+```text
 [Load Balancer] → [Web Server × 4] → [App Server × 6] → [DB Cluster × 3]
                                    → [Cache Server × 2]
                                    → [Search Engine × 2]
@@ -192,7 +192,7 @@ AWS Infrastructure:
 #### 障害タイムライン
 
 **09:15** - AWS公式障害通知
-```
+```text
 AWS Health Dashboard Alert:
 Service: EC2
 Region: ap-northeast-1
