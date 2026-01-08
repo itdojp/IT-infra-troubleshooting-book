@@ -353,8 +353,8 @@ AZHealthCheck:
 **02:18** - セキュリティチーム対応開始
 ```bash
 # 1. 緊急ネットワーク分析
-netstat -tulpn | grep :22
-ss -tulpn | grep :3306
+ss -lntp | grep :22
+ss -lntp | grep :3306
 
 # 2. アクセスログ分析
 tail -f /var/log/auth.log | grep "203.0.113"

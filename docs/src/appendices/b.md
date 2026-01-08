@@ -54,7 +54,7 @@ order: 102
 - [ ] `ping` - 基本疎通確認
 - [ ] `traceroute` - 経路確認
 - [ ] `nslookup/dig` - DNS解決確認
-- [ ] `telnet host port` - ポート疎通確認
+- [ ] `nc -vz host port` - ポート疎通確認（netcat）
 - [ ] `ss -tuln` - ポート待受状態確認
 
 ### アプリケーション層チェックリスト
