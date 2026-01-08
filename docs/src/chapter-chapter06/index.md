@@ -556,7 +556,13 @@ class IntelligentAlertManager:
 
 **診断手順の体系化**では、効率的で確実な問題診断のための標準手順を確立します。
 
-標準診断テンプレート：
+標準診断テンプレート（例）：
+
+- prerequisites: 作業前提（アクセス権、参照できるログ/ダッシュボードなど）
+- step_by_step: 手順、コマンド例、期待する観察結果
+- decision_tree: 観察結果に応じた分岐
+- escalation_criteria: エスカレーション条件
+
 ```yaml
 # troubleshooting_template.yml
 diagnostic_procedure:
@@ -715,7 +721,10 @@ class TroubleshootingKnowledgeBase:
 
 **包括的なシステムヘルスチェック**では、多角的な視点からシステムの健全性を評価します。
 
-自動ヘルスチェックスクリプト：
+自動ヘルスチェックスクリプト（例）：
+
+注: このスクリプトは例示です。実運用に適用する場合は、利用環境（systemd の有無、`bc` の有無、監視すべきサービス名、権限）に合わせて調整し、影響の少ない環境で事前検証してください。
+
 ```bash
 #!/bin/bash
 # comprehensive_health_check.sh
