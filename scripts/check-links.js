@@ -18,12 +18,26 @@ class LinkChecker {
   }
 
   /**
+   * コードブロック（fenced code block）内かどうかを判定しながらリンク抽出するための簡易トグル
+   * @param {string} line
+   * @returns {string|null} fence marker ("```" or "~~~") もしくは null
+   */
+  detectFenceMarker(line) {
+    const match = line.match(/^\s*(```+|~~~+)/);
+    if (!match) return null;
+    return match[1].startsWith('`') ? '```' : '~~~';
+  }
+
+  /**
    * ディレクトリ内のMarkdownファイルをチェック
    * @param {string} directory - チェック対象のディレクトリ
    * @param {Object} options - オプション
    */
   async checkDirectory(directory, options = {}) {
-    const { pattern = '**/*.md', ignore = ['node_modules/**', '**/node_modules/**'] } = options;
+    const {
+      pattern = '**/*.md',
+      ignore = ['node_modules/**', '**/node_modules/**', 'output/**', '**/output/**']
+    } = options;
     
     console.log(chalk.blue(`🔍 Checking links in ${directory}...`));
     
@@ -90,6 +104,10 @@ class LinkChecker {
   extractLinks(content) {
     const links = [];
     const lines = content.split('\n');
+
+    // fenced code block 内の誤検知（例: Python の dict/配列アクセス）を避ける
+    let inFence = false;
+    let fenceMarker = null;
     
     // リンクパターン
     const patterns = [
@@ -102,9 +120,24 @@ class LinkChecker {
     ];
     
     lines.forEach((line, lineIndex) => {
+      const marker = this.detectFenceMarker(line);
+      if (marker) {
+        if (!inFence) {
+          inFence = true;
+          fenceMarker = marker;
+        } else if (fenceMarker === marker) {
+          inFence = false;
+          fenceMarker = null;
+        }
+      }
+      if (inFence) return;
+
+      // インラインコード内の誤検知も避ける
+      const scrubbedLine = line.replace(/`[^`]*`/g, '`...`');
+
       patterns.forEach(pattern => {
         let match;
-        while ((match = pattern.exec(line)) !== null) {
+        while ((match = pattern.exec(scrubbedLine)) !== null) {
           const text = match[1];
           const url = match[2] || '';
           
@@ -156,7 +189,7 @@ class LinkChecker {
       // 相対パス
       targetPath = path.resolve(sourceDir, url);
     }
-    
+
     // アンカーの処理
     let anchor = null;
     if (targetPath.includes('#')) {
@@ -164,25 +197,59 @@ class LinkChecker {
       targetPath = parts[0];
       anchor = parts[1];
     }
-    
-    // ファイルの存在確認
-    try {
-      const exists = await fs.pathExists(targetPath);
-      
-      if (!exists) {
-        // インデックスファイルの確認
-        if (await fs.pathExists(path.join(targetPath, 'index.md'))) {
-          targetPath = path.join(targetPath, 'index.md');
-        } else if (await fs.pathExists(path.join(targetPath, 'index.html'))) {
-          targetPath = path.join(targetPath, 'index.html');
+
+    // Jekyll の docs/ 配下をサイトルートにしている構成のため、
+    // "/src/..." のようなサイト内パスを docs/ に寄せて解決する（存在しない場合のみ）。
+    const urlBaseLooksLikeDocsRoot = url.startsWith('/') && !targetPath.startsWith(path.join(baseDir, 'docs'));
+    if (urlBaseLooksLikeDocsRoot && !(await fs.pathExists(targetPath))) {
+      const docsRoot = path.join(baseDir, 'docs');
+      if (await fs.pathExists(docsRoot)) {
+        const docsTarget = path.join(docsRoot, url);
+        if (await fs.pathExists(docsTarget)) {
+          targetPath = docsTarget;
         } else {
-          return { 
-            valid: false, 
-            reason: 'File not found',
-            type: 'internal'
-          };
+          // docs/ 配下に相当するパスが無い場合でも、後段の候補探索で拾える可能性があるため
+          // targetPath 自体はそのまま維持する。
         }
       }
+    }
+
+    // ファイルの存在確認
+    try {
+      const candidates = [];
+      candidates.push(targetPath);
+
+      const trimmed = targetPath.replace(/[\\\/]+$/, '');
+      const hasExt = path.extname(trimmed) !== '';
+
+      // 末尾 "/" の pretty URL (例: ../appendices/a/) を ../appendices/a.md として解決する
+      if (trimmed !== targetPath) {
+        candidates.push(trimmed);
+      }
+      if (!hasExt) {
+        candidates.push(`${trimmed}.md`);
+      }
+      candidates.push(path.join(trimmed, 'index.md'));
+      candidates.push(path.join(trimmed, 'index.html'));
+
+      const existing = [];
+      for (const candidate of candidates) {
+        if (!candidate) continue;
+        if (await fs.pathExists(candidate)) {
+          existing.push(candidate);
+        }
+      }
+
+      if (existing.length === 0) {
+        return {
+          valid: false,
+          reason: 'File not found',
+          type: 'internal'
+        };
+      }
+
+      // 最初に存在したものを採用
+      targetPath = existing[0];
       
       // アンカーの検証（オプション）
       if (anchor) {
@@ -300,7 +367,7 @@ program
   .version('1.0.0')
   .argument('[directory]', 'Directory to check', '.')
   .option('-p, --pattern <pattern>', 'Glob pattern for files', '**/*.md')
-  .option('-i, --ignore <patterns...>', 'Patterns to ignore', ['node_modules/**', '**/node_modules/**'])
+  .option('-i, --ignore <patterns...>', 'Patterns to ignore', ['node_modules/**', '**/node_modules/**', 'output/**', '**/output/**'])
   .option('-o, --output <file>', 'Save report to file')
   .option('-e, --external', 'Also check external URLs (slower)')
   .action(async (directory, options) => {
