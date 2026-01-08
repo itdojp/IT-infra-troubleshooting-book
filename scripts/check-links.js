@@ -20,12 +20,12 @@ class LinkChecker {
   /**
    * コードブロック（fenced code block）内かどうかを判定しながらリンク抽出するための簡易トグル
    * @param {string} line
-   * @returns {string|null} fence marker ("```" or "~~~") もしくは null
+   * @returns {string|null} fence marker (例: "```", "````", "~~~") もしくは null
    */
   detectFenceMarker(line) {
     const match = line.match(/^\s*(```+|~~~+)/);
     if (!match) return null;
-    return match[1].startsWith('`') ? '```' : '~~~';
+    return match[1];
   }
 
   /**
@@ -125,7 +125,7 @@ class LinkChecker {
         if (!inFence) {
           inFence = true;
           fenceMarker = marker;
-        } else if (fenceMarker === marker) {
+        } else if (fenceMarker && marker[0] === fenceMarker[0] && marker.length >= fenceMarker.length) {
           inFence = false;
           fenceMarker = null;
         }
@@ -133,9 +133,11 @@ class LinkChecker {
       if (inFence) return;
 
       // インラインコード内の誤検知も避ける
-      const scrubbedLine = line.replace(/`[^`]*`/g, '`...`');
+      // 注: 行内の文字数を維持し、壊れたリンク報告時の `column` がズレないようにする
+      const scrubbedLine = line.replace(/`[^`]*`/g, match => ' '.repeat(match.length));
 
       patterns.forEach(pattern => {
+        pattern.lastIndex = 0;
         let match;
         while ((match = pattern.exec(scrubbedLine)) !== null) {
           const text = match[1];
@@ -216,6 +218,11 @@ class LinkChecker {
 
     // ファイルの存在確認
     try {
+      // 候補の優先順位に従って最初に存在したものを採用する:
+      // 1) 明示的に指定されたパス（拡張子付きの場合）
+      // 2) 拡張子が省略されていた場合の "<path>.md"
+      // 3) "<path>/index.md"
+      // 4) "<path>/index.html"
       const candidates = [];
       candidates.push(targetPath);
 
