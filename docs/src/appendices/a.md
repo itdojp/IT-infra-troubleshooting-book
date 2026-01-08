@@ -48,6 +48,51 @@ ITインフラトラブルシューティングで頻繁に使用するコマン
 | `dmesg \| tail` | カーネルメッセージ | ハードウェアエラー確認 |
 | `systemctl --version` | systemd バージョン | サービス管理システム確認 |
 
+### 定型の情報収集（例）
+
+初動で「いま何が起きているか」を再現可能な形で残すために、まずは基本情報をファイルに保存しておくと、引き継ぎや振り返り、復旧後の差分確認で再利用しやすくなります。
+
+注意:
+- 出力にはホスト名・IPアドレス等が含まれるため、取り扱い（共有範囲・保管場所）に注意します。
+- コマンドの有無や権限の違いで失敗する場合があるため、ここでは `|| true` で続行する例にしています。
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+out_dir="${1:-./diagnostics}"
+mkdir -p "$out_dir"
+
+ts="$(date -u +'%Y%m%dT%H%M%SZ')"
+out="$out_dir/diag-$ts.txt"
+
+{
+  echo "timestamp(UTC): $ts"
+  echo
+  echo "## Basic"
+  uname -a || true
+  hostname || true
+  uptime || true
+  whoami || true
+  id || true
+  echo
+  echo "## CPU/Memory"
+  lscpu || true
+  free -h || true
+  echo
+  echo "## Disk"
+  df -h || true
+  lsblk || true
+  echo
+  echo "## Network"
+  ip addr show || true
+  ip route show || true
+  ss -tuln || true
+} > "$out"
+
+echo "Wrote: $out"
+```
+
 ## ネットワーク診断コマンド
 
 ### 基本ネットワーク確認
