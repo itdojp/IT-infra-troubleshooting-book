@@ -591,7 +591,7 @@ def lambda_handler(event, context):
 
 ## クラウド診断フローチャート
 
-```
+```text
 クラウド問題発生
     ↓
 責任範囲確認（共有責任モデル）
