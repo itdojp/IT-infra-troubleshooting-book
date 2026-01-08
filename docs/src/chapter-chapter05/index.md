@@ -106,8 +106,8 @@ aws cloudwatch get-metric-statistics \
   --namespace AWS/EC2 \
   --metric-name CPUUtilization \
   --dimensions Name=InstanceId,Value=i-1234567890abcdef0 \
-  --start-time 2023-01-01T00:00:00Z \
-  --end-time 2023-01-01T23:59:59Z \
+  --start-time YYYY-MM-DDT00:00:00Z \
+  --end-time YYYY-MM-DDT23:59:59Z \
   --period 300 \
   --statistics Average
 
@@ -116,8 +116,8 @@ aws cloudwatch get-metric-statistics \
   --namespace AWS/RDS \
   --metric-name DatabaseConnections \
   --dimensions Name=DBInstanceIdentifier,Value=mydb-instance \
-  --start-time 2023-01-01T00:00:00Z \
-  --end-time 2023-01-01T23:59:59Z \
+  --start-time YYYY-MM-DDT00:00:00Z \
+  --end-time YYYY-MM-DDT23:59:59Z \
   --period 300 \
   --statistics Average
 ```
@@ -129,13 +129,13 @@ X-Rayトレース分析
 # トレース取得
 aws xray get-trace-summaries \
   --time-range-type TimeRangeByStartTime \
-  --start-time 2023-01-01T00:00:00 \
-  --end-time 2023-01-01T23:59:59
+  --start-time YYYY-MM-DDTHH:MM:SS \
+  --end-time YYYY-MM-DDTHH:MM:SS
 
 # サービスマップ取得
 aws xray get-service-graph \
-  --start-time 2023-01-01T00:00:00 \
-  --end-time 2023-01-01T23:59:59
+  --start-time YYYY-MM-DDTHH:MM:SS \
+  --end-time YYYY-MM-DDTHH:MM:SS
 ```
 
 **VPC Flow Logs による ネットワーク分析**では、AWS ネットワーク内のトラフィックを詳細に分析します。
@@ -184,7 +184,8 @@ Cloud Monitoring確認
 gcloud monitoring metrics list --filter="resource.type=gce_instance"
 
 # アラートポリシー確認
-gcloud alpha monitoring policies list
+# 注: gcloud のバージョンにより `alpha` が必要な場合があります。
+gcloud monitoring policies list
 ```
 
 **Cloud Logging による ログ分析**では、GCP全体のログを統合的に分析します。
@@ -313,12 +314,15 @@ kubectl exec -it pod-name -- nslookup kubernetes.default
 
 セキュリティ診断
 ```bash
-# コンテナイメージの脆弱性スキャン
-docker scan image-name
+# コンテナイメージの脆弱性スキャン（例）
+# 注: 利用できるスキャナは環境・組織により異なります。CI/CD での実施が一般的です。
+# 例: trivy image image-name
 
-# Kubernetesセキュリティポリシー確認
-kubectl get podsecuritypolicy
-kubectl get networkpolicy
+# Kubernetes の Pod セキュリティ設定確認
+# 注: PodSecurityPolicy は Kubernetes v1.25 以降で削除されています。
+# 代替として、Pod Security Admission（PSA）の namespace ラベル等を確認します。
+kubectl get ns -L pod-security.kubernetes.io/enforce,pod-security.kubernetes.io/audit,pod-security.kubernetes.io/warn
+kubectl get networkpolicy --all-namespaces
 
 # RBAC設定確認
 kubectl get rolebindings --all-namespaces
@@ -340,7 +344,7 @@ AWS Cost Explorer API使用
 ```bash
 # コスト情報取得
 aws ce get-cost-and-usage \
-  --time-period Start=2023-01-01,End=2023-01-31 \
+  --time-period Start=YYYY-MM-DD,End=YYYY-MM-DD \
   --granularity DAILY \
   --metrics BlendedCost \
   --group-by Type=DIMENSION,Key=SERVICE
@@ -417,11 +421,11 @@ Reserved Instance分析
 ```bash
 # AWS Reserved Instance使用状況
 aws ce get-reservation-utilization \
-  --time-period Start=2023-01-01,End=2023-01-31
+  --time-period Start=YYYY-MM-DD,End=YYYY-MM-DD
 
 # Savings Plans使用状況
 aws ce get-savings-plans-utilization \
-  --time-period Start=2023-01-01,End=2023-01-31
+  --time-period Start=YYYY-MM-DD,End=YYYY-MM-DD
 ```
 
 ### リソース最適化と自動化
