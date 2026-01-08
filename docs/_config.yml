@@ -58,7 +58,7 @@ structure:
       title: "クラウド環境特有のトラブルシューティング"
       path: "/src/chapter-chapter05/"
     - id: 6
-      title: "継続的学習と改善のプロセス"
+      title: "トラブルからの学びと再発防止"
       path: "/src/chapter-chapter06/"
   appendices:
     - id: "A"
