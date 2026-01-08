@@ -133,8 +133,9 @@ class LinkChecker {
       if (inFence) return;
 
       // インラインコード内の誤検知も避ける
-      // 注: 行内の文字数を維持し、壊れたリンク報告時の `column` がズレないようにする
-      const scrubbedLine = line.replace(/`[^`]*`/g, match => ' '.repeat(match.length));
+      // 注: 行内の文字数を維持し、壊れたリンク報告時の `column` がズレないようにする。
+      // Markdown のコードスパンはバッククォート数が可変なため、`+ ... \1` で対にする。
+      const scrubbedLine = line.replace(/(`+)[\s\S]*?\1/g, match => ' '.repeat(match.length));
 
       patterns.forEach(pattern => {
         pattern.lastIndex = 0;
@@ -168,76 +169,88 @@ class LinkChecker {
    * @returns {Object} 検証結果
    */
   async validateLink(link, sourceFile, baseDir) {
-    const { url } = link;
+    const { url: urlRaw } = link;
     
     // 外部URLはスキップ（オプションで検証可能）
-    if (url.startsWith('http://') || url.startsWith('https://')) {
+    if (urlRaw.startsWith('http://') || urlRaw.startsWith('https://')) {
       return { valid: true, type: 'external' };
     }
     
     // メールリンクはスキップ
-    if (url.startsWith('mailto:')) {
+    if (urlRaw.startsWith('mailto:')) {
       return { valid: true, type: 'email' };
     }
-    
-    // 相対パスの解決
-    const sourceDir = path.dirname(sourceFile);
-    let targetPath;
-    
-    if (url.startsWith('/')) {
-      // 絶対パス（プロジェクトルートから）
-      targetPath = path.join(baseDir, url);
-    } else {
-      // 相対パス
-      targetPath = path.resolve(sourceDir, url);
-    }
 
-    // アンカーの処理
+    // アンカーの処理（URL文字列から先に分離する）
+    let urlPath = urlRaw;
     let anchor = null;
-    if (targetPath.includes('#')) {
-      const parts = targetPath.split('#');
-      targetPath = parts[0];
-      anchor = parts[1];
+    const hashIndex = urlRaw.indexOf('#');
+    if (hashIndex !== -1) {
+      urlPath = urlRaw.slice(0, hashIndex);
+      anchor = urlRaw.slice(hashIndex + 1);
     }
 
-    // Jekyll の docs/ 配下をサイトルートにしている構成のため、
-    // "/src/..." のようなサイト内パスを docs/ に寄せて解決する（存在しない場合のみ）。
-    const urlBaseLooksLikeDocsRoot = url.startsWith('/') && !targetPath.startsWith(path.join(baseDir, 'docs'));
-    if (urlBaseLooksLikeDocsRoot && !(await fs.pathExists(targetPath))) {
-      const docsRoot = path.join(baseDir, 'docs');
-      if (await fs.pathExists(docsRoot)) {
-        const docsTarget = path.join(docsRoot, url);
-        if (await fs.pathExists(docsTarget)) {
-          targetPath = docsTarget;
-        } else {
-          // docs/ 配下に相当するパスが無い場合でも、後段の候補探索で拾える可能性があるため
-          // targetPath 自体はそのまま維持する。
-        }
+    // パスの解決（absolute: docs/ ルート or リポジトリルート、relative: sourceFile 相対）
+    const sourceDir = path.dirname(sourceFile);
+    const docsRoot = path.join(baseDir, 'docs');
+    const docsExists = await fs.pathExists(docsRoot);
+    const candidateRoots = [];
+
+    if (urlPath.startsWith('/')) {
+      // 先頭の "/" を落として結合しないと、path.join がルート扱いして baseDir を無視してしまう
+      const urlRelative = urlPath.replace(/^\/+/, '');
+      const fromRepoRoot = path.join(baseDir, urlRelative);
+      const fromDocsRoot = path.join(docsRoot, urlRelative);
+
+      // docs 配下の Markdown からの参照は「サイト内リンク（docs/ ルート）」であることが多いため優先する
+      const isUnderDocsRoot = docsExists
+        ? (() => {
+            const relative = path.relative(docsRoot, sourceFile);
+            return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
+          })()
+        : false;
+
+      if (docsExists && isUnderDocsRoot) {
+        candidateRoots.push(fromDocsRoot, fromRepoRoot);
+      } else {
+        candidateRoots.push(fromRepoRoot);
+        if (docsExists) candidateRoots.push(fromDocsRoot);
       }
+    } else {
+      candidateRoots.push(path.resolve(sourceDir, urlPath));
     }
 
     // ファイルの存在確認
     try {
       // 候補の優先順位に従って最初に存在したものを採用する:
-      // 1) 明示的に指定されたパス（拡張子付きの場合）
-      // 2) 拡張子が省略されていた場合の "<path>.md"
-      // 3) "<path>/index.md"
-      // 4) "<path>/index.html"
+      // - ルート候補（docs ルート / リポジトリルート / 相対パス解決）の順に探索する
+      // - 各ルート候補の中では、次の順に解決する
+      //   1) 明示的に指定されたパス（拡張子付きの場合）
+      //   2) 拡張子が省略されていた場合の "<path>.md"
+      //   3) "<path>/index.md"
+      //   4) "<path>/index.html"
       const candidates = [];
-      candidates.push(targetPath);
+      const seen = new Set();
 
-      const trimmed = targetPath.replace(/[\\\/]+$/, '');
-      const hasExt = path.extname(trimmed) !== '';
+      for (const root of candidateRoots) {
+        if (!root) continue;
 
-      // 末尾 "/" の pretty URL (例: ../appendices/a/) を ../appendices/a.md として解決する
-      if (trimmed !== targetPath) {
-        candidates.push(trimmed);
+        const trimmed = root.replace(/[\\\/]+$/, '');
+        const hasExt = path.extname(trimmed) !== '';
+
+        const localCandidates = [root];
+        if (trimmed !== root) localCandidates.push(trimmed);
+        if (!hasExt) localCandidates.push(`${trimmed}.md`);
+        localCandidates.push(path.join(trimmed, 'index.md'));
+        localCandidates.push(path.join(trimmed, 'index.html'));
+
+        for (const candidate of localCandidates) {
+          if (!candidate) continue;
+          if (seen.has(candidate)) continue;
+          seen.add(candidate);
+          candidates.push(candidate);
+        }
       }
-      if (!hasExt) {
-        candidates.push(`${trimmed}.md`);
-      }
-      candidates.push(path.join(trimmed, 'index.md'));
-      candidates.push(path.join(trimmed, 'index.html'));
 
       const existing = [];
       for (const candidate of candidates) {
@@ -256,7 +269,7 @@ class LinkChecker {
       }
 
       // 最初に存在したものを採用
-      targetPath = existing[0];
+      const targetPath = existing[0];
       
       // アンカーの検証（オプション）
       if (anchor) {
