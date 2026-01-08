@@ -54,19 +54,19 @@ ITインフラトラブルシューティングで頻繁に使用するコマン
 
 注意:
 - 出力にはホスト名・IPアドレス等が含まれるため、取り扱い（共有範囲・保管場所）に注意します。
-- コマンドの有無や権限の違いで失敗する場合があるため、ここでは `|| true` で続行する例にしています。
+- コマンドの有無や権限の違いで失敗する場合があるため、診断コマンドは `|| true` で続行する例にしています（出力先の作成/書き込みが失敗した場合は停止します）。
 
 ```bash
 #!/usr/bin/env bash
-set -euo pipefail
+set -uo pipefail
 
 out_dir="${1:-./diagnostics}"
-mkdir -p "$out_dir"
+mkdir -p "$out_dir" || { echo "Failed to create output dir: $out_dir" >&2; exit 1; }
 
 ts="$(date -u +'%Y%m%dT%H%M%SZ')"
 out="$out_dir/diag-$ts.txt"
 
-{
+if ! {
   echo "timestamp(UTC): $ts"
   echo
   echo "## Basic"
@@ -88,7 +88,10 @@ out="$out_dir/diag-$ts.txt"
   ip addr show || true
   ip route show || true
   ss -tuln || true
-} > "$out"
+} > "$out"; then
+  echo "Failed to write: $out" >&2
+  exit 1
+fi
 
 echo "Wrote: $out"
 ```
