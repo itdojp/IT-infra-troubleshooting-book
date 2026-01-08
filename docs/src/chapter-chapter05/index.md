@@ -319,7 +319,7 @@ kubectl exec -it pod-name -- nslookup kubernetes.default
 # 例: trivy image image-name
 
 # Kubernetes の Pod セキュリティ設定確認
-# 注: PodSecurityPolicy は Kubernetes v1.25 以降で削除されています。
+# 注: PodSecurityPolicy は Kubernetes v1.25 以降で削除されました。
 # 代替として、Pod Security Admission（PSA）の namespace ラベル等を確認します。
 kubectl get ns -L pod-security.kubernetes.io/enforce,pod-security.kubernetes.io/audit,pod-security.kubernetes.io/warn
 kubectl get networkpolicy --all-namespaces
