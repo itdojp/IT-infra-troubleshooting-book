@@ -16,8 +16,8 @@ layout: book
 ## 2. リポジトリの使い方
 
 - オンライン版（目次）: `docs/index.md`
-- 本文: `docs/src/chapter-chapter01/` 〜 `docs/src/chapter-chapter06/`
-- 付録（リファレンス）: `docs/src/appendices/`
+- 本文: `manuscript/chapter-chapter01/` 〜 `manuscript/chapter-chapter06/`
+- 付録（リファレンス）: `manuscript/appendices/`
 
 GitHub 上で読む場合は、リポジトリ内検索（キーワード検索）も有効です。たとえば、障害時の症状（例: `timeout`、`dns`、`connection refused`）で検索し、該当章や付録へ移動できます。
 
@@ -29,5 +29,5 @@ GitHub 上で読む場合は、リポジトリ内検索（キーワード検索�
 ## まとめ
 
 - 体系学習と参照用途で、読み方を切り替える。
-- 目次は `docs/index.md`、本文は `docs/src/`、付録は `docs/src/appendices/`。
+- 目次は `docs/index.md`、本文は `manuscript/`、付録は `manuscript/appendices/`。
 - コマンドは環境依存のため、必要に応じて読み替える。
