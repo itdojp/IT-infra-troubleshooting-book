@@ -4,11 +4,11 @@
 - `README.md`
 - `docs/index.md`
 - `docs/_data/navigation.yml`
-- `docs/src/chapter-introduction/index.md`
-- `docs/src/chapter-getting-started/index.md`
-- `docs/src/introduction/index.md`（および配下の導入用Markdown）
-- `docs/src/chapter-chapter01/index.md` 〜 `docs/src/chapter-chapter06/index.md`
-- `docs/src/appendices/a.md` 〜 `docs/src/appendices/f.md`
+- `manuscript/chapter-introduction/index.md`
+- `manuscript/chapter-getting-started/index.md`
+- `manuscript/introduction/index.md`（および配下の導入用Markdown）
+- `manuscript/chapter-chapter01/index.md` 〜 `manuscript/chapter-chapter06/index.md`
+- `manuscript/appendices/a.md` 〜 `manuscript/appendices/f.md`
 
 ## 1. 書籍の概要
 
@@ -24,38 +24,38 @@
 - 狙い / 主なトピック: 本書の目的、特徴、対象読者、学習の進め方、ライセンス。
 - 学習目標: 「各章に学習目標と想定学習時間がある」と説明（実際に各章で `章の概要` として記載あり）。
 
-### 導入（`docs/src/chapter-introduction/index.md` / `docs/src/chapter-getting-started/index.md`）
+### 導入（`manuscript/chapter-introduction/index.md` / `manuscript/chapter-getting-started/index.md`）
 - いずれもテンプレート文が残っており、現状は書籍内容に即した導入になっていない。
 - 入口として採用する場合は内容の作成が必要。
 
-### 導入（`docs/src/introduction/index.md` および配下）
+### 導入（`manuscript/introduction/index.md` および配下）
 - 「理論計算機科学教科書」等、本書（トラブルシューティング）と異なる内容が含まれているほか、メタデータに将来日付（`2025-07-13`）が含まれているため、現状のまま読者に公開できない（内容および日付の要修正/要差し替え）。
 
-### 第1章：トラブルシューティングの基本と心構え（`docs/src/chapter-chapter01/index.md`）
+### 第1章：トラブルシューティングの基本と心構え（`manuscript/chapter-chapter01/index.md`）
 - 章の狙い / 主なトピック: 障害の本質、問題解決フレームワーク、心構え、章末まとめ。
 - 学習目標（章頭）: トラブルシューティングの思考プロセスと心構えを理解し、問題解決の基盤を構築する。
 
-### 第2章：問題の特定と情報収集（`docs/src/chapter-chapter02/index.md`）
+### 第2章：問題の特定と情報収集（`manuscript/chapter-chapter02/index.md`）
 - 章の狙い / 主なトピック: 検知と初期対応、情報収集、チェックリスト、情報共有/コミュニケーション、章末まとめ。
 - 学習目標（章頭）: 情報収集手法と状況把握技術を習得し、問題解決の基盤となるデータを確実に収集する。
 
-### 第3章：論理的な切り分けと原因特定（`docs/src/chapter-chapter03/index.md`）
+### 第3章：論理的な切り分けと原因特定（`manuscript/chapter-chapter03/index.md`）
 - 章の狙い / 主なトピック: 切り分け原則、レイヤーモデル切り分け、仮説検証、ツール/テクニック、実践チェックリスト、診断フローチャート、重要用語集、次章への接続。
 - 学習目標（章頭）: 切り分け手法と原因特定プロセスを習得し、複雑な問題を効率的に解決する。
 
-### 第4章：各レイヤーでのトラブルシューティング実践（`docs/src/chapter-chapter04/index.md`）
+### 第4章：各レイヤーでのトラブルシューティング実践（`manuscript/chapter-chapter04/index.md`）
 - 章の狙い / 主なトピック: ネットワーク/OS/アプリ/DBの各レイヤー別の診断、実践チェックリスト、診断フローチャート、コマンドリファレンス、次章への接続。
 - 学習目標（章頭）: レイヤー別の診断技術を習得し、具体的な問題パターンに対する解決策を身につける。
 
-### 第5章：クラウド環境特有のトラブルシューティング（`docs/src/chapter-chapter05/index.md`）
+### 第5章：クラウド環境特有のトラブルシューティング（`manuscript/chapter-chapter05/index.md`）
 - 章の狙い / 主なトピック: クラウド障害パターンと影響分析、主要クラウドでのアプローチ、サーバーレス/コンテナ、運用コスト起因のトラブル、実践チェックリスト、診断フローチャート、コマンドリファレンス、用語集、次章への接続。
 - 学習目標（章頭）: クラウドの責任分担/分散アーキテクチャ/サービス依存を理解し、クラウド特有の診断手法を習得する。
 
-### 第6章：トラブルからの学びと再発防止（`docs/src/chapter-chapter06/index.md`）
+### 第6章：トラブルからの学びと再発防止（`manuscript/chapter-chapter06/index.md`）
 - 章の狙い / 主なトピック: ポストモーテム（テンプレート含む）、監視/アラート改善、ナレッジ管理、予防的運用、チェックリスト、継続改善フローチャート、用語集、章末まとめ。
 - 学習目標（章頭）: インシデントから組織的学習を促進し、継続的改善と予防的運用体制を構築する。
 
-### 付録（`docs/src/appendices/a.md` 〜 `f.md`）
+### 付録（`manuscript/appendices/a.md` 〜 `f.md`）
 - 付録A: コマンドリファレンス（情報収集/ネットワーク/プロセス/ログ/クラウド/DB/セキュリティ/性能）
 - 付録B: 診断チェックリスト集（症状別ガイド、対応手順、エスカレーション基準、復旧確認、予防保守）
 - 付録C: 設定ファイルサンプル（ネットワーク/Web/DB/監視/セキュリティ/設定管理）
@@ -67,8 +67,8 @@
 
 - 読者入口が成立していない:
   - `README.md` が書籍内容ではなく Book Formatter の説明になっている（公開時の第一印象が崩れる）。
-  - `docs/src/introduction/index.md` が別書籍（理論計算機科学）の内容で、本書の導入として不適切。
-  - `docs/src/chapter-introduction/index.md` と `docs/src/chapter-getting-started/index.md` はテンプレートが未記入。
+  - `manuscript/introduction/index.md` が別書籍（理論計算機科学）の内容で、本書の導入として不適切。
+  - `manuscript/chapter-introduction/index.md` と `manuscript/chapter-getting-started/index.md` はテンプレートが未記入。
   - `docs/_data/navigation.yml` の導入リンクが `/src/introduction/` を指しており、現状の誤内容へ誘導してしまう。
 - 目次の見せ方:
   - `docs/index.md` に章リンクの一覧（目次）が無い。ページナビゲーション頼みだと、初見読者の全体把握が難しい可能性がある（要確認）。
@@ -81,7 +81,7 @@
 
 - 入口の確定と整合（最優先）:
   - `README.md` を「読者入口」にする方針なら、書籍の書名・概要・オンライン版リンク（`docs/index.md`）・ライセンスを記載する形に置換する。
-  - 導入は `docs/src/introduction/` と `docs/src/chapter-introduction/` のどちらを正式採用するか決め、不要側は削除/リダイレクト/非表示にする。
+  - 導入は `manuscript/introduction/` と `manuscript/chapter-introduction/` のどちらを正式採用するか決め、不要側は削除/リダイレクト/非表示にする。
   - `docs/_data/navigation.yml` の導入リンクを、正式な導入ページへ修正する。
 - 目次の追加:
   - `docs/index.md` に、第1〜6章と付録へのリンク一覧を追加し、学習導線を明確化する（章の学習目標/学習時間への誘導も併記）。
