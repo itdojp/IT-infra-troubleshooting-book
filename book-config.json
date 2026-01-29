@@ -1,10 +1,10 @@
 {
-  "title": "IT\u30a4\u30f3\u30d5\u30e9\u30c8\u30e9\u30d6\u30eb\u30b7\u30e5\u30fc\u30c6\u30a3\u30f3\u30b0\u5927\u5168",
-  "description": "\u554f\u984c\u89e3\u6c7a\u306e\u601d\u8003\u6cd5\u304b\u3089\u5404\u30ec\u30a4\u30e4\u30fc\u306e\u5177\u4f53\u7b56\u307e\u3067\u301c\u30b7\u30b9\u30c6\u30e0\u969c\u5bb3\u306b\u7acb\u3061\u5411\u304b\u3046\u5b9f\u8df5\u7684\u30ac\u30a4\u30c9\u301c",
-  "author": "ITDO Inc.\uff08\u682a\u5f0f\u4f1a\u793e\u30a2\u30a4\u30c6\u30a3\u30fc\u30c9\u30a5\uff09",
+  "title": "ITインフラトラブルシューティング大全",
+  "description": "問題解決の思考法から各レイヤーの具体策まで〜システム障害に立ち向かう実践的ガイド〜",
+  "author": "ITDO Inc.（株式会社アイティードゥ）",
   "version": "1.0.0",
   "language": "ja",
-  "license": "CC BY-NC-SA 4.0",
+  "license": "CC-BY-NC-SA-4.0",
   "repository": {
     "url": "https://github.com/itdojp/IT-infra-troubleshooting-book.git",
     "branch": "main"
@@ -13,45 +13,45 @@
     "chapters": [
       {
         "id": "chapter01",
-        "title": "\u7b2c1\u7ae0\uff1a\u30c8\u30e9\u30d6\u30eb\u30b7\u30e5\u30fc\u30c6\u30a3\u30f3\u30b0\u306e\u57fa\u672c\u3068\u5fc3\u69cb\u3048",
-        "description": "\u30b7\u30b9\u30c6\u30e0\u969c\u5bb3\u306e\u672c\u8cea\u7684\u7406\u89e3\u3068\u52b9\u679c\u7684\u306a\u554f\u984c\u89e3\u6c7a\u306e\u57fa\u76e4\u69cb\u7bc9"
+        "title": "第1章：トラブルシューティングの基本と心構え",
+        "description": "システム障害の本質的理解と効果的な問題解決の基盤構築"
       },
       {
         "id": "chapter02",
-        "title": "\u7b2c2\u7ae0\uff1a\u554f\u984c\u306e\u7279\u5b9a\u3068\u60c5\u5831\u53ce\u96c6",
-        "description": "\u52b9\u679c\u7684\u306a\u60c5\u5831\u53ce\u96c6\u624b\u6cd5\u3068\u72b6\u6cc1\u628a\u63e1\u6280\u8853\u306e\u7fd2\u5f97"
+        "title": "第2章：問題の特定と情報収集",
+        "description": "効果的な情報収集手法と状況把握技術の習得"
       },
       {
         "id": "chapter03",
-        "title": "\u7b2c3\u7ae0\uff1a\u8ad6\u7406\u7684\u306a\u5207\u308a\u5206\u3051\u3068\u539f\u56e0\u7279\u5b9a",
-        "description": "\u4f53\u7cfb\u7684\u306a\u5207\u308a\u5206\u3051\u624b\u6cd5\u3068\u79d1\u5b66\u7684\u306a\u539f\u56e0\u7279\u5b9a\u30d7\u30ed\u30bb\u30b9"
+        "title": "第3章：論理的な切り分けと原因特定",
+        "description": "体系的な切り分け手法と科学的な原因特定プロセス"
       },
       {
         "id": "chapter04",
-        "title": "\u7b2c4\u7ae0\uff1a\u5404\u30ec\u30a4\u30e4\u30fc\u3067\u306e\u30c8\u30e9\u30d6\u30eb\u30b7\u30e5\u30fc\u30c6\u30a3\u30f3\u30b0\u5b9f\u8df5",
-        "description": "\u30cd\u30c3\u30c8\u30ef\u30fc\u30af\u3001OS\u3001\u30a2\u30d7\u30ea\u30b1\u30fc\u30b7\u30e7\u30f3\u3001\u30c7\u30fc\u30bf\u30d9\u30fc\u30b9\u3067\u306e\u5177\u4f53\u7684\u5bfe\u5fdc\u6cd5"
+        "title": "第4章：各レイヤーでのトラブルシューティング実践",
+        "description": "ネットワーク、OS、アプリケーション、データベースでの具体的対応法"
       },
       {
         "id": "chapter05",
-        "title": "\u7b2c5\u7ae0\uff1a\u30af\u30e9\u30a6\u30c9\u74b0\u5883\u7279\u6709\u306e\u30c8\u30e9\u30d6\u30eb\u30b7\u30e5\u30fc\u30c6\u30a3\u30f3\u30b0",
-        "description": "AWS\u3001Azure\u3001GCP\u3067\u306e\u30af\u30e9\u30a6\u30c9\u30cd\u30a4\u30c6\u30a3\u30d6\u306a\u554f\u984c\u89e3\u6c7a\u624b\u6cd5"
+        "title": "第5章：クラウド環境特有のトラブルシューティング",
+        "description": "AWS、Azure、GCPでのクラウドネイティブな問題解決手法"
       },
       {
         "id": "chapter06",
-        "title": "\u7b2c6\u7ae0\uff1a\u30c8\u30e9\u30d6\u30eb\u304b\u3089\u306e\u5b66\u3073\u3068\u518d\u767a\u9632\u6b62",
-        "description": "\u30a4\u30f3\u30b7\u30c7\u30f3\u30c8\u30ec\u30d3\u30e5\u30fc\u3068\u6301\u7d9a\u7684\u6539\u5584\u306e\u30d7\u30ed\u30bb\u30b9\u69cb\u7bc9"
+        "title": "第6章：トラブルからの学びと再発防止",
+        "description": "インシデントレビューと持続的改善のプロセス構築"
       }
     ],
     "appendices": [
       {
         "id": "appendix-a",
-        "title": "\u4ed8\u9332A\uff1a\u5b9f\u8df5\u7684\u306a\u30b3\u30de\u30f3\u30c9\u30ea\u30d5\u30a1\u30ec\u30f3\u30b9",
-        "description": "\u30c8\u30e9\u30d6\u30eb\u30b7\u30e5\u30fc\u30c6\u30a3\u30f3\u30b0\u3067\u983b\u7528\u3059\u308b\u30b3\u30de\u30f3\u30c9\u3068\u30c4\u30fc\u30eb\u306e\u4f7f\u7528\u6cd5"
+        "title": "付録A：実践的なコマンドリファレンス",
+        "description": "トラブルシューティングで頻用するコマンドとツールの使用法"
       },
       {
         "id": "appendix-b",
-        "title": "\u4ed8\u9332B\uff1a\u30c1\u30a7\u30c3\u30af\u30ea\u30b9\u30c8\u3068\u30c6\u30f3\u30d7\u30ec\u30fc\u30c8",
-        "description": "\u52b9\u7387\u7684\u306a\u554f\u984c\u89e3\u6c7a\u306e\u305f\u3081\u306e\u30c1\u30a7\u30c3\u30af\u30ea\u30b9\u30c8\u3068\u30c9\u30ad\u30e5\u30e1\u30f3\u30c8\u30c6\u30f3\u30d7\u30ec\u30fc\u30c8"
+        "title": "付録B：チェックリストとテンプレート",
+        "description": "効率的な問題解決のためのチェックリストとドキュメントテンプレート"
       }
     ]
   }
