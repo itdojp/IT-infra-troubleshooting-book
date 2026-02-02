@@ -54,5 +54,22 @@
         "description": "効率的な問題解決のためのチェックリストとドキュメントテンプレート"
       }
     ]
+  },
+  "ux": {
+    "profile": "B",
+    "modules": {
+      "quickStart": false,
+      "readingGuide": false,
+      "checklistPack": true,
+      "troubleshootingFlow": true,
+      "conceptMap": false,
+      "figureIndex": true,
+      "legalNotice": false,
+      "glossary": false
+    }
+  },
+  "shared": {
+    "version": "3.2.0",
+    "lastSync": "2026-02-02T14:16:14.272Z"
   }
 }
