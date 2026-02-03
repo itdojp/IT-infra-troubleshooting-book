@@ -7,28 +7,28 @@ introduction:
 
 chapters:
 - title: "第1章：トラブルシューティングの基本と心構え"
-  path: /src/chapter-chapter01/
+  path: /chapters/chapter01/
 - title: "第2章：問題の特定と情報収集"
-  path: /src/chapter-chapter02/
+  path: /chapters/chapter02/
 - title: "第3章：論理的な切り分けと原因特定"
-  path: /src/chapter-chapter03/
+  path: /chapters/chapter03/
 - title: "第4章：各レイヤーでのトラブルシューティング実践"
-  path: /src/chapter-chapter04/
+  path: /chapters/chapter04/
 - title: "第5章：クラウド環境特有のトラブルシューティング"
-  path: /src/chapter-chapter05/
+  path: /chapters/chapter05/
 - title: "第6章：トラブルからの学びと再発防止"
-  path: /src/chapter-chapter06/
+  path: /chapters/chapter06/
 
 appendices:
 - title: "付録A: トラブルシューティング用コマンドリファレンス"
-  path: /src/appendices/a/
+  path: /appendices/a/
 - title: "付録B: 診断チェックリスト集"
-  path: /src/appendices/b/
+  path: /appendices/b/
 - title: "付録C: 設定ファイルサンプル"
-  path: /src/appendices/c/
+  path: /appendices/c/
 - title: "付録D: 用語集・技術索引"
-  path: /src/appendices/d/
+  path: /appendices/d/
 - title: "付録E: 実践ケーススタディ"
-  path: /src/appendices/e/
+  path: /appendices/e/
 - title: "付録F: 継続学習ガイド"
-  path: /src/appendices/f/
+  path: /appendices/f/
