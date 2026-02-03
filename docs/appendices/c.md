@@ -350,16 +350,16 @@ track_functions = all
 
 # Local接続
 local   all             postgres                                peer
-local   all             all                                     md5
+local   all             all                                     scram-sha-256
 
 # IPv4ローカル接続
-host    all             all             127.0.0.1/32            md5
+host    all             all             127.0.0.1/32            scram-sha-256
 
 # IPv6ローカル接続
-host    all             all             ::1/128                 md5
+host    all             all             ::1/128                 scram-sha-256
 
 # レプリケーション接続
-host    replication     replicator      192.168.1.0/24          md5
+host    replication     replicator      192.168.1.0/24          scram-sha-256
 ```
 
 ## 監視設定サンプル

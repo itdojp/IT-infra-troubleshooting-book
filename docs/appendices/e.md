@@ -1033,7 +1033,7 @@ cat > /home/engineer/work_checklist.md << 'EOF'
 EOF
 ```
 
-#### 学んだ教訋
+#### 学んだ教訓
 
 1. **環境管理**
    - 明確な環境識別システム

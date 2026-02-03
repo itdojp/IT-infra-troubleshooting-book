@@ -44,41 +44,41 @@ structure:
   chapters:
     - id: 1
       title: "トラブルシューティングの基本と心構え"
-      path: "/src/chapter-chapter01/"
+      path: "/chapters/chapter01/"
     - id: 2
       title: "問題の特定と情報収集"
-      path: "/src/chapter-chapter02/"
+      path: "/chapters/chapter02/"
     - id: 3
       title: "論理的な切り分けと原因特定"
-      path: "/src/chapter-chapter03/"
+      path: "/chapters/chapter03/"
     - id: 4
       title: "各レイヤーでのトラブルシューティング実践"
-      path: "/src/chapter-chapter04/"
+      path: "/chapters/chapter04/"
     - id: 5
       title: "クラウド環境特有のトラブルシューティング"
-      path: "/src/chapter-chapter05/"
+      path: "/chapters/chapter05/"
     - id: 6
       title: "トラブルからの学びと再発防止"
-      path: "/src/chapter-chapter06/"
+      path: "/chapters/chapter06/"
   appendices:
     - id: "A"
       title: "コマンドリファレンス"
-      path: "/src/appendices/a"
+      path: "/appendices/a/"
     - id: "B" 
       title: "診断チェックリスト集"
-      path: "/src/appendices/b"
+      path: "/appendices/b/"
     - id: "C"
       title: "設定ファイルサンプル"
-      path: "/src/appendices/c"
+      path: "/appendices/c/"
     - id: "D"
       title: "用語集・技術索引"
-      path: "/src/appendices/d"
+      path: "/appendices/d/"
     - id: "E"
       title: "実践ケーススタディ"
-      path: "/src/appendices/e"
+      path: "/appendices/e/"
     - id: "F"
       title: "継続学習ガイド"
-      path: "/src/appendices/f"
+      path: "/appendices/f/"
 
 permalink: pretty
 # Use custom book layout as default
