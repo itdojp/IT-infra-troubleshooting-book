@@ -30,9 +30,9 @@ version: "1.0.0"
 
 ## 付録
 
-- [付録1 付録A：実践的なコマンドリファレンス](src/appendices/appendix-a.md)
+- [付録1 付録A：実践的なコマンドリファレンス](src/appendices/a.md)
 
-- [付録2 付録B：チェックリストとテンプレート](src/appendices/appendix-b.md)
+- [付録2 付録B：チェックリストとテンプレート](src/appendices/b.md)
 
 
 
