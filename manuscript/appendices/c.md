@@ -60,7 +60,9 @@ GATEWAY=192.168.1.1
 
 ### Ubuntu/Debian ネットワーク設定
 
-#### /etc/netplan/00-installer-config.yaml (Ubuntu / netplan)
+#### /etc/netplan/*.yaml の例 (Ubuntu / netplan)
+
+※ 実際のファイル名はインストール形態や環境により異なる場合があります（例: `00-installer-config.yaml` / `50-cloud-init.yaml`）。
 ```yaml
 network:
   version: 2
