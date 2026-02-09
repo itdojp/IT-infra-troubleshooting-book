@@ -60,7 +60,7 @@ GATEWAY=192.168.1.1
 
 ### Ubuntu/Debian ネットワーク設定
 
-#### /etc/netplan/00-installer-config.yaml (Ubuntu 18.04+)
+#### /etc/netplan/00-installer-config.yaml (Ubuntu / netplan)
 ```yaml
 network:
   version: 2
