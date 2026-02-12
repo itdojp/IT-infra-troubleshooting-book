@@ -432,7 +432,7 @@ grep -n "${" docs/chapter-*/index.md
    }
    ```
    {% endraw %}
-   ```
+   ```text
 
 2. **一括修正スクリプトの作成**
    ```bash

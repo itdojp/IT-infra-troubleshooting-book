@@ -8,7 +8,7 @@
 
 **RSA暗号における素数と合同算術**
 
-```
+```text
 実用例: HTTPS通信、デジタル署名
 理論: 素数、最大公約数、合同算術、フェルマーの小定理
 
@@ -57,7 +57,7 @@ SELECT customer_id FROM store_customers;
 
 **3Dグラフィックスの座標変換**
 
-```
+```text
 回転行列による3D変換:
 [x']   [cos θ  -sin θ   0] [x]
 [y'] = [sin θ   cos θ   0] [y]
@@ -80,7 +80,7 @@ y_screen = f * y_world / z_world
 
 **プログラム言語の計算能力**
 
-```
+```text
 例: C言語の計算能力
 - 任意のメモリアクセス（テープの読み書き）
 - 条件分岐（状態遷移）
@@ -104,7 +104,7 @@ while (condition) {
 
 **Java仮想マシン（JVM）**
 
-```
+```text
 JVMバイトコード例:
 iload_1      // 変数1をスタックにロード
 iload_2      // 変数2をスタックにロード  
@@ -144,7 +144,7 @@ NFA構築 → ε遷移除去 → DFA変換 → 最小化
 
 **プログラミング言語の構文解析**
 
-```
+```text
 文脈自由文法例（C言語の式）:
 Expr → Expr + Term | Term
 Term → Term * Factor | Factor  
@@ -163,7 +163,7 @@ Factor → ( Expr ) | id | number
 
 **HTTPプロトコルの状態機械**
 
-```
+```text
 HTTP/1.1 接続の状態遷移:
 CLOSED → SYN_SENT → ESTABLISHED → FIN_WAIT → CLOSED
 
@@ -200,7 +200,7 @@ if (halts(program, input)) {  // 停止問題
 
 **テストケース生成の限界**
 
-```
+```text
 完全なテストは不可能（停止問題の帰結）
 → カバレッジ基準による近似
 - ステートメントカバレッジ
@@ -220,7 +220,7 @@ if (halts(program, input)) {  // 停止問題
 
 **配送ルート最適化（TSP問題）**
 
-```
+```text
 巡回セールスマン問題（NP困難）の実用解法:
 
 1. 最近傍法（貪欲法）
@@ -243,7 +243,7 @@ if (halts(program, input)) {  // 停止問題
 
 **ニューラルネットワーク学習**
 
-```
+```text
 問題の複雑性:
 - ニューラルネットの最適化: NP困難
 - 実用的解法: 勾配降下法（局所最適解）
@@ -263,7 +263,7 @@ SGD（確率的勾配降下法）
 
 **公開鍵暗号の安全性**
 
-```
+```text
 RSA暗号の安全性:
 - 素因数分解問題の困難性に基づく
 - 現在最良アルゴリズム: 準指数時間
@@ -286,7 +286,7 @@ RSA暗号の安全性:
 
 **PageRankアルゴリズム**
 
-```
+```text
 理論的基礎:
 - グラフ理論（リンク構造）
 - 線形代数（固有ベクトル計算）
@@ -354,7 +354,7 @@ struct Node {
 
 **B-tree索引**
 
-```
+```text
 B-treeの特性:
 - 高さ: O(log n)
 - 挿入/削除/検索: O(log n)
@@ -374,7 +374,7 @@ CREATE INDEX idx_customer_name ON customers USING btree(name);
 
 **ルーティングテーブルの実装**
 
-```
+```text
 Trie（接頭辞木）によるIP prefix matching:
 192.168.1.0/24
 192.168.2.0/24
@@ -420,7 +420,7 @@ communities = community.greedy_modularity_communities(G)
 
 **配送ルート最適化**
 
-```
+```text
 Dijkstraアルゴリズムの実用実装:
 - 優先度付きキュー: フィボナッチヒープ
 - 時間複雑性: O(E + V log V)
@@ -440,7 +440,7 @@ Dijkstraアルゴリズムの実用実装:
 
 **通信ネットワークの設計**
 
-```
+```text
 最小全域木（MST）による効率的接続:
 - Kruskalアルゴリズム: O(E log E)
 - Primアルゴリズム: O(E + V log V)
@@ -462,7 +462,7 @@ Dijkstraアルゴリズムの実用実装:
 
 **モデル検査（Model Checking）**
 
-```
+```text
 TLA+による分散システム検証:
 THEOREM Safety == []TypeOK
 THEOREM Liveness == <>WillEventuallyTerminate
@@ -548,7 +548,7 @@ def huffman_encoding(text):
 
 **Reed-Solomon符号**
 
-```
+```text
 理論的基礎:
 - 有限体上の多項式
 - BCH符号の一般化
@@ -633,7 +633,7 @@ def bitcoin_mine(data, difficulty):
 
 **Signal Protocol**
 
-```
+```text
 Double Ratchet Algorithm:
 1. ECDH（楕円曲線Diffie-Hellman）
 2. HKDF（HMAC-based Key Derivation Function）
