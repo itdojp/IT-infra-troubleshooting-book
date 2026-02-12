@@ -423,7 +423,7 @@ grep -n "${" docs/chapter-*/index.md
 
 **解決手順:**
 1. **rawタグで囲む**
-   ```markdown
+   ````markdown
    {% raw %}
    ```terraform
    resource "aws_instance" "web" {
@@ -432,7 +432,7 @@ grep -n "${" docs/chapter-*/index.md
    }
    ```
    {% endraw %}
-   ```
+   ````
 
 2. **一括修正スクリプトの作成**
    ```bash

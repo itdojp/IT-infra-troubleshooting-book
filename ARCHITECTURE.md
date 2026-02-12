@@ -6,7 +6,7 @@ Book Formatter は、設定駆動型の書籍生成システムと継続的改�
 
 ## システム構成
 
-```
+```text
 book-formatter/
 ├── src/                      # コアモジュール
 │   ├── index.js             # CLI エントリーポイント
