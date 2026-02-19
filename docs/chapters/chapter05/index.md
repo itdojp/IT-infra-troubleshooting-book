@@ -148,9 +148,8 @@ X-Rayトレース分析
 ```bash
 # トレース取得
 aws xray get-trace-summaries \
-  --time-range-type TimeRangeByStartTime \
-  --start-time YYYY-MM-DDTHH:MM:SS \
-  --end-time YYYY-MM-DDTHH:MM:SS
+  --start-time YYYY-MM-DDTHH:MM:SSZ \
+  --end-time YYYY-MM-DDTHH:MM:SSZ
 
 # サービスマップ取得
 aws xray get-service-graph \
@@ -236,8 +235,18 @@ aws logs describe-log-groups --log-group-name-prefix /aws/lambda/
 # 関数の設定確認
 aws lambda get-function --function-name my-function
 
-# 実行統計の確認
+# 設定の確認
 aws lambda get-function-configuration --function-name my-function
+
+# 実行統計（例: Invocations/Errors/Duration）の確認（CloudWatchメトリクス）
+aws cloudwatch get-metric-statistics \
+  --namespace AWS/Lambda \
+  --metric-name Duration \
+  --dimensions Name=FunctionName,Value=my-function \
+  --start-time YYYY-MM-DDT00:00:00Z \
+  --end-time YYYY-MM-DDT23:59:59Z \
+  --period 300 \
+  --statistics Average,Maximum
 ```
 
 コールドスタート分析
