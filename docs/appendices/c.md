@@ -117,7 +117,7 @@ up route add -net 172.16.0.0/12 gw 192.168.1.254 dev eth0
 # 基本設定
 ServerRoot "/etc/httpd"
 Listen 80
-Listen 443 ssl
+Listen 443
 
 # セキュリティ設定
 ServerTokens Prod
@@ -283,8 +283,11 @@ innodb_log_buffer_size = 16M
 key_buffer_size = 256M
 max_connections = 200
 thread_cache_size = 8
-query_cache_size = 64M
-query_cache_limit = 2M
+
+# クエリキャッシュ（query_cache_*）は MySQL 8.0 では廃止されているため設定しない
+# （MySQL 5.7 / MariaDB を前提とする場合のみ参考として記載）
+# query_cache_size = 64M
+# query_cache_limit = 2M
 
 # ログ設定
 log_error = /var/log/mysql/error.log
