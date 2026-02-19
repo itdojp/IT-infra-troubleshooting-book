@@ -2,7 +2,7 @@
   "title": "ITインフラトラブルシューティング大全",
   "description": "問題解決の思考法から各レイヤーの具体策まで〜システム障害に立ち向かう実践的ガイド〜",
   "author": "ITDO Inc.（株式会社アイティードゥ）",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "language": "ja",
   "license": "CC-BY-NC-SA-4.0",
   "repository": {

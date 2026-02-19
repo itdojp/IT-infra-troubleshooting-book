@@ -2,7 +2,7 @@
 title: "ITインフラトラブルシューティング大全"
 description: "問題解決の思考法から各レイヤーの具体策まで〜システム障害に立ち向かう実践的ガイド〜"
 author: "ITDO Inc.（株式会社アイティードゥ）"
-version: "1.0.0"
+version: "1.0.1"
 layout: book
 order: 0
 ---
@@ -88,6 +88,12 @@ ITインフラの設計・構築・運用に20年以上携わり、大規模シ�
 **お問い合わせ**  
 株式会社アイティードゥ（ITDO Inc.）  
 Email: [knowledge@itdo.jp](mailto:knowledge@itdo.jp)
+
+---
+
+**著者:** ITDO Inc.（株式会社アイティードゥ）  
+**バージョン:** 1.0.1  
+**最終更新:** 2026-02-20
 
 
 
