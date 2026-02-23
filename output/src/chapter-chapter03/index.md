@@ -254,7 +254,7 @@ DNS診断ツール：
 tcpdumpによるパケットキャプチャ：
 - `tcpdump -i any host 192.168.1.1`: 特定ホスト監視
 - `tcpdump port 80 -w capture.pcap`: HTTP トラフィック保存
-- `tcpdump -n 'tcp[tcpflags] & (tcp-syn|tcp-ack) == tcp-syn'`: 初回SYN（SYN/ACKを除外）
+- `tcpdump -n '(tcp[tcpflags] & (tcp-syn|tcp-ack)) == tcp-syn'`: 初回SYN（SYN/ACKを除外）
 
 iperfによる帯域幅測定：
 - `iperf3 -c server -t 60`: 60秒間の帯域幅テスト
@@ -410,4 +410,3 @@ perfによる性能プロファイリング：
 ## 次章への接続
 
 第3章で習得した論理的な切り分けと原因特定の手法を、第4章では各技術レイヤーでの具体的なトラブルシューティングに応用します。ネットワーク、OS、アプリケーション、データベースの各レイヤーでの実践的な診断技術を学びます。
-

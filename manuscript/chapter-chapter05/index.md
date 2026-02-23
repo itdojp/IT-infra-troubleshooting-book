@@ -243,11 +243,11 @@ aws lambda get-function-configuration --function-name my-function
 aws cloudwatch get-metric-statistics \
   --namespace AWS/Lambda \
   --metric-name Duration \
-  --dimensions Name=FunctionName,Value=my-function \
-  --start-time YYYY-MM-DDT00:00:00Z \
-  --end-time YYYY-MM-DDT23:59:59Z \
-  --period 300 \
-  --statistics Average,Maximum
+	  --dimensions Name=FunctionName,Value=my-function \
+	  --start-time YYYY-MM-DDT00:00:00Z \
+	  --end-time YYYY-MM-DDT23:59:59Z \
+	  --period 300 \
+	  --statistics Average Maximum
 ```
 
 コールドスタート分析

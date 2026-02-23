@@ -248,7 +248,7 @@ DNS診断ツール
 tcpdumpによるパケットキャプチャ
 - `tcpdump -i any host 192.168.1.1`: 特定ホスト監視
 - `tcpdump port 80 -w capture.pcap`: HTTP トラフィック保存
-- `tcpdump -n 'tcp[tcpflags] & (tcp-syn|tcp-ack) == tcp-syn'`: 初回SYN（SYN/ACKを除外）
+- `tcpdump -n '(tcp[tcpflags] & (tcp-syn|tcp-ack)) == tcp-syn'`: 初回SYN（SYN/ACKを除外）
 
 iperfによる帯域幅測定
 - `iperf3 -c server -t 60`: 60秒間の帯域幅テスト
