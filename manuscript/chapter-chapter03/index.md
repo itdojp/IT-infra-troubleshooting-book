@@ -230,7 +230,7 @@ Webサーバーログの分析により、アクセスログとエラーログ�
 
 pingコマンドの高度な活用
 - `ping -i 0.1 target`: 高頻度テスト（0.1秒間隔）
-- `ping -s 1472 target`: MTU サイズの確認
+- `ping -M do -s 1472 target`: Path MTU の確認（Linux。DFを立ててフラグメントを禁止）
 - `ping -f target`: フラッド ping テスト（要注意）
 
 tracerouteの詳細分析
@@ -248,7 +248,7 @@ DNS診断ツール
 tcpdumpによるパケットキャプチャ
 - `tcpdump -i any host 192.168.1.1`: 特定ホスト監視
 - `tcpdump port 80 -w capture.pcap`: HTTP トラフィック保存
-- `tcpdump -n 'tcp[tcpflags] & tcp-syn != 0'`: SYN パケットのみ
+- `tcpdump -n 'tcp[tcpflags] & (tcp-syn|tcp-ack) == tcp-syn'`: 初回SYN（SYN/ACKを除外）
 
 iperfによる帯域幅測定
 - `iperf3 -c server -t 60`: 60秒間の帯域幅テスト
@@ -275,7 +275,7 @@ psコマンドの詳細分析
 
 iostatによるI/O統計
 - `iostat -x 1`: 詳細I/O統計の継続監視
-- `iostat -c`: CPU統計も含める
+- `iostat -c`: CPU統計のみ
 - `iostat -d`: デバイス統計のみ
 
 lsofによるファイル使用状況

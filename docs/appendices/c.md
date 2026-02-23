@@ -118,6 +118,7 @@ up route add -net 172.16.0.0/12 gw 192.168.1.254 dev eth0
 ServerRoot "/etc/httpd"
 Listen 80
 Listen 443
+# TLS/SSL の有効化は Listen 行ではなく、<VirtualHost *:443> や mod_ssl の設定（例: SSLEngine on）で行います
 
 # セキュリティ設定
 ServerTokens Prod
