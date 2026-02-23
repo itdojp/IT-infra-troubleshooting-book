@@ -127,7 +127,7 @@ X-Rayトレース分析：
 ```bash
 # トレース取得
 aws xray get-trace-summaries \
-  --time-range-type TimeRangeByStartTime \
+  --time-range-type TraceId \
   --start-time 2023-01-01T00:00:00 \
   --end-time 2023-01-01T23:59:59
 
@@ -214,8 +214,18 @@ aws logs describe-log-groups --log-group-name-prefix /aws/lambda/
 # 関数の設定確認
 aws lambda get-function --function-name my-function
 
-# 実行統計の確認
+# 設定の確認
 aws lambda get-function-configuration --function-name my-function
+
+# 実行統計（例: Invocations/Errors/Duration）の確認（CloudWatchメトリクス）
+aws cloudwatch get-metric-statistics \
+  --namespace AWS/Lambda \
+  --metric-name Duration \
+	  --dimensions Name=FunctionName,Value=my-function \
+	  --start-time 2023-01-01T00:00:00Z \
+	  --end-time 2023-01-01T23:59:59Z \
+	  --period 300 \
+	  --statistics Average Maximum
 ```
 
 コールドスタート分析：
@@ -682,5 +692,3 @@ kubectl top nodes
 ## 次章への接続
 
 第5章で習得したクラウド環境での診断技術を基に、第6章では継続的な学習と改善のプロセスを学びます。インシデントから得られた知見を組織的な資産として蓄積し、将来の問題を予防する仕組みの構築方法を習得します。
-
-
