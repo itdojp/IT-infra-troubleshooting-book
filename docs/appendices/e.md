@@ -54,7 +54,7 @@ mysql    1234  99.8  85.2 8192000 7654321 ?  R  14:30   5:30 mysqld
 **14:40** - 根本原因特定
 - 特定の商品ページへの大量アクセス
 - 非効率なSQLクエリによるデータベース負荷
-- Connection poolの枯渇
+- コネクションプール（Connection pool）の枯渇
 
 #### 問題のSQLクエリ
 ```sql
@@ -80,28 +80,38 @@ EXPLAIN SELECT ...;
 #### 緊急復旧対応
 
 **14:45** - 即座の対応策
-```bash
-# 1. 問題クエリの無効化
-UPDATE application_config 
-SET feature_enabled = 0 
+注: 以下はサービス影響を伴う可能性があるため、実施前に停止線（どこまでやる/やらない）とロールバック手順を確認してください。
+
+```sql
+-- 1. 問題機能の一時無効化（例）
+UPDATE application_config
+SET feature_enabled = 0
 WHERE feature_name = 'product_reviews_enhanced';
+```
 
-# 2. データベース接続の強制クリア
+```bash
+# 2. データベース接続の強制クリア（例。影響が大きいため要注意）
+# [状態変更] 既存接続を切断するため、アプリ側のエラー増加やトランザクション中断が起きる可能性があります。
 mysqladmin processlist | grep "Sleep" | cut -d'|' -f2 | xargs -I {} mysqladmin kill {}
+```
 
-# 3. Connection poolのリセット
+```bash
+# 3. アプリケーション再起動（例。結果としてコネクションプールが再生成される場合があります）
+# [状態変更] 影響範囲（台数/順序/ヘルスチェック）を確認し、段階的に実施します。
 systemctl restart application-server
 ```
 
-**15:00** - 負荷軽減策
-```bash
-# アプリケーションサーバーの一時的な設定変更
-# connection pool設定
-max_connections=50 → 25
-timeout=30 → 10
+**15:00** - 負荷軽減策（例）
 
-# キャッシュ戦略の変更
-# Redis cache TTL延長
+```text
+# アプリケーションサーバーの一時的な設定変更（例）
+max_connections: 50 → 25
+timeout: 30 → 10
+```
+
+```bash
+# キャッシュ戦略の変更（例）
+# [状態変更] `CONFIG SET` は実行中プロセスへ即時反映されます。永続化方法は環境により異なるため要確認です。
 redis-cli CONFIG SET maxmemory-policy allkeys-lru
 ```
 
@@ -113,6 +123,7 @@ redis-cli CONFIG SET maxmemory-policy allkeys-lru
 #### 根本対策
 
 **15:30〜16:45** - 恒久対策実施
+注: `CREATE INDEX` はテーブルサイズや DDL 方式によりロック/負荷が発生する可能性があります。オンライン DDL 可否や手順は要確認です。
 ```sql
 -- 適切なインデックス追加
 CREATE INDEX idx_products_category ON products(category);
@@ -132,7 +143,7 @@ LIMIT 50;  -- LIMIT追加
 
 **アプリケーション改善**
 ```python
-# Connection pool設定改善
+# コネクションプール設定改善
 DATABASE_CONFIG = {
     'MAX_CONNECTIONS': 20,
     'OVERFLOW': 0,
@@ -410,14 +421,18 @@ grep "203.0.113"
 
 #### 即座の対応策
 
+注: 以下は状態変更を伴うため、実施前に停止線（どこまでやる/やらない）とロールバック手順を確認してください。実運用では、まず組織標準（例: クラウドFW/Security Group/WAF、踏み台経由の遮断）を優先し、OS 上の設定変更は影響範囲を限定して実施します。`iptables` の永続化方法は環境により異なるため要確認です。
+
 **02:25** - ネットワーク遮断
 ```bash
 # 1. 攻撃元IPの即座遮断
+# [状態変更] 既存ルールとの重複や順序に注意（恒久対応は構成管理/IaC 側へ反映）。
 iptables -I INPUT -s 203.0.113.42 -j DROP
 iptables -I INPUT -s 203.0.113.43 -j DROP
 iptables -I INPUT -s 203.0.113.44 -j DROP
 
 # 2. fail2ban設定強化
+# [状態変更] 追記（>>）は重複を生む可能性があるため、事前にバックアップと差分確認を推奨。
 cat >> /etc/fail2ban/jail.local << EOF
 [sshd]
 enabled = true
@@ -443,6 +458,7 @@ UPDATE users SET failed_login_count=0 WHERE username='admin';
 EOF
 
 # 2. WAF ルール追加（nginx）
+# [状態変更] 例示です。実運用では WAF 製品/マネージドルールや、検証環境での事前検証を優先してください。
 cat >> /etc/nginx/conf.d/security.conf << EOF
 # SQLインジェクション対策
 location ~* \.(php|asp|aspx|jsp)$ {
@@ -502,6 +518,7 @@ WHERE created_at <= '2023-09-03 02:20:00';
 **03:00** - 即座の復旧作業
 ```bash
 # 1. データベース権限見直し
+# [状態変更] 実行前に現在権限のバックアップ（SHOW GRANTS 等）と影響範囲の確認が必要です。
 mysql -u root -p << EOF
 -- アプリケーション用ユーザーの権限制限
 REVOKE ALL ON *.* FROM 'webapp'@'localhost';
@@ -512,12 +529,14 @@ GRANT DELETE ON app_db.sessions TO 'webapp'@'localhost';
 ALTER USER 'admin'@'localhost' PASSWORD EXPIRE;
 EOF
 
-# 2. アプリケーション設定強化
-# prepared statement の強制
-sed -i 's/mysql_query/mysql_prepare/g' /var/www/html/includes/database.php
+# 2. アプリケーション設定強化（概念）
+# [状態変更] 本番サーバーでの直編集は避け、リポジトリに反映して CI/デプロイで適用します（実装方法は言語/フレームワークに依存）。
+# - prepared statement の強制（パラメータ化）
+# - 入力値バリデーションの強化
 
 # 3. ログ監視強化
-cat >> /etc/rsyslog.conf << EOF
+# [状態変更] 追記（>>）は重複の原因になり得ます。実運用では drop-in（例: /etc/rsyslog.d/）の利用を推奨します。
+cat > /etc/rsyslog.d/99-security.conf << EOF
 # セキュリティログ専用
 auth.* /var/log/security.log
 local0.* /var/log/application-security.log
