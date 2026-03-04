@@ -665,7 +665,9 @@ for file in "${CONFIG_FILES[@]}"; do
 done
 
 # 30日以上古いバックアップを削除
-find "$BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -mtime +30 -exec rm -rf -- {} \;
+# [注意] まず削除対象を表示し、問題なければ削除を有効化する
+find "$BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -mtime +30 -print
+# find "$BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -mtime +30 -print -exec rm -rf -- {} +
 ```
 
 ### 設定の検証
