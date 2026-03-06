@@ -92,7 +92,9 @@ WHERE feature_name = 'product_reviews_enhanced';
 ```bash
 # 2. データベース接続の強制クリア（例。影響が大きいため要注意）
 # [状態変更] 既存接続を切断するため、アプリ側のエラー増加やトランザクション中断が起きる可能性があります。
-mysqladmin processlist | grep "Sleep" | cut -d'|' -f2 | xargs -I {} mysqladmin kill {}
+# [状態変更] 一括 kill は避け、一覧を確認して対象セッションIDを個別に切断します。
+mysqladmin processlist
+mysqladmin kill 12345  # 例: 影響を確認したセッションIDのみ
 ```
 
 ```bash
@@ -432,8 +434,8 @@ iptables -I INPUT -s 203.0.113.43 -j DROP
 iptables -I INPUT -s 203.0.113.44 -j DROP
 
 # 2. fail2ban設定強化
-# [状態変更] 追記（>>）は重複を生む可能性があるため、事前にバックアップと差分確認を推奨。
-cat >> /etc/fail2ban/jail.local << EOF
+# [状態変更] 既存設定を直編集せず、drop-in ファイルで追加します。反映後は差分と reload 結果を確認します。
+cat > /etc/fail2ban/jail.d/incident-hardening.local << 'EOF'
 [sshd]
 enabled = true
 maxretry = 3
@@ -452,14 +454,16 @@ systemctl reload fail2ban
 **02:30** - アプリケーション保護
 ```bash
 # 1. 管理者アカウントの一時無効化
-mysql -u root -p << EOF
+# [状態変更] 退避用の管理経路や緊急用アカウントが確保済みであることを確認してから実施します。
+mysql -u root -p << 'EOF'
 UPDATE users SET status='disabled' WHERE username='admin';
 UPDATE users SET failed_login_count=0 WHERE username='admin';
 EOF
 
 # 2. WAF ルール追加（nginx）
 # [状態変更] 例示です。実運用では WAF 製品/マネージドルールや、検証環境での事前検証を優先してください。
-cat >> /etc/nginx/conf.d/security.conf << EOF
+# [状態変更] 既存ファイルへの追記は避け、一時ルール用の別ファイルで反映します。
+cat > /etc/nginx/conf.d/security-temporary-block.conf << 'EOF'
 # SQLインジェクション対策
 location ~* \.(php|asp|aspx|jsp)$ {
     if (\$args ~* "union.*select|drop.*table|insert.*into") {
@@ -519,7 +523,7 @@ WHERE created_at <= '2023-09-03 02:20:00';
 ```bash
 # 1. データベース権限見直し
 # [状態変更] 実行前に現在権限のバックアップ（SHOW GRANTS 等）と影響範囲の確認が必要です。
-mysql -u root -p << EOF
+mysql -u root -p << 'EOF'
 -- アプリケーション用ユーザーの権限制限
 REVOKE ALL ON *.* FROM 'webapp'@'localhost';
 GRANT SELECT, INSERT, UPDATE ON app_db.* TO 'webapp'@'localhost';
@@ -536,11 +540,13 @@ EOF
 
 # 3. ログ監視強化
 # [状態変更] 追記（>>）は重複の原因になり得ます。実運用では drop-in（例: /etc/rsyslog.d/）の利用を推奨します。
-cat > /etc/rsyslog.d/99-security.conf << EOF
+cat > /etc/rsyslog.d/99-security.conf << 'EOF'
 # セキュリティログ専用
 auth.* /var/log/security.log
 local0.* /var/log/application-security.log
 EOF
+
+systemctl reload rsyslog
 ```
 
 **監視システム強化**
