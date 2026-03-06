@@ -640,11 +640,12 @@ maxretry = 3
 **副作用/注意**: バックアップの保管先/権限/暗号化（秘密情報を含む場合）を考慮する。
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 # 設定ファイル自動バックアップスクリプト
+set -euo pipefail
 
 BACKUP_DIR="/backup/config"
-DATE=$(date +%Y%m%d_%H%M%S)
+DATE="$(date +%Y%m%d_%H%M%S)"
 
 # 重要な設定ファイルリスト
 CONFIG_FILES=(
@@ -655,7 +656,7 @@ CONFIG_FILES=(
     "/etc/iptables/rules.v4"
 )
 
-mkdir -p "$BACKUP_DIR/$DATE"
+mkdir -p -- "$BACKUP_DIR/$DATE"
 
 for file in "${CONFIG_FILES[@]}"; do
     if [ -f "$file" ]; then
@@ -664,10 +665,15 @@ for file in "${CONFIG_FILES[@]}"; do
     fi
 done
 
-# 30日以上古いバックアップを削除
+# 30日以上古いバックアップを削除（破壊的操作）
+# 注意: BACKUP_DIR が意図したディレクトリであることを必ず確認してください（例: "/" になっていない）。
 # [注意] まず削除対象を表示し、問題なければ削除を有効化する
-find "$BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -mtime +30 -print
-# find "$BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -mtime +30 -print -exec rm -rf -- {} +
+if [ -n "${BACKUP_DIR}" ] && [ "${BACKUP_DIR}" != "/" ] && [ -d "${BACKUP_DIR}" ]; then
+  find "$BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -mtime +30 -print
+  # find "$BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -mtime +30 -print -exec rm -rf -- {} +
+else
+  echo "Skip cleanup: BACKUP_DIR is unsafe or missing: ${BACKUP_DIR}" >&2
+fi
 ```
 
 ### 設定の検証
