@@ -667,8 +667,10 @@ done
 
 # 30日以上古いバックアップを削除（破壊的操作）
 # 注意: BACKUP_DIR が意図したディレクトリであることを必ず確認してください（例: "/" になっていない）。
+# [注意] まず削除対象を表示し、問題なければ削除を有効化する
 if [ -n "${BACKUP_DIR}" ] && [ "${BACKUP_DIR}" != "/" ] && [ -d "${BACKUP_DIR}" ]; then
-  find "$BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -mtime +30 -print -exec rm -rf -- {} \;
+  find "$BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -mtime +30 -print
+  # find "$BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -mtime +30 -print -exec rm -rf -- {} +
 else
   echo "Skip cleanup: BACKUP_DIR is unsafe or missing: ${BACKUP_DIR}" >&2
 fi
