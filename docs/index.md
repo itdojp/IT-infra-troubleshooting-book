@@ -58,10 +58,19 @@ order: 0
 ITインフラの設計・構築・運用に20年以上携わり、大規模システムから小規模環境まで幅広いトラブルシューティング経験を持つ。現在は技術コンサルティングと教育事業を通じて、実践的なITスキルの普及に取り組んでいる。
 
 ## 前提知識
+- 詳細版: [前提知識]({{ "/introduction/prerequisites/" | relative_url }})
 - Linux の基本操作（例: `cd`/`ls`/`cat`/`grep`/`less`/`sudo`）
 - ログ確認の基本（例: `journalctl`、`/var/log/` 配下のログの読み方）
 - ネットワーク基礎（IP/DNS/TCP/HTTP の概要と「疎通できない」の意味を説明できる程度）
 - 原因を「仮説 → 切り分け → 検証」で絞り込む姿勢（第1章で整理）
+
+## 参照導線
+
+障害時に先に開くと効果が高い入口をまとめています。
+
+- AWS 障害の一次確認: [AWS Health Dashboard](https://health.aws.amazon.com/health/status)
+- 付録A/B: [コマンドリファレンス]({{ "/appendices/a/" | relative_url }}) / [診断チェックリスト集]({{ "/appendices/b/" | relative_url }})
+- 主要図版: [トラブルシューティングの流れ]({{ "/assets/images/diagrams/troubleshooting-process.svg" | relative_url }}) / [原因分析]({{ "/assets/images/diagrams/root-cause-analysis.svg" | relative_url }}) / [インシデント対応ライフサイクル]({{ "/assets/images/diagrams/incident-response-lifecycle.svg" | relative_url }}) / [監視・可観測性スタック]({{ "/assets/images/diagrams/monitoring-observability-stack.svg" | relative_url }})
 
 ## 所要時間
 - 通読（本文のみ）: 約2.5〜3.5時間（本文量ベース概算。コードブロック除外、400〜600文字/分換算）
