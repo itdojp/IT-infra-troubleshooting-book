@@ -169,7 +169,19 @@ class LinkChecker {
    * @returns {Object} 検証結果
    */
   async validateLink(link, sourceFile, baseDir) {
-    const { url: urlRaw } = link;
+    let { url: urlRaw } = link;
+
+    // Jekyll/Liquid の `relative_url` フィルタを使った固定パスは、
+    // 実ファイルの存在確認に利用できる形へ正規化する。
+    // 変数展開を含むテンプレートリンクは実行時に解決されるためスキップする。
+    const liquidRelativeUrl = urlRaw.match(
+      /^{{\s*["']([^"']+)["']\s*\|\s*relative_url\s*}}$/
+    );
+    if (liquidRelativeUrl) {
+      urlRaw = liquidRelativeUrl[1];
+    } else if (urlRaw.includes('{{') || urlRaw.includes('{%')) {
+      return { valid: true, type: 'template' };
+    }
     
     // 外部URLはスキップ（オプションで検証可能）
     if (urlRaw.startsWith('http://') || urlRaw.startsWith('https://')) {
