@@ -1,13 +1,13 @@
 {
-  "name": "book-formatter",
-  "version": "1.0.0",
-  "description": "Book publishing template formatter - converts markdown books to various formats",
+  "name": "it-infra-troubleshooting-book",
+  "version": "1.0.1",
+  "description": "問題解決の思考法から各レイヤーの具体策まで〜システム障害に立ち向かう実践的ガイド〜",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
-    "test": "node --test tests/BookGenerator.test.js tests/ConfigValidator.test.js",
+    "test": "npm run check:metadata && node --test tests/BookGenerator.test.js tests/ConfigValidator.test.js",
     "format": "prettier --write .",
     "lint": "eslint src/ tests/",
     "build": "cd docs && bundle exec jekyll build",
@@ -18,24 +18,25 @@
     "dashboard:report": "node scripts/dashboard.js --report markdown --save dashboard-report.md",
     "sync-components": "node scripts/sync-components.js",
     "sync-components:all": "node scripts/sync-components.js --all",
-    "sync-components:dry-run": "node scripts/sync-components.js --all --dry-run"
+    "sync-components:dry-run": "node scripts/sync-components.js --all --dry-run",
+    "check:metadata": "node scripts/check-metadata-consistency.js"
   },
   "keywords": [
     "book",
-    "publishing",
-    "markdown",
-    "format",
-    "template"
+    "it-infrastructure",
+    "troubleshooting",
+    "incident-response",
+    "operations"
   ],
-  "author": "ITDO Inc.",
+  "author": "ITDO Inc.（株式会社アイティードゥ）",
   "license": "CC-BY-NC-SA-4.0",
   "dependencies": {
     "commander": "^12.0.0",
-    "markdown-it": "^14.1.0",
-    "yaml": "^2.4.1",
+    "markdown-it": "^14.2.0",
+    "yaml": "^2.9.0",
     "fs-extra": "^11.2.0",
     "chalk": "^5.3.0",
-    "glob": "^10.3.10"
+    "glob": "^10.5.0"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
@@ -43,5 +44,13 @@
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itdojp/IT-infra-troubleshooting-book.git"
+  },
+  "homepage": "https://itdojp.github.io/IT-infra-troubleshooting-book/",
+  "bugs": {
+    "url": "https://github.com/itdojp/IT-infra-troubleshooting-book/issues"
   }
 }
