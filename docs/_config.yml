@@ -7,6 +7,9 @@ lang: "ja"
 # GitHub Pages設定
 url: "https://itdojp.github.io"
 baseurl: "/IT-infra-troubleshooting-book"
+license: "CC-BY-NC-SA-4.0"
+homepage: "https://itdojp.github.io/IT-infra-troubleshooting-book/"
+repository_url: "https://github.com/itdojp/IT-infra-troubleshooting-book"
 
 # Jekyll設定
 markdown: kramdown
@@ -36,7 +39,7 @@ kramdown:
   syntax_highlighter: rouge
   
 # リポジトリ情報
-repository: 
+repository:
   github: "https://github.com/itdojp/IT-infra-troubleshooting-book"
 
 # Book structure for navigation

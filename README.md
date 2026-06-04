@@ -24,6 +24,17 @@
 - リポジトリ内: `docs/index.md`
 - GitHub Pages を有効化している場合: `https://itdojp.github.io/IT-infra-troubleshooting-book/`
 
+## 品質確認
+
+公開メタデータとナビゲーションの整合性を確認する場合は、次のコマンドを実行します。
+
+```bash
+npm run check:metadata
+npm test
+```
+
+`check:metadata` は `book-config.json`、`docs/book-config.json`、`docs/_config.yml`、`docs/index.md`、`docs/_data/navigation.yml`、`package.json`、`package-lock.json` の公開情報を照合し、章・付録の経路と必須アセットの欠落を検出します。
+
 ## フィードバック
 
 - Issue: `https://github.com/itdojp/IT-infra-troubleshooting-book/issues`
