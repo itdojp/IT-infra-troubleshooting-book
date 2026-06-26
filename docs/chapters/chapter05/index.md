@@ -87,7 +87,7 @@ curl -s https://status.aws.amazon.com/
 
 AZ 障害の検出
 ```bash
-# EC2 インスタンスの AZ確認
+# EC2 インスタンスの AZ 確認
 aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,Placement.AvailabilityZone]'
 
 # ELBのヘルスチェック確認

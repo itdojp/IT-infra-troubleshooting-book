@@ -56,7 +56,7 @@ mysql    1234  99.8  85.2 8192000 7654321 ?  R  14:30   5:30 mysqld
 - 非効率な SQL クエリによるデータベース負荷
 - Connection poolの枯渇
 
-#### 問題のSQL クエリ
+#### 問題の SQL クエリ
 ```sql
 -- 問題のあるクエリ（インデックス未使用）
 SELECT * FROM products p 
