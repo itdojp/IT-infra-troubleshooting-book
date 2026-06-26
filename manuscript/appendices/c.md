@@ -631,7 +631,7 @@ echo "=== Configuration Validation ==="
 echo "Checking Apache configuration..."
 httpd -t && echo "Apache: OK" || echo "Apache: ERROR"
 
-# Nginx設定検証
+# Nginx 設定検証
 echo "Checking Nginx configuration..."
 nginx -t && echo "Nginx: OK" || echo "Nginx: ERROR"
 

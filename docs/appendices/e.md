@@ -53,10 +53,10 @@ mysql    1234  99.8  85.2 8192000 7654321 ?  R  14:30   5:30 mysqld
 
 **14:40** - 根本原因特定
 - 特定の商品ページへの大量アクセス
-- 非効率なSQLクエリによるデータベース負荷
+- 非効率な SQL クエリによるデータベース負荷
 - コネクションプール（Connection pool）の枯渇
 
-#### 問題のSQLクエリ
+#### 問題のSQL クエリ
 ```sql
 -- 問題のあるクエリ（インデックス未使用）
 SELECT * FROM products p 
@@ -176,8 +176,8 @@ def get_popular_products(category, min_rating=4):
 
 #### まとめ（証拠→判断→行動→学び）
 
-- **証拠**: DB接続タイムアウト増加、ロード平均の急増、`mysqld` のCPU/メモリ使用率の異常、`EXPLAIN` でのフルスキャン/ファイルソート
-- **判断**: 特定機能/ページへの集中アクセスと非効率クエリによりDB負荷が急増し、接続枯渇がカスケードした
+- **証拠**: DB 接続タイムアウト増加、ロード平均の急増、`mysqld` のCPU/メモリ使用率の異常、`EXPLAIN` でのフルスキャン/ファイルソート
+- **判断**: 特定機能/ページへの集中アクセスと非効率クエリにより DB 負荷が急増し、接続枯渇がカスケードした
 - **行動**: 影響機能の無効化、接続整理/サービス再起動で止血し、インデックス追加とクエリ改善で恒久対応
 - **学び**: 予兆監視（クエリ実行時間/負荷）の強化、性能テスト自動化、手順書とエスカレーション基準の整備
 
@@ -185,11 +185,11 @@ def get_popular_products(category, min_rating=4):
 
 ## クラウド環境障害事例
 
-### ケース2: AWS multi-AZ障害
+### ケース2: AWS multi-AZ 障害
 
 #### 事例概要
 **発生日時**: 2023年8月22日 09:15〜11:30 (JST)  
-**影響範囲**: 東京リージョン ap-northeast-1a AZ障害  
+**影響範囲**: 東京リージョン ap-northeast-1a AZ 障害<br>
 **サービス**: SaaS基盤、顧客数 1,200社、ユーザー数 50,000人  
 
 #### システム構成
@@ -211,7 +211,7 @@ AWS Infrastructure:
 
 #### 障害タイムライン
 
-**09:15** - AWS公式障害通知
+**09:15** - AWS 公式障害通知
 ```text
 AWS Health Dashboard Alert:
 Service: EC2
@@ -223,18 +223,18 @@ Impact: Elevated API error rates and instance launch failures
 
 **09:18** - サービス影響確認
 ```bash
-# EC2インスタンス状況確認
+# EC2 インスタンス状況確認
 aws ec2 describe-instances \
   --filters "Name=availability-zone,Values=ap-northeast-1a" \
   --query 'Reservations[*].Instances[*].[InstanceId,State.Name]'
 
-# Auto Scaling状況確認
+# Auto Scaling 状況確認
 aws autoscaling describe-auto-scaling-groups \
   --query 'AutoScalingGroups[*].[AutoScalingGroupName,DesiredCapacity,Instances[].AvailabilityZone]'
 ```
 
 **09:20** - 影響分析
-- ap-northeast-1a の EC2インスタンス 12台が Stopping状態
+- ap-northeast-1a の EC2 インスタンス 12台が Stopping 状態
 - Auto Scaling が新しいインスタンス起動に失敗
 - RDS Multi-AZ の自動フェイルオーバー未発生（正常）
 
@@ -287,7 +287,7 @@ import boto3
 import json
 
 def handle_az_failure(failed_az, region='ap-northeast-1'):
-    """AZ障害時の自動対応"""
+    """AZ 障害時の自動対応"""
     
     ec2 = boto3.client('ec2', region_name=region)
     autoscaling = boto3.client('autoscaling', region_name=region)
@@ -295,7 +295,7 @@ def handle_az_failure(failed_az, region='ap-northeast-1'):
     # 1. 健全なAZの特定
     healthy_azs = get_healthy_azs(failed_az, region)
     
-    # 2. Auto Scaling Group更新
+    # 2. Auto Scaling Group 更新
     for asg in get_auto_scaling_groups():
         autoscaling.update_auto_scaling_group(
             AutoScalingGroupName=asg['AutoScalingGroupName'],
@@ -371,7 +371,7 @@ AZHealthCheck:
 2023-09-03 02:15:45 NOTICE  [ssh] Ban 203.0.113.43
 2023-09-03 02:15:58 NOTICE  [ssh] Ban 203.0.113.44
 
-# Webアプリケーション異常ログ
+# Web アプリケーション異常ログ
 [2023-09-03 02:16:12] WARN: Multiple login failures for user: admin
 [2023-09-03 02:16:15] ERROR: SQL injection attempt detected
 [2023-09-03 02:16:18] CRITICAL: Unauthorized database access attempt
@@ -392,7 +392,7 @@ grep -r "203.0.113" /var/log/apache2/
 
 **SSH ブルートフォース攻撃**
 ```bash
-# 攻撃元IP分析
+# 攻撃元 IP 分析
 grep "Failed password" /var/log/auth.log | \
 awk '{print $11}' | sort | uniq -c | sort -nr
 
@@ -411,9 +411,9 @@ awk '{print $9}' | sort | uniq -c | sort -nr
 #   34 administrator
 ```
 
-**Webアプリケーション攻撃**
+**Web アプリケーション攻撃**
 ```bash
-# SQLインジェクション試行検知
+# SQL インジェクション試行検知
 grep -i "union\|select\|drop\|insert" /var/log/apache2/access.log | \
 grep "203.0.113"
 
@@ -427,7 +427,7 @@ grep "203.0.113"
 
 **02:25** - ネットワーク遮断
 ```bash
-# 1. 攻撃元IPの即座遮断
+# 1. 攻撃元 IP の即座遮断
 # [状態変更] 既存ルールとの重複や順序に注意（恒久対応は構成管理/IaC 側へ反映）。
 iptables -I INPUT -s 203.0.113.42 -j DROP
 iptables -I INPUT -s 203.0.113.43 -j DROP
@@ -464,14 +464,14 @@ EOF
 # [状態変更] 例示です。実運用では WAF 製品/マネージドルールや、検証環境での事前検証を優先してください。
 # [状態変更] 既存ファイルへの追記は避け、一時ルール用の別ファイルで反映します。
 cat > /etc/nginx/conf.d/security-temporary-block.conf << 'EOF'
-# SQLインジェクション対策
+# SQL インジェクション対策
 location ~* \.(php|asp|aspx|jsp)$ {
     if (\$args ~* "union.*select|drop.*table|insert.*into") {
         return 403;
     }
 }
 
-# 不正IP遮断
+# 不正 IP 遮断
 location / {
     deny 203.0.113.0/24;
 }
@@ -885,7 +885,7 @@ EXPLAIN FORMAT=JSON SELECT ... ;
 
 **16:30** - 定期メンテナンス作業開始
 ```bash
-# 目的: Nginxの設定最適化
+# 目的: Nginx の設定最適化
 # 予定: ステージング環境での設定変更とテスト
 
 # 作業予定手順:
@@ -934,7 +934,7 @@ Response time increased: 2000ms -> 8000ms
 
 **即座の状況確認**
 ```bash
-# 1. Nginxエラーログ確認
+# 1. Nginx エラーログ確認
 tail -f /var/log/nginx/error.log
 /*
 2023-12-08 16:48:15 [error] connect() failed (111: Connection refused) 

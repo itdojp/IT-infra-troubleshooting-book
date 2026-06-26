@@ -265,7 +265,7 @@ ITインフラトラブルシューティングで使用される専門用語の
 
 **ORM (Object-Relational Mapping)**
 - オブジェクトとリレーショナルデータベースのマッピング
-- SQLクエリの抽象化
+- SQL クエリの抽象化
 - N+1問題などのパフォーマンス課題あり
 
 **OSI Model**
@@ -395,9 +395,9 @@ ITインフラトラブルシューティングで使用される専門用語の
 ## W
 
 **WAF (Web Application Firewall)**
-- Webアプリケーション向けファイアウォール
-- SQLインジェクション、XSS攻撃の防御
-- CloudFlare、AWS WAFなど
+- Web アプリケーション向けファイアウォール
+- SQL インジェクション、XSS 攻撃の防御
+- CloudFlare、AWS WAF など
 
 **WebSocket**
 - リアルタイム双方向通信プロトコル
@@ -413,7 +413,7 @@ ITインフラトラブルシューティングで使用される専門用語の
 
 **XSS (Cross-Site Scripting)**
 - クロスサイトスクリプティング攻撃
-- Webアプリケーションの脆弱性
+- Web アプリケーションの脆弱性
 - CSP（Content Security Policy）による対策
 
 ## Y

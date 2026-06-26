@@ -277,7 +277,7 @@ ITインフラ技術の継続的な学習と成長のためのガイドです。
 - Linux Academy (クラウド・Linux専門)
 
 【ハンズオン学習】
-- AWS Training (AWS公式トレーニング)
+- AWS Training (AWS 公式トレーニング)
 - Microsoft Learn (Azure公式学習)
 - Google Cloud Skills Boost (GCP公式)
 - Katacoda (インタラクティブ学習)
