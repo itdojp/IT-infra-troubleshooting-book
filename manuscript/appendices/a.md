@@ -190,7 +190,7 @@ echo "Wrote: $out"
 
 | コマンド | 説明 | 使用例 |
 |---------|------|-------|
-| `aws ec2 describe-instances` | EC2インスタンス一覧 | インスタンス状態確認 |
+| `aws ec2 describe-instances` | EC2 インスタンス一覧 | インスタンス状態確認 |
 | `aws cloudwatch get-metric-statistics` | CloudWatch メトリクス | 性能データ取得 |
 | `aws logs describe-log-groups` | ロググループ一覧 | ログ設定確認 |
 | `aws sts get-caller-identity` | 認証情報確認 | アクセス権限確認 |
