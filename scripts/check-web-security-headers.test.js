@@ -66,10 +66,23 @@ test('requires Report-Only rollout guidance inside the Apache section', () => {
 
 test('requires an enforced CSP in the Nginx example', () => {
   const { manuscript, docs } = canonicalTexts();
-  const regressed = docs.replace('add_header Content-Security-Policy', 'add_header X-Policy-Placeholder');
+  const regressed = docs.replaceAll('add_header Content-Security-Policy', 'add_header X-Policy-Placeholder');
   assert.throws(
     () => validateWebSecurityHeaderTexts(manuscript, regressed),
     /Nginx CSP section is missing required web security marker.*add_header Content-Security-Policy/,
+  );
+});
+
+test('requires security headers in the static-assets location that overrides add_header inheritance', () => {
+  const { manuscript, docs } = canonicalTexts();
+  const marker = 'add_header Content-Security-Policy';
+  const first = docs.indexOf(marker);
+  const second = docs.indexOf(marker, first + marker.length);
+  assert.ok(second > first, 'canonical docs must contain a static-assets CSP directive');
+  const regressed = `${docs.slice(0, second)}# static-assets CSP missing${docs.slice(second + marker.length)}`;
+  assert.throws(
+    () => validateWebSecurityHeaderTexts(manuscript, regressed),
+    /must repeat the enforced policy in the static-assets location/,
   );
 });
 

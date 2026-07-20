@@ -280,7 +280,7 @@ http {
 }
 ```
 
-Nginxの`add_header`は、下位の`server` / `location`に別の`add_header`があると上位設定を通常継承しません。共通headerをincludeへ切り出して各適用scopeで読み込むか、採用versionで継承契約を明示し、`nginx -t`、reload、error responseを含む実responseで確認してください。
+Nginxの`add_header`は、下位の`server` / `location`に別の`add_header`があると上位設定を通常継承しません。共通headerをincludeへ切り出して各適用scopeで読み込むか、下の静的file用`location`のように同じheaderを再設定します。採用versionで継承契約を明示し、`nginx -t`、reload、error responseを含む実responseで確認してください。
 
 - [Nginx: ngx_http_headers_module](https://nginx.org/en/docs/http/ngx_http_headers_module.html)
 
@@ -320,7 +320,11 @@ server {
     # 静的ファイルのキャッシュ
     location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
         expires 1y;
-        add_header Cache-Control "public, immutable";
+        add_header Cache-Control "public, immutable" always;
+        # このscopeのadd_headerが上位設定を置換するため、共通security headerも再設定する
+        add_header X-Frame-Options "DENY" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" always;
     }
 }
 ```

@@ -19,7 +19,7 @@ const sections = [
   {
     name: 'Nginx CSP procedure',
     start: '#### /etc/nginx/nginx.conf',
-    end: '#### /etc/nginx/conf.d/example.conf',
+    end: '## データベース設定例',
   },
 ];
 
@@ -48,6 +48,7 @@ const nginxMarkers = [
   'add_header Content-Security-Policy',
   'form-action \'self\'" always;',
   '下位の`server` / `location`に別の`add_header`があると上位設定を通常継承しません',
+  'このscopeのadd_headerが上位設定を置換するため、共通security headerも再設定する',
   '`nginx -t`',
   'https://nginx.org/en/docs/http/ngx_http_headers_module.html',
 ];
@@ -112,6 +113,11 @@ export function validateWebSecurityHeaderTexts(manuscript, docs) {
     const nginx = extractSection(text, sections[1], label);
     requireMarkers(apache, apacheMarkers, `${label} Apache CSP section`);
     requireMarkers(nginx, nginxMarkers, `${label} Nginx CSP section`);
+    if (nginx.split('add_header Content-Security-Policy').length - 1 < 2) {
+      throw new WebSecurityHeaderContractError(
+        `${label} Nginx CSP section must repeat the enforced policy in the static-assets location`,
+      );
+    }
     extracted[label] = { apache, nginx };
   }
 
