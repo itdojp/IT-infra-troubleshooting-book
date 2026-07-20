@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
-    "test": "npm run check:metadata && npm run test:network-config && npm run test:mysql-binlog && node --test tests/BookGenerator.test.js tests/ConfigValidator.test.js",
+    "test": "npm run check:metadata && npm run test:network-config && npm run test:mysql-binlog && npm run test:web-security && node --test tests/BookGenerator.test.js tests/ConfigValidator.test.js",
     "format": "prettier --write .",
     "lint": "eslint src/ tests/",
     "build": "cd docs && bundle exec jekyll build",
@@ -23,7 +23,9 @@
     "check:network-config": "node scripts/check-network-config-modernization.js",
     "test:network-config": "node --test scripts/check-network-config-modernization.test.js",
     "check:mysql-binlog": "node scripts/check-mysql-binlog-modernization.js",
-    "test:mysql-binlog": "node --test scripts/check-mysql-binlog-modernization.test.js"
+    "test:mysql-binlog": "node --test scripts/check-mysql-binlog-modernization.test.js",
+    "check:web-security": "node scripts/check-web-security-headers.js",
+    "test:web-security": "node --test scripts/check-web-security-headers.test.js"
   },
   "keywords": [
     "book",

@@ -163,6 +163,13 @@ Listen 443
 ServerTokens Prod
 ServerSignature Off
 
+# mod_headersを有効にし、成功・error responseの両方へ適用する
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "DENY"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
+</IfModule>
+
 # MPM設定（preforkモジュール）
 <IfModule mpm_prefork_module>
     StartServers         8
@@ -187,10 +194,6 @@ LogLevel warn
     ErrorLog logs/example_error.log
     CustomLog logs/example_access.log combined
     
-    # セキュリティヘッダー
-    Header always set X-Frame-Options DENY
-    Header always set X-Content-Type-Options nosniff
-    Header always set X-XSS-Protection "1; mode=block"
 </VirtualHost>
 
 # SSL設定
@@ -209,6 +212,25 @@ LogLevel warn
     SSLHonorCipherOrder on
 </VirtualHost>
 ```
+
+`X-XSS-Protection`はnon-standardかつdeprecatedで、legacy browserのfilterが安全なpageへXSSを作り込む場合もあるため、現行hardening例では送信しません。CSPをXSSのdefense-in-depthとして使いますが、context-awareなoutput encoding、untrusted HTMLのsanitization、safe DOM API、input validationを置き換えるものではありません。
+
+上のenforced baselineはsame-origin resourceだけを許可し、inline script/styleと`eval()`系APIを許可しません。既存siteへ直接適用すると機能を壊し得るため、最初に同じpolicyを`Content-Security-Policy-Report-Only`で配信し、実在する収集先を`Reporting-Endpoints`と`report-to`で指定して違反を観測します。必要なinline codeは`'unsafe-inline'`や`'unsafe-eval'`で緩和せず、responseごとのnonce、content hash、または外部fileへ移行してから`Content-Security-Policy`をenforceしてください。
+
+`mod_headers`を有効化したうえで、構文、段階reload、実responseを確認します。
+
+```bash
+sudo apachectl configtest
+sudo systemctl reload httpd
+curl -sSI https://example.com/ | grep -iE '^(content-security-policy|x-content-type-options|x-frame-options):'
+```
+
+公式情報（2026-07-21 JST確認）:
+
+- [MDN: X-XSS-Protection](https://developer.mozilla.org/ja/docs/Web/HTTP/Reference/Headers/X-XSS-Protection)
+- [MDN: Content Security Policy guide](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP)
+- [MDN: Content-Security-Policy-Report-Only](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy-Report-Only)
+- [Apache HTTP Server 2.4: mod_headers](https://httpd.apache.org/docs/2.4/mod/mod_headers.html)
 
 ### Nginx
 
@@ -244,9 +266,9 @@ http {
     
     # セキュリティ設定
     server_tokens off;
-    add_header X-Frame-Options DENY;
-    add_header X-Content-Type-Options nosniff;
-    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Frame-Options "DENY" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" always;
     
     # Gzip圧縮
     gzip on;
@@ -257,6 +279,10 @@ http {
     include /etc/nginx/conf.d/*.conf;
 }
 ```
+
+Nginxの`add_header`は、下位の`server` / `location`に別の`add_header`があると上位設定を通常継承しません。共通headerをincludeへ切り出して各適用scopeで読み込むか、下の静的file用`location`のように同じheaderを再設定します。採用versionで継承契約を明示し、`nginx -t`、reload、error responseを含む実responseで確認してください。
+
+- [Nginx: ngx_http_headers_module](https://nginx.org/en/docs/http/ngx_http_headers_module.html)
 
 #### /etc/nginx/conf.d/example.conf
 ```nginx
@@ -294,7 +320,11 @@ server {
     # 静的ファイルのキャッシュ
     location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
         expires 1y;
-        add_header Cache-Control "public, immutable";
+        add_header Cache-Control "public, immutable" always;
+        # このscopeのadd_headerが上位設定を置換するため、共通security headerも再設定する
+        add_header X-Frame-Options "DENY" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" always;
     }
 }
 ```
