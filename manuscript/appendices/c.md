@@ -62,7 +62,7 @@ nmcli -f TYPE,FILENAME,NAME,UUID connection show
 nmcli connection show --active
 ```
 
-移行後のprofileは通常`/etc/NetworkManager/system-connections/*.nmconnection`に保存されます。疎通確認前に旧fileを削除せず、問題があればconsoleからbackupと変更記録に基づいて復旧してください。
+`nmcli connection migrate`はsource ifcfg profileをkeyfileへ置換するため、旧ifcfg fileは元の場所に残りません。移行後のprofileは通常`/etc/NetworkManager/system-connections/*.nmconnection`に保存されます。問題があればconsoleから、上の確認結果で特定した移行後keyfileを無効化・退避し、backup内の該当ifcfg fileを元のpathへ復元して`nmcli connection reload`後に接続を再度有効化します。同じUUIDのkeyfileとifcfg fileを併存させないでください。
 
 公式情報（2026-07-21確認）:
 

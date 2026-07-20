@@ -18,7 +18,7 @@ function canonicalTexts() {
 
 function netplanDocument(text) {
   const section = text.match(
-    /#### \/etc\/netplan\/\*\.yaml の例（Ubuntu \/ Netplan）[\s\S]*?```yaml\n([\s\S]*?)\n```/,
+    /#### \/etc\/netplan\/\*\.yaml の例（Ubuntu \/ Netplan）[\s\S]*?```yaml\r?\n([\s\S]*?)\r?\n```/,
   );
   assert.ok(section, 'Netplan YAML block must exist');
   return YAML.parse(section[1]);
@@ -27,11 +27,15 @@ function netplanDocument(text) {
 test('accepts current RHEL 9 and Netplan procedures with source/public parity', () => {
   const { manuscript, docs } = canonicalTexts();
   assert.deepEqual(validateNetworkConfigTexts(manuscript, docs), { synchronizedSectionCount: 4 });
+  assert.deepEqual(
+    validateNetworkConfigTexts(manuscript.replaceAll('\n', '\r\n'), docs.replaceAll('\n', '\r\n')),
+    { synchronizedSectionCount: 4 },
+  );
 });
 
 test('parses the canonical Netplan example with an explicit default route', () => {
   const { manuscript, docs } = canonicalTexts();
-  for (const text of [manuscript, docs]) {
+  for (const text of [manuscript, docs, manuscript.replaceAll('\n', '\r\n'), docs.replaceAll('\n', '\r\n')]) {
     const config = netplanDocument(text);
     assert.deepEqual(config.network.ethernets.enp1s0.routes, [
       { to: 'default', via: '192.0.2.1' },
@@ -42,11 +46,17 @@ test('parses the canonical Netplan example with an explicit default route', () =
 
 test('rejects a gateway4 regression in either canonical copy', () => {
   const { manuscript, docs } = canonicalTexts();
-  const regressed = manuscript.replace('      routes:\n        - to: default\n          via: 192.0.2.1', '      gateway4: 192.0.2.1');
-  assert.throws(
-    () => validateNetworkConfigTexts(regressed, docs),
-    /deprecated gateway4\/gateway6 key/,
-  );
+  const routeBlock = '      routes:\n        - to: default\n          via: 192.0.2.1';
+  const gateway4 = '      gateway4: 192.0.2.1';
+  for (const [source, publicCopy] of [
+    [manuscript.replace(routeBlock, gateway4), docs],
+    [manuscript, docs.replace(routeBlock, gateway4)],
+  ]) {
+    assert.throws(
+      () => validateNetworkConfigTexts(source, publicCopy),
+      /deprecated gateway4\/gateway6 key/,
+    );
+  }
 });
 
 test('rejects removal of the ifcfg migration command', () => {
