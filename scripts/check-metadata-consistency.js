@@ -6,6 +6,7 @@ import util from 'node:util';
 import { fileURLToPath } from 'node:url';
 import { validateNetworkConfigModernization } from './check-network-config-modernization.js';
 import { validateMysqlBinlogModernization } from './check-mysql-binlog-modernization.js';
+import { validateWebSecurityHeaders } from './check-web-security-headers.js';
 
 const REPO_SLUG = 'IT-infra-troubleshooting-book';
 const GITHUB_URL = `https://github.com/itdojp/${REPO_SLUG}`;
@@ -394,6 +395,12 @@ try {
 
 try {
   validateMysqlBinlogModernization(root);
+} catch (error) {
+  errors.push(error instanceof Error ? error.message : String(error));
+}
+
+try {
+  validateWebSecurityHeaders(root);
 } catch (error) {
   errors.push(error instanceof Error ? error.message : String(error));
 }
