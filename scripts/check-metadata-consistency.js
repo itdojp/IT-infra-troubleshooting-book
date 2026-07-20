@@ -4,6 +4,7 @@ import path from 'node:path';
 import process from 'node:process';
 import util from 'node:util';
 import { fileURLToPath } from 'node:url';
+import { validateNetworkConfigModernization } from './check-network-config-modernization.js';
 
 const REPO_SLUG = 'IT-infra-troubleshooting-book';
 const GITHUB_URL = `https://github.com/itdojp/${REPO_SLUG}`;
@@ -382,6 +383,12 @@ for (const asset of EXPECTED_DOC_ASSETS) {
   if (!fs.existsSync(assetPath) || !fs.statSync(assetPath).isFile() || fs.statSync(assetPath).size === 0) {
     errors.push(`docs/${asset}: required public asset is missing or empty`);
   }
+}
+
+try {
+  validateNetworkConfigModernization(root);
+} catch (error) {
+  errors.push(error instanceof Error ? error.message : String(error));
 }
 
 if (errors.length > 0) {
