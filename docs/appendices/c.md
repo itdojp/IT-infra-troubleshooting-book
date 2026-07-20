@@ -324,6 +324,8 @@ server {
 
 ### MySQL/MariaDB
 
+この節の一般設定は構成例です。製品間でparameterのdefault、廃止時期、反映方法が異なるため、後半のbinary log例はOracle MySQL向けのbaselineとして分離し、MariaDBへそのまま流用しません。
+
 **推奨度**: 条件付き（環境/ワークロードに合わせて調整。デフォルト値を鵜呑みにしない）  
 **副作用/注意**: 設定変更は性能/互換性/安定性に影響する。反映に再起動が必要な項目があるため、検証環境で事前確認する。
 
@@ -365,18 +367,51 @@ bind-address = 127.0.0.1
 # ssl-cert = /etc/mysql/ssl/server-cert.pem
 # ssl-key = /etc/mysql/ssl/server-key.pem
 
-# レプリケーション設定
-server-id = 1
-log-bin = mysql-bin
-binlog-format = ROW
-expire_logs_days = 7
-
 [mysql]
 default-character-set = utf8mb4
 
 [client]
 default-character-set = utf8mb4
 ```
+
+#### Binary log設定（Oracle MySQL 8.0.34以降）
+
+次はOracle MySQL 8.0.34以降の新規installationをbaselineとする例です。MySQL 8.0ではbinary logとROW formatがdefaultであり、8.0.34以降は`binlog_format`変数とformat変更自体がdeprecatedです。そのため、主例では`binlog_format`を明示せず、binary logのbasenameとretentionだけを設定します。
+
+```ini
+[mysqld]
+# replicationを使用する場合、server-idは各serverで一意にする
+server-id = 1
+
+# binary logのbasenameを明示する
+log-bin = mysql-bin
+
+# 自動purgeを有効にし、例として7日（604800秒）保持する
+binlog_expire_logs_auto_purge = ON
+binlog_expire_logs_seconds = 604800
+```
+
+`604800`は例示値です。最大replica lagに運用余裕を加えた期間を下回らず、point-in-time recoveryとbackup policyが要求する復旧可能期間を満たす値にします。短縮前には全replicaの適用位置と必要なbackupを確認してください。
+
+`log-bin`の有効化やbasename変更はstartup optionなので、設定反映には計画restartが必要です。反映後はdeprecated変数を参照せず、次のSQLでversion、binary log、自動purge、retentionを確認します。
+
+```sql
+SELECT @@version AS version,
+       @@global.log_bin AS log_bin,
+       @@global.binlog_expire_logs_auto_purge AS auto_purge,
+       @@global.binlog_expire_logs_seconds AS retention_seconds;
+```
+
+既存のSTATEMENT/MIXED環境では、明示設定だけを削除するとrestart後のevent形式が変わり得ます。application、temporary table、replicaの互換性を評価し、公式のreplication format移行手順に従ってROW移行を完了してから設定を除去してください。
+
+MariaDBは別製品です。MariaDB 10.6.1以降にも`binlog_expire_logs_seconds`がありますが、`expire_logs_days`とのalias関係や`binlog_format`のdefault・変更契約はOracle MySQL 8.0と同一ではありません。採用中のMariaDB versionの公式system variableを確認してください。
+
+公式情報（2026-07-21確認）:
+
+- [MySQL 8.0: Binary Logging Options and Variables](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html)
+- [MySQL 8.0.34 Release Notes: binlog_format deprecation](https://dev.mysql.com/doc/relnotes/mysql/8.0/en/news-8-0-34.html)
+- [MySQL 8.0: Replication Formats](https://dev.mysql.com/doc/refman/8.0/en/replication-formats.html)
+- [MariaDB: Replication and Binary Log System Variables](https://mariadb.com/docs/server/ha-and-performance/standard-replication/replication-and-binary-log-system-variables)
 
 ### PostgreSQL
 
