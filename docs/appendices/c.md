@@ -17,75 +17,105 @@ order: 103
 
 ### RHEL系（RHEL/RockyLinux/AlmaLinux等）ネットワーク設定
 
-**推奨度**: 条件付き（NetworkManager 運用の場合は推奨。従来の ifcfg-* 運用は互換目的の参考）  
-**副作用/注意**: 接続設定の変更により通信断が起こり得る。リモート作業時はコンソール等の退避手段を確保する。
+**推奨度**: 推奨（RHEL 9ではNetworkManager/keyfileをbaselineとする）
 
-RHEL 8 以降では NetworkManager が標準となっており、設定は `nmcli` 等で管理する運用が一般的です。一方で、従来の `ifcfg-*` 形式は互換目的で残っている場合もあります（環境・方針により異なるため要確認）。
+**副作用/注意**: 接続設定の変更により通信断が起こり得る。リモート作業時はconsole等の退避手段とrollback手順を確保する。
 
-#### NetworkManager 設定例（nmcli）
+RHEL 9 では NetworkManager が標準で、接続プロファイルの既定保存形式は keyfile です。新規設定は `nmcli`、RHEL system role、または nmstate で管理し、`/etc/NetworkManager/system-connections/*.nmconnection` を直接作成・編集しないでください。プロファイル名とNIC名は別の値なので、変更前に `nmcli connection show` で対象を確認します。
+
+#### NetworkManager/keyfile 設定例（RHEL 9の主手順）
+
+次の例は、`enp1s0`用に`static-enp1s0`という接続プロファイルを新規作成します。`192.0.2.0/24`、`198.51.100.0/24`、`203.0.113.0/24`はRFC 5737の文書用アドレスなので、実環境のアドレスへ置き換えてください。リモート接続中の変更は通信断を起こし得るため、consoleとrollback手段を確保してから実行してください。
+
 ```bash
-# 例: eth0 に静的IPを設定（環境に合わせて調整）
-nmcli connection modify eth0 \
+# 既存プロファイルとNICの対応を確認
+nmcli connection show
+nmcli device status
+
+# 例: enp1s0用の静的IPv4プロファイルを作成
+sudo nmcli connection add \
+  type ethernet \
+  con-name static-enp1s0 \
+  ifname enp1s0 \
   ipv4.method manual \
-  ipv4.addresses "192.168.1.100/24" \
-  ipv4.gateway "192.168.1.1" \
-  ipv4.dns "8.8.8.8 8.8.4.4"
+  ipv4.addresses "192.0.2.100/24" \
+  ipv4.gateway "192.0.2.1" \
+  ipv4.dns "192.0.2.53" \
+  ipv6.method auto
 
-nmcli connection up eth0
+# 設定値を確認してから有効化
+nmcli connection show static-enp1s0
+sudo nmcli connection up static-enp1s0
+
+# keyfileで保存されたことと、有効な接続を確認
+nmcli -f TYPE,FILENAME,NAME connection show
+nmcli connection show --active
 ```
 
-#### /etc/sysconfig/network-scripts/ifcfg-eth0
+#### Legacy: ifcfg-*（RHEL 8 / RHEL 9既存環境の移行対象）
+
+`/etc/sysconfig/network-scripts/ifcfg-*`形式はRHEL 9でdeprecatedです。RHEL 9は既存profileを処理できますが、新規profileの主手順には使用せずkeyfileへ移行します。移行前に設定backupとconsoleを確保し、`NM_CONTROLLED=no`やcustom device nameがあるprofileはRed Hat公式の前提条件を先に確認してください。
+
 ```bash
-# 静的IP設定例
-TYPE=Ethernet
-PROXY_METHOD=none
-BROWSER_ONLY=no
-BOOTPROTO=static
-DEFROUTE=yes
-IPV4_FAILURE_FATAL=no
-IPV6INIT=yes
-IPV6_AUTOCONF=yes
-IPV6_DEFROUTE=yes
-IPV6_FAILURE_FATAL=no
-NAME=eth0
-UUID=12345678-1234-1234-1234-123456789abc
-DEVICE=eth0
-ONBOOT=yes
-IPADDR=192.168.1.100
-NETMASK=255.255.255.0
-GATEWAY=192.168.1.1
-DNS1=8.8.8.8
-DNS2=8.8.4.4
+# 現在の形式、ファイル、connection name/UUIDを確認
+nmcli -f TYPE,FILENAME,NAME,UUID connection show
+
+# 既存ifcfg profileをbackup（保存先は組織の運用規則に合わせる）
+sudo cp -a /etc/sysconfig/network-scripts /root/network-scripts.before-keyfile-migration
+
+# <connection-name-or-UUID>を実在する値へ置換して、1 profileずつ移行
+sudo nmcli connection migrate "<connection-name-or-UUID>"
+
+# keyfile化と接続状態を確認
+nmcli -f TYPE,FILENAME,NAME,UUID connection show
+nmcli connection show --active
 ```
 
-#### /etc/sysconfig/network
-```bash
-# システム全体のネットワーク設定
-NETWORKING=yes
-HOSTNAME=server01.example.com
-GATEWAY=192.168.1.1
-```
+`nmcli connection migrate`はsource ifcfg profileをkeyfileへ置換するため、旧ifcfg fileは元の場所に残りません。移行後のprofileは通常`/etc/NetworkManager/system-connections/*.nmconnection`に保存されます。問題があればconsoleから、上の確認結果で特定した移行後keyfileを無効化・退避し、backup内の該当ifcfg fileを元のpathへ復元して`nmcli connection reload`後に接続を再度有効化します。同じUUIDのkeyfileとifcfg fileを併存させないでください。
+
+公式情報（2026-07-21確認）:
+
+- [RHEL 9: Configuring an Ethernet connection by using nmcli](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_and_managing_networking/configuring-an-ethernet-connection_configuring-and-managing-networking)
+- [RHEL 9: NetworkManager connection profiles in keyfile format / ifcfg migration](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_and_managing_networking/assembly_networkmanager-connection-profiles-in-keyfile-format_configuring-and-managing-networking)
 
 ### Ubuntu/Debian ネットワーク設定
 
 **推奨度**: 条件付き（Ubuntu は netplan が基本。Debian/既存運用では interfaces 等が残る場合がある）  
 **副作用/注意**: ネットワーク設定反映で瞬断が起こり得る。適用前に構文確認とロールバック手順を用意する。
 
-#### /etc/netplan/*.yaml の例 (Ubuntu / netplan)
+#### /etc/netplan/*.yaml の例（Ubuntu / Netplan）
 
-※ 実際のファイル名はインストール形態や環境により異なる場合があります（例: `00-installer-config.yaml` / `50-cloud-init.yaml`）。
+`gateway4` / `gateway6`はdeprecatedです。現行の主例では`routes`でdefault routeを定義します。例示する`192.0.2.0/24`はRFC 5737の文書用アドレスなので、実環境のアドレスへ置き換えてください。実際のfile名とinterface名は環境に合わせ、cloud-init等が生成元の場合は先に永続化の責務を確認してください。
+
 ```yaml
 network:
   version: 2
   ethernets:
-    eth0:
+    enp1s0:
       dhcp4: false
-      addresses: [192.168.1.100/24]
-      gateway4: 192.168.1.1
+      addresses:
+        - 192.0.2.100/24
+      routes:
+        - to: default
+          via: 192.0.2.1
       nameservers:
-        addresses: [8.8.8.8, 8.8.4.4]
-        search: [example.com]
+        addresses:
+          - 192.0.2.53
+        search:
+          - example.com
 ```
+
+リモート接続中はconsoleとrollback手段を確保し、構文生成とtimeout付き試行を経てから確定します。
+
+```bash
+sudo netplan generate
+sudo netplan try
+netplan status enp1s0
+```
+
+公式情報（2026-07-21確認）:
+
+- [Netplan YAML: gateway4/gateway6のdeprecated statusとdefault routes](https://netplan.readthedocs.io/en/stable/netplan-yaml/)
 
 #### /etc/network/interfaces (Debian/Ubuntu classic)
 ```bash
@@ -108,12 +138,22 @@ iface eth0 inet static
 **推奨度**: 条件付き（恒久設定はOS/配布方式に合わせて管理する）  
 **副作用/注意**: 経路変更は到達性に直結する。誤るとリモート接続断や経路ループが発生し得る。
 
-#### /etc/sysconfig/network-scripts/route-eth0 (RHEL/CentOS)
+#### RHEL 9 / NetworkManager（nmcli）
+
+恒久routeは対象connection profileへ追加します。次の例では`static-enp1s0`に2経路を追加します。
+
 ```bash
-# 静的ルート設定
-10.0.0.0/8 via 192.168.1.254 dev eth0
-172.16.0.0/12 via 192.168.1.254 dev eth0
+sudo nmcli connection modify static-enp1s0 \
+  +ipv4.routes "198.51.100.0/24 192.0.2.254, 203.0.113.0/24 192.0.2.254"
+sudo nmcli connection up static-enp1s0
+
+nmcli connection show static-enp1s0
+ip route show
 ```
+
+`/etc/sysconfig/network-scripts/route-*`はifcfg profileを継続するRHEL 8 / RHEL 9既存環境のlegacy方式です。新規のRHEL 9手順には採用せず、上記keyfile profileへrouteを移してから`nmcli connection migrate`で移行します。
+
+- [RHEL 9: Configuring a static route by using nmcli](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_and_managing_networking/configuring-static-routes_configuring-and-managing-networking)
 
 #### /etc/network/interfaces でのルート設定 (Debian/Ubuntu)
 ```bash

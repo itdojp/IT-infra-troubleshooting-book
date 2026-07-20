@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
-    "test": "npm run check:metadata && node --test tests/BookGenerator.test.js tests/ConfigValidator.test.js",
+    "test": "npm run check:metadata && npm run test:network-config && node --test tests/BookGenerator.test.js tests/ConfigValidator.test.js",
     "format": "prettier --write .",
     "lint": "eslint src/ tests/",
     "build": "cd docs && bundle exec jekyll build",
@@ -19,7 +19,9 @@
     "sync-components": "node scripts/sync-components.js",
     "sync-components:all": "node scripts/sync-components.js --all",
     "sync-components:dry-run": "node scripts/sync-components.js --all --dry-run",
-    "check:metadata": "node scripts/check-metadata-consistency.js"
+    "check:metadata": "node scripts/check-metadata-consistency.js",
+    "check:network-config": "node scripts/check-network-config-modernization.js",
+    "test:network-config": "node --test scripts/check-network-config-modernization.test.js"
   },
   "keywords": [
     "book",
