@@ -66,14 +66,15 @@ export function validateMysqlBinlogTexts(manuscript, docs) {
         `${label} appendix C contains a deprecated MySQL binary log assignment`,
       );
     }
+    const extracted = extractSection(text, label);
     for (const marker of requiredMarkers) {
-      if (!text.includes(marker)) {
+      if (!extracted.includes(marker)) {
         throw new MysqlBinlogContractError(
           `${label} appendix C is missing required MySQL binary log marker ${JSON.stringify(marker)}`,
         );
       }
     }
-    sections[label] = extractSection(text, label);
+    sections[label] = extracted;
   }
 
   if (sections.manuscript !== sections.docs) {

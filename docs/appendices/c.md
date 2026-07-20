@@ -406,7 +406,7 @@ SELECT @@version AS version,
 
 MariaDBは別製品です。MariaDB 10.6.1以降にも`binlog_expire_logs_seconds`がありますが、`expire_logs_days`とのalias関係や`binlog_format`のdefault・変更契約はOracle MySQL 8.0と同一ではありません。採用中のMariaDB versionの公式system variableを確認してください。
 
-公式情報（2026-07-21確認）:
+公式情報（2026-07-21 JST確認）:
 
 - [MySQL 8.0: Binary Logging Options and Variables](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html)
 - [MySQL 8.0.34 Release Notes: binlog_format deprecation](https://dev.mysql.com/doc/relnotes/mysql/8.0/en/news-8-0-34.html)

@@ -48,7 +48,8 @@ test('rejects an explicit deprecated binlog_format assignment', () => {
 
 test('rejects loss of the MariaDB product and version boundary', () => {
   const { manuscript, docs } = canonicalTexts();
-  const regressed = manuscript.replace('MariaDB 10.6.1以降', 'MariaDB version unspecified');
+  const marker = 'MariaDB 10.6.1以降';
+  const regressed = `${manuscript.replace(marker, 'MariaDB version unspecified')}\n\n${marker}\n`;
   assert.throws(
     () => validateMysqlBinlogTexts(regressed, docs),
     /missing required MySQL binary log marker.*MariaDB 10\.6\.1/,
