@@ -5,6 +5,7 @@ import process from 'node:process';
 import util from 'node:util';
 import { fileURLToPath } from 'node:url';
 import { validateNetworkConfigModernization } from './check-network-config-modernization.js';
+import { validateMysqlBinlogModernization } from './check-mysql-binlog-modernization.js';
 
 const REPO_SLUG = 'IT-infra-troubleshooting-book';
 const GITHUB_URL = `https://github.com/itdojp/${REPO_SLUG}`;
@@ -387,6 +388,12 @@ for (const asset of EXPECTED_DOC_ASSETS) {
 
 try {
   validateNetworkConfigModernization(root);
+} catch (error) {
+  errors.push(error instanceof Error ? error.message : String(error));
+}
+
+try {
+  validateMysqlBinlogModernization(root);
 } catch (error) {
   errors.push(error instanceof Error ? error.message : String(error));
 }
