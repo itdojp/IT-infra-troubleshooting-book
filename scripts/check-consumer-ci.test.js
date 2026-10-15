@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
+import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import YAML from 'yaml';
-import { validateVendoredLock } from './check-vendored-lock.js';
+import { validateVendoredLock, listVendoredPackages } from './check-vendored-lock.js';
 
 const workflow = YAML.parse(fs.readFileSync('.github/workflows/consumer-qa.yml', 'utf8'));
 function checkWorkflow(value) {
@@ -62,7 +64,7 @@ const lock = { lockfileVersion: 3, packages: { '': {},
   'node_modules/fixture/node_modules/@example/nested': { version: '2.0.0' } } };
 const read = key => ({ name: key.split('node_modules/').at(-1), version: lock.packages[key].version });
 test('vendor identities/versions pass including nested scoped packages', () => {
-  assert.deepEqual(validateVendoredLock(lock, read), []);
+  assert.deepEqual(validateVendoredLock(lock, read, Object.keys(lock.packages).filter(key => key !== '')), []);
 });
 for (const [label, value, reader] of [
   ['stale version', lock, key => ({ ...read(key), version: '0.0.1' })],
@@ -74,12 +76,63 @@ for (const [label, value, reader] of [
   ['traversal', { lockfileVersion: 3, packages: { 'node_modules/../../fixture': { version: '1' } } }, read],
 ]) {
   test(`reject vendored ${label}`, () => {
-    assert.ok(validateVendoredLock(value, reader).length > 0);
+    assert.ok(validateVendoredLock(value, reader, Object.keys(value.packages).filter(key => key !== '')).length > 0);
   });
 }
 
 test('npm aliases compare the locked canonical package name', () => {
   const alias = { lockfileVersion: 3, packages: {
     'node_modules/fixture-cjs': { name: 'fixture', version: '1.0.0' } } };
-  assert.deepEqual(validateVendoredLock(alias, () => ({ name: 'fixture', version: '1.0.0' })), []);
+  assert.deepEqual(validateVendoredLock(alias, () => ({ name: 'fixture', version: '1.0.0' }), ['node_modules/fixture-cjs']), []);
+});
+
+for (const extra of ['node_modules/extra', 'node_modules/@example/extra',
+  'node_modules/fixture/node_modules/extra']) {
+  test(`reject extra vendored package: ${extra}`, () => {
+    const inventory = Object.keys(lock.packages).filter(key => key !== '');
+    assert.ok(validateVendoredLock(lock, read, [...inventory, extra])
+      .some(error => error.includes('absent from lock')));
+  });
+}
+test('reject missing/duplicate package inventory', () => {
+  assert.ok(validateVendoredLock(lock, read, undefined).length);
+  assert.ok(validateVendoredLock(lock, read, []).length);
+  assert.ok(validateVendoredLock(lock, read, ['duplicate', 'duplicate']).length);
+});
+test('inventory visits actual ordinary/scoped/nested roots and rejects links/files', () => {
+  const base = fs.mkdtempSync(path.join(process.cwd(), '.consumer-test-'));
+  try {
+    const expected = ['node_modules/plain', 'node_modules/@example/scoped',
+      'node_modules/plain/node_modules/nested',
+      'node_modules/plain/node_modules/@example/nested-scoped'].sort();
+    const packages = {};
+    for (const key of expected) {
+      fs.mkdirSync(path.join(base, key), { recursive: true });
+      const manifest = { name: key.split('node_modules/').at(-1), version: '1.0.0' };
+      fs.writeFileSync(path.join(base, key, 'package.json'), JSON.stringify(manifest));
+      packages[key] = { version: '1.0.0' };
+    }
+    fs.writeFileSync(path.join(base, 'package-lock.json'), JSON.stringify({ lockfileVersion: 3, packages }));
+    const cli = () => spawnSync(process.execPath, [path.resolve('scripts/check-vendored-lock.js')],
+      { cwd: base, encoding: 'utf8' });
+    fs.mkdirSync(path.join(base, 'node_modules/.bin'));
+    fs.writeFileSync(path.join(base, 'node_modules/.package-lock.json'), '{}');
+    assert.deepEqual(listVendoredPackages(base), expected);
+    assert.equal(cli().status, 0);
+    const extra = path.join(base, 'node_modules/extra');
+    fs.mkdirSync(extra);
+    assert.ok(listVendoredPackages(base).includes('node_modules/extra'));
+    assert.equal(cli().status, 1);
+    fs.rmdirSync(extra);
+    fs.symlinkSync(path.join(base, 'node_modules/plain'), extra, 'dir');
+    assert.throws(() => listVendoredPackages(base), /not a link/);
+    fs.unlinkSync(extra);
+    const dangling = path.join(base, 'node_modules/@example/scoped/node_modules');
+    fs.symlinkSync(path.join(base, 'absent'), dangling, 'dir');
+    assert.throws(() => listVendoredPackages(base), /not a link/);
+    assert.equal(cli().status, 1);
+    fs.unlinkSync(dangling);
+    fs.writeFileSync(extra, 'not a package directory');
+    assert.throws(() => listVendoredPackages(base), /not a link\/file/);
+  } finally { fs.rmSync(base, { recursive: true, force: true }); }
 });
