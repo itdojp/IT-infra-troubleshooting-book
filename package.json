@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
-    "test": "npm run check:metadata && npm run test:network-config && npm run test:mysql-binlog && npm run test:web-security && node --test tests/BookGenerator.test.js tests/ConfigValidator.test.js",
+    "test": "npm run check:metadata && npm run test:network-config && npm run test:mysql-binlog && npm run test:web-security && node --test tests/BookGenerator.test.js tests/ConfigValidator.test.js && node --test scripts/check-consumer-ci.test.js",
     "format": "prettier --write .",
     "lint": "eslint src/ tests/",
     "build": "cd docs && bundle exec jekyll build",
