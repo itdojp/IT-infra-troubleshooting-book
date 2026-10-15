@@ -1,5 +1,6 @@
 import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert';
+import { format } from 'node:util';
 import fs from 'fs-extra';
 import path from 'path';
 import { BookGenerator } from '../src/BookGenerator.js';
@@ -13,7 +14,11 @@ describe('BookGenerator', () => {
   let tempDir;
   let testConfigPath;
 
-  beforeEach(async () => {
+  beforeEach(async (t) => {
+    // Route diagnostics through the test context, avoiding raw stdout/stderr IPC (#165).
+    // Keep messages and functional checks; context mocks restore after each test.
+    t.mock.method(console, 'log', (...args) => t.diagnostic(format(...args)));
+    t.mock.method(console, 'error', (...args) => t.diagnostic(format(...args)));
     bookGenerator = new BookGenerator();
     tempDir = await fs.mkdtemp(path.join(__dirname, 'tmp-'));
     

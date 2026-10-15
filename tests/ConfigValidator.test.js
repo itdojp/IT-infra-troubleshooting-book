@@ -1,11 +1,14 @@
 import { test, describe, beforeEach } from 'node:test';
 import assert from 'node:assert';
+import { format } from 'node:util';
 import { ConfigValidator } from '../src/ConfigValidator.js';
 
 describe('ConfigValidator', () => {
   let validator;
 
-  beforeEach(() => {
+  beforeEach((t) => {
+    // Keep diagnostics via the test context rather than raw console IPC (#165).
+    t.mock.method(console, 'log', (...args) => t.diagnostic(format(...args)));
     validator = new ConfigValidator();
   });
 
