@@ -3,10 +3,12 @@ import fs from 'node:fs';
 import test from 'node:test';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import YAML from 'yaml';
 import { validateVendoredLock, listVendoredPackages } from './check-vendored-lock.js';
 
-const workflow = YAML.parse(fs.readFileSync('.github/workflows/consumer-qa.yml', 'utf8'));
+const root = fileURLToPath(new URL('../', import.meta.url));
+const workflow = YAML.parse(fs.readFileSync(new URL('../.github/workflows/consumer-qa.yml', import.meta.url), 'utf8'));
 function checkWorkflow(value) {
   assert.ok(Object.hasOwn(value.on, 'pull_request'));
   assert.equal(value.on.pull_request, null);
@@ -100,7 +102,7 @@ test('reject missing/duplicate package inventory', () => {
   assert.ok(validateVendoredLock(lock, read, ['duplicate', 'duplicate']).length);
 });
 test('inventory visits actual ordinary/scoped/nested roots and rejects links/files', () => {
-  const base = fs.mkdtempSync(path.join(process.cwd(), '.consumer-test-'));
+  const base = fs.mkdtempSync(path.join(root, '.consumer-test-'));
   try {
     const expected = ['node_modules/plain', 'node_modules/@example/scoped',
       'node_modules/plain/node_modules/nested',
@@ -113,7 +115,7 @@ test('inventory visits actual ordinary/scoped/nested roots and rejects links/fil
       packages[key] = { version: '1.0.0' };
     }
     fs.writeFileSync(path.join(base, 'package-lock.json'), JSON.stringify({ lockfileVersion: 3, packages }));
-    const cli = () => spawnSync(process.execPath, [path.resolve('scripts/check-vendored-lock.js')],
+    const cli = () => spawnSync(process.execPath, [fileURLToPath(new URL('./check-vendored-lock.js', import.meta.url))],
       { cwd: base, encoding: 'utf8' });
     fs.mkdirSync(path.join(base, 'node_modules/.bin'));
     fs.writeFileSync(path.join(base, 'node_modules/.package-lock.json'), '{}');
